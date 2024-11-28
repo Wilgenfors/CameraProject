@@ -16,7 +16,7 @@ public class Main {
         //todo проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
         if (cams.size()>1) {
-
+            webcam = cams.get(1);
         }
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
