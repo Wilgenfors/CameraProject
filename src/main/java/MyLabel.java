@@ -21,12 +21,13 @@ public class MyLabel extends JLabel {
 	int pointY;
 	// --
 	boolean paintCircle = false;
-	boolean paintRepPoint = false;
+	boolean paintRedPoint = false;
 
 	public void drawCircles(ArrayList<Circle> circleList, float dHeight) {
 		this.circleList = circleList;
 		this.dHeight = dHeight;
 		paintCircle = true;
+		paintRedPoint = false;
 		repaint();
 	}
 
@@ -34,7 +35,16 @@ public class MyLabel extends JLabel {
 	public void drawPoint(Circle circle, float dHeight2) {
 		this.circle = circle;
 		this.dHeight = dHeight2;
-		paintRepPoint = true;
+		paintRedPoint = true;
+//		paintCircle = false;
+		repaint();
+	}
+
+	public void drawPoint(Circle circle) {
+		this.circle = circle;
+	//	this.dHeight = dHeight2;
+		paintRedPoint = true;
+//		paintCircle = false;
 		repaint();
 	}
 
@@ -68,7 +78,7 @@ public class MyLabel extends JLabel {
 				gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
 			}
 		}
-		if (paintRepPoint) {
+		if (paintRedPoint) {
 			// TODO енить код, чтобы рисовал вокруг точки
 			System.out.println("Drawing blue");
 		//	float[] dash = { 20, 20 };

@@ -47,8 +47,10 @@ public class RedSearch {
 				int r = (p >> 16) & 0xff; // get red
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
-				
-				if (r > 200 && g < 50 && b < 50) {
+
+//				if (r > 200 && g < 190 && b < 190) {
+//				if (r > 230 && g < 230 && b < 230) {
+				if (r > 250 && g < 250 && b < 250) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -102,8 +104,10 @@ public class RedSearch {
 				int r = (p >> 16) & 0xff; // get red
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
-				
-				if (r > 200 && g < 50 && b < 50) {
+
+//				if (r > 200 && g < 190 && b < 190) {
+//				if (r > 230 && g < 230 && b < 230) {
+				if (r > 250 && g < 250 && b < 250) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
