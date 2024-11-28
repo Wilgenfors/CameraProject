@@ -13,6 +13,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
         Webcam webcam = Webcam.getDefault();
+        //todo проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
+        var cams = Webcam.getWebcams();
+        if (cams.size()>1) {
+
+        }
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
         WebcamPanel panel = new WebcamPanel(webcam);
