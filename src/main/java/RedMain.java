@@ -25,17 +25,17 @@ public class RedMain {
 
     public static void main(String[] args) {
 //		consoleTest();
-        guiTest();
-    }
-
-    private static void guiTest() {
-        // frame for bounds detected:
-        mainFrame = new JFrame("BoundsTarget");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        MyLabel imageLabel = new MyLabel();
         Webcam webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
         webcam.open();
+        guiTest(webcam);
+    }
+
+    public static void guiTest( Webcam webcam) {
+        // frame for bounds detected:
+        MyLabel imageLabel = new MyLabel();
+        mainFrame = new JFrame("BoundsTarget");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         myPicture = webcam.getImage();
 //		BufferedImage blackAndWhiteImg = webcam.getImage();
@@ -99,30 +99,52 @@ public class RedMain {
     private static void checkTarget(ArrayList<Circle> circleList, Circle myCircle) {
         System.out.println("Going through the target: ");
         System.out.println("circles = "+circleList.size());
+
+        boolean miss = false, between = false;
         for (Circle circle0 : circleList) {
             int i = circleList.indexOf(circle0);
+
             Circle circle1 = circleList.get(i + 1);
+
             int Cx = circle0.getX();
             int Cy = circle0.getY();
             int R = circle0.getRadius();
-            // Проверяем окружности на попадания без внутренего круга и промаха:
-            if (i < circleList.size() - 1 && checkRedPointAndCircle(myCircle, circle0, circle1)) {
-                System.out.println("between " + i + " & " + (i + 1));
-                break;
-            }
+
 
             // Проверяем на промах:
             if (i < circleList.size() - 1 && checkRedPointAndCircleOut(myCircle, circle0)) {
                 System.out.println("miss");
+                miss = true;
                 break;
             }
 
-            // Проверяем на попадание во внутрению окружность:
-            if (i < circleList.size() - 1 && checkRedPointAndCircleCentre(myCircle, circle1)) {
+//            // Проверяем на попадание во внутрению окружность:
+//            if (i == circleList.size() - 1 && checkRedPointAndCircleCentre(myCircle, circle1)) {
+//                System.out.println("in center");
+//                break;
+//            }
+
+//           //  Проверяем на попадание во внутрению окружность:
+//            if (i == circleList.size() - 1 && (!miss && !center)) {
+//                System.out.println("in center");
+//                break;
+//            }
+
+            // Проверяем окружности на попадания без внутренего круга и промаха:
+            if ( i < circleList.size() - 1 && checkRedPointAndCircle(myCircle, circle0, circle1)) {
+                System.out.println("between " + i + " & " + (i + 1));
+                between = true;
+                break;
+            }
+//  Проверяем на попадание во внутрению окружность:
+            if (circle1 == circleList.get(2) && (!miss && !between)) {
                 System.out.println("in center");
                 break;
             }
+
         }
+
+
     }
 
     // metod for detected red poins on target:

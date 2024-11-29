@@ -5,6 +5,7 @@ import com.github.sarxos.webcam.util.ImageUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,15 +25,16 @@ public class Main {
         panel.setImageSizeDisplayed(true);
 
         JFrame window = new JFrame("Webcam");
-        window.add(panel);
+        window.add(panel, BorderLayout.CENTER);
         window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
         webcam.open();
-
-        BufferedImage image = webcam.getImage();
-
-        ImageIO.write(image, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
+        RedMain.guiTest(webcam);
+//
+//        BufferedImage image = webcam.getImage();
+//
+//        ImageIO.write(image, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
     }
 }
