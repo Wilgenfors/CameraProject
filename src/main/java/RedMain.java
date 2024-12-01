@@ -18,9 +18,9 @@ import javax.swing.JFrame;
 
 public class RedMain {
     private static JFrame mainFrame;
-    private static JFrame pointSearchFrame;
+    //private static JFrame pointSearchFrame;
     static BufferedImage myPicture = null;
-    static BufferedImage myPicture2 = null;
+    //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circleList;
 
     public static void main(String[] args) {
