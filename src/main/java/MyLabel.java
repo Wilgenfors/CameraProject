@@ -42,7 +42,7 @@ public class MyLabel extends JLabel {
 
 	public void drawPoint(Circle circle) {
 		this.circle = circle;
-	//	this.dHeight = dHeight2;
+		//	this.dHeight = dHeight2;
 		paintRedPoint = true;
 //		paintCircle = false;
 		repaint();
@@ -81,7 +81,7 @@ public class MyLabel extends JLabel {
 		if (paintRedPoint) {
 			// TODO енить код, чтобы рисовал вокруг точки
 			System.out.println("Drawing blue");
-		//	float[] dash = { 20, 20 };
+			//	float[] dash = { 20, 20 };
 			grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			pen = new BasicStroke(2);
 			grDot.setStroke(pen);

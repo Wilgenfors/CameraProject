@@ -150,6 +150,8 @@ public class RedMain {
     // metod for detected red poins on target:
     //todo передавть в аргументы метода параметры 1 фрейма и на строке 165 обводить точку
     private static Circle detectedRedPointOnTarget(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) {
+                
+
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
