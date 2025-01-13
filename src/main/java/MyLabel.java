@@ -12,10 +12,12 @@ public class MyLabel extends JLabel {
 	int circleX;
 	int circleY;
 	float dHeight;
-	ArrayList<Circle> circleList;
+
 	// Добавляю для обведения красных точек
 	MyPoint[] redPoints;
 	Circle circle;
+	boolean paintCircles = false;
+	ArrayList<Circle> circlesList = null;
 	int pointR;
 	int pointX;
 	int pointY;
@@ -23,11 +25,27 @@ public class MyLabel extends JLabel {
 	boolean paintCircle = false;
 	boolean paintRedPoint = false;
 
-	public void drawCircles(ArrayList<Circle> circleList, float dHeight) {
-		this.circleList = circleList;
+	public void drawCircle(int x, int y, int r, float dHeight) {
+		this.dHeight = dHeight;
+		circleR = (int) (r*dHeight);
+		circleX = (int) (x*dHeight);
+		circleY = (int) (y*dHeight);
+		paintCircle = true;
+		repaint();
+	}
+
+	public void drawCircles(ArrayList<Circle> circlesList, float dHeight) {
+		this.circlesList = circlesList;
 		this.dHeight = dHeight;
 		paintCircle = true;
 		paintRedPoint = false;
+		repaint();
+	}
+
+	// если добавить в параметры еще float dHeight, то можно не рисовать отдельно первый круг
+	public void drawCircles(ArrayList<Circle> circlesList) { //для рисования всех кругов
+		paintCircles = true;
+		this.circlesList = circlesList;
 		repaint();
 	}
 
@@ -39,6 +57,7 @@ public class MyLabel extends JLabel {
 //		paintCircle = false;
 		repaint();
 	}
+
 
 	public void drawPoint(Circle circle) {
 		this.circle = circle;
@@ -68,7 +87,7 @@ public class MyLabel extends JLabel {
 			pen = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dash, 1);
 			gr2D.setStroke(pen);
 			gr2D.setColor(Color.GREEN);
-			for (Circle circle : circleList) {
+			for (Circle circle : circlesList) {
 				int x = circle.getX();
 				int y = circle.getY();
 				int r = circle.getRadius();
@@ -79,7 +98,6 @@ public class MyLabel extends JLabel {
 			}
 		}
 		if (paintRedPoint) {
-			// TODO енить код, чтобы рисовал вокруг точки
 			System.out.println("Drawing blue");
 			//	float[] dash = { 20, 20 };
 			grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
