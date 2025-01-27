@@ -69,12 +69,13 @@ public class RedMain {
             }
         });
 
+        // todo Откоментировать если не поможет с Cannot invoke "Circle.getY()" because "circle" is null
         // Для того чтобы список не был пустой:
-        RedSearch redSearch = new RedSearch(myPicture);
-        Circle circle = redSearch.getCircle(); //находим внешний круг
-        ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
-        imageLabel.drawCircles(circlesList);
-        circlesList.add(circle); //если нужен список со всеми кругами
+//        RedSearch redSearch = new RedSearch(myPicture);
+//        Circle circle = redSearch.getCircle(); //находим внешний круг
+//        ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
+//        imageLabel.drawCircles(circlesList);
+//        circlesList.add(circle); //если нужен список со всеми кругами
         // ---------------------------------------------------------------
 
 //		var myCircle = detectedRedPointOnTarget(imageLabel, myPicture, imgIcon);
