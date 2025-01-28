@@ -47,7 +47,8 @@ public class RedSearch {
 				int r = (p >> 16) & 0xff; // get red
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
-				if (r > 200 && g < 50 && b < 50) {
+				if (r > 230 && g < 250 && b < 250) {
+//				if (r > 200 && g < 50 && b < 50) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -105,8 +106,8 @@ public class RedSearch {
 
 //				if (r > 200 && g < 190 && b < 190) {
 //				if (r > 230 && g < 230 && b < 230) {
-//				if (r > 250 && g < 250 && b < 250) {
-				if (r > 200 && g < 50 && b < 50) {
+				if (r > 250 && g < 250 && b < 250) {
+//				if (r > 200 && g < 50 && b < 50) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -158,7 +159,7 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
 //				System.out.println("black at top detected at y = " + j);
 				upperPoint = new MyPoint(width / 2, j);
 				pointsList.add(upperPoint);
@@ -170,7 +171,7 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
 //				System.out.println("black at buttom detected at y = " + j);
 				lowerPoint = new MyPoint(width / 2, j);
 				pointsList.add(lowerPoint);
@@ -182,7 +183,7 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
 //				System.out.println("black at left detected at x = " + i);
 				leftPoint = new MyPoint(i, height / 2);
 				pointsList.add(leftPoint);
@@ -272,12 +273,14 @@ public class RedSearch {
 			circlesList.add(getCircle(z)); //добавляем в список круг по найденным точкам
 		//цикл пока последний добавленный круг не приблизится к самому внешнему
 		try {
-			while (circlesList.get(circlesList.size()-1).getRadius()+10 < circle.getRadius()) {
-				//ищем следующий внутренний круг за последним найденным до этого
-				z = searchCircleFromCenter(circle, circlesList.get(circlesList.size()-1).getRadius()+10);
-				circlesList.add(getCircle(z));
+			if (!circlesList.isEmpty()) {
+				while (circlesList.get(circlesList.size() - 1).getRadius() + 40 < circle.getRadius()) {
+					//ищем следующий внутренний круг за последним найденным до этого
+					z = searchCircleFromCenter(circle, circlesList.get(circlesList.size() - 1).getRadius() + 40);
+					circlesList.add(getCircle(z));
+				}
+				circlesList.remove(circlesList.size() - 1); //убираем последний круг, он обычно совпадает с самым внешним
 			}
-			circlesList.remove(circlesList.size()-1); //убираем последний круг, он обычно совпадает с самым внешним
 		} catch (java.util.NoSuchElementException err) {
 			System.out.println("--!! NoSuchElementException !!--");
 		}
@@ -298,7 +301,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
+//			if (r < 2 && g < 2 && b < 2) {
 //				System.out.println("black at top detected at y = " + j);
 				blackPoints[0] = new MyPoint(circle.getX(), j); //upper point
 				break;
@@ -310,7 +314,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
+//			if (r < 2 && g < 2 && b < 2) {
 //				System.out.println("black at buttom detected at y = " + j);
 				blackPoints[1] = new MyPoint(circle.getX(), j); //lower point
 				break;
@@ -322,7 +327,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 2 && g < 2 && b < 2) {
+			if (r < 150 && g < 150 && b < 150) {
+//			if (r < 2 && g < 2 && b < 2) {
 //				System.out.println("black at right detected at x = " + i);
 				blackPoints[2] = new MyPoint(i, circle.getY()); //right point
 				break;

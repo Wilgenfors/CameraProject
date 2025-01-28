@@ -1,18 +1,12 @@
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
-import com.github.sarxos.webcam.WebcamUtils;
-import com.github.sarxos.webcam.util.ImageUtils;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -60,12 +54,14 @@ public class RedMain {
         mainFrame.add(imageLabel, BorderLayout.CENTER);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
-        resizeImage(imageLabel, blackAndWhiteImg, imgIcon);
+        resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+        System.out.println("Black");
         mainFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                resizeImage(imageLabel, myPicture, imgIcon);
+                resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+                System.out.println("color");
             }
         });
 
@@ -81,7 +77,7 @@ public class RedMain {
 //		var myCircle = detectedRedPointOnTarget(imageLabel, myPicture, imgIcon);
 //		checkTarget(circlesList, myCircle);
     }
-    private static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) {
+    private static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
@@ -89,7 +85,7 @@ public class RedMain {
         RedSearch redSearch = new RedSearch(myPicture);
 
 
-        redSearch.findRedPoints(); //Находим координаты красной точки
+       // redSearch.findRedPoints(); //Находим координаты красной точки
         Circle circle = redSearch.getCircle(); //находим внешний круг
         if (circle==null) {
             System.out.println("--!! No circle !!--");
@@ -97,7 +93,7 @@ public class RedMain {
 
             //red point detected:
             // Объектная переменная для синей обводки:
-            Circle myPoint = detectedRedPointOnTarget(imageLabel, myPicture, imgIcon);
+            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon);
             imageLabel.drawPoint(myPoint, dHeight);
             //--------------------------------------------------------------------
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
