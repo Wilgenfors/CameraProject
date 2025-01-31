@@ -4,6 +4,7 @@ import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -17,20 +18,27 @@ public class RedMain {
     //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
 
-    public static void main(String[] args) {
-//		consoleTest();
-        Webcam webcam = Webcam.getDefault();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webcam.open();
-        guiTest(webcam);
+//    public static void main(String[] args) {
+////		consoleTest();
+//        Webcam webcam = Webcam.getDefault();
+//        webcam.setViewSize(WebcamResolution.VGA.getSize());
+//        webcam.open();
+//        guiTest(webcam);
+//    }
+
+    public static void closeRedMain(){
+//        mainFrame.
+        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
     }
 
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         MyLabel imageLabel = new MyLabel();
+        if (mainFrame!=null) {
+        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
+//            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
         mainFrame = new JFrame("BoundsTarget");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         myPicture = webcam.getImage();
 //		BufferedImage blackAndWhiteImg = webcam.getImage();
         //ImageIO.write(myPicture, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
@@ -51,6 +59,8 @@ public class RedMain {
         graphics.drawImage(myPicture, 0, 0, null);
         ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
         imageLabel.setIcon(imgIcon);
+//        if (mainFrame.)
+            mainFrame.remove(imageLabel);
         mainFrame.add(imageLabel, BorderLayout.CENTER);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
