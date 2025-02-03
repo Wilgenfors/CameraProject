@@ -32,9 +32,12 @@ public class Main {
 
         JFrame window = new JFrame("Webcam");
         window.add(panel, BorderLayout.CENTER);
-        // add button for...
+        // add button for detected black circle and red point^
         JButton button = new JButton("Red detected");
         window.add(button, BorderLayout.NORTH);
+        // add button for stopped Runnable:
+        JButton button_stop = new JButton("Stopped detected");
+        window.add(button_stop, BorderLayout.SOUTH);
         //_____________________________________________________________
         window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,13 +46,23 @@ public class Main {
         webcam.open();
         //RedMain.guiTest(webcam);
 
-        // Слушатель для кнопки:
+        // Слушатель конпки для начала потока (расспознования красных точек):
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+           //     SimpleRunnable.running();
                 RedMain.guiTest(webcam);
             }
         });
         //_______________________________________________
+
+        // Слашатель для остановки потока:
+        button_stop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SimpleRunnable.stopped();
+            }
+        });
+        //_______________________________________________
+
 //
 //        BufferedImage image = webcam.getImage();
 //

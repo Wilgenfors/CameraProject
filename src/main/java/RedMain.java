@@ -18,16 +18,8 @@ public class RedMain {
     //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
 
-//    public static void main(String[] args) {
-////		consoleTest();
-//        Webcam webcam = Webcam.getDefault();
-//        webcam.setViewSize(WebcamResolution.VGA.getSize());
-//        webcam.open();
-//        guiTest(webcam);
-//    }
-
     public static void closeRedMain(){
-//        mainFrame.
+
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
     }
 
@@ -40,16 +32,7 @@ public class RedMain {
         }
         mainFrame = new JFrame("BoundsTarget");
         myPicture = webcam.getImage();
-//		BufferedImage blackAndWhiteImg = webcam.getImage();
-        //ImageIO.write(myPicture, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
-//		WebcamUtils.capture(webcam, "grayImage.jpg");
-//		System.out.println("image size = "+myPicture.getWidth()+" x "+ myPicture.getHeight());
-//		String fileName = "target3_promah.png";
-//		try {
-//			myPicture = ImageIO.read(new File(fileName));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+
         // Буффер для изменнения картинки в серый
         BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
 //		BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(),BufferedImage.TYPE_BYTE_BINARY);
@@ -59,8 +42,8 @@ public class RedMain {
         graphics.drawImage(myPicture, 0, 0, null);
         ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
         imageLabel.setIcon(imgIcon);
-//        if (mainFrame.)
-            mainFrame.remove(imageLabel);
+
+        mainFrame.remove(imageLabel);
         mainFrame.add(imageLabel, BorderLayout.CENTER);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
@@ -75,19 +58,16 @@ public class RedMain {
             }
         });
 
-        // todo Откоментировать если не поможет с Cannot invoke "Circle.getY()" because "circle" is null
-        // Для того чтобы список не был пустой:
-//        RedSearch redSearch = new RedSearch(myPicture);
-//        Circle circle = redSearch.getCircle(); //находим внешний круг
-//        ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
-//        imageLabel.drawCircles(circlesList);
-//        circlesList.add(circle); //если нужен список со всеми кругами
-        // ---------------------------------------------------------------
 
-//		var myCircle = detectedRedPointOnTarget(imageLabel, myPicture, imgIcon);
-//		checkTarget(circlesList, myCircle);
+        RedMain redmain = new RedMain();
+        // Создаем объектную переменую для потока и сам поток:
+        SimpleRunnable run1=new SimpleRunnable(redmain, mainFrame,webcam, imageLabel);
+        Thread thread1=new Thread(run1); //создаем поток и передаем ему наш объект
+        thread1.start();
     }
-    private static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
+    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
+
+
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
@@ -107,26 +87,26 @@ public class RedMain {
             imageLabel.drawPoint(myPoint, dHeight);
             //--------------------------------------------------------------------
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
-            System.out.println("--- inner circles search ---");
+//            System.out.println("--- inner circles search ---");
             ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
             imageLabel.drawCircles(circlesList);
             circlesList.add(circle); //если нужен список со всеми кругами
 
             // Новый алгоритм точности попадания:
             int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-            System.out.println("circleIndex = "+circleIndex);
+//            System.out.println("circleIndex = "+circleIndex);
 
             // Если точка в центре или в области промаха:
             if (circleIndex == -1){
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-                if (soloCircleIndex==-99) {
-                    System.out.println("circleIndex = "+soloCircleIndex);
-                    System.out.println("Red point detected in center");
-                }
-                else if (soloCircleIndex==99){
-                    System.out.println("circleIndex = "+soloCircleIndex);
-                    System.out.println("Red point detected in miss");
-                }
+//                if (soloCircleIndex==-99) {
+//                    System.out.println("circleIndex = "+soloCircleIndex);
+//                    System.out.println("Red point detected in center");
+//                }
+//                else if (soloCircleIndex==99){
+//                    System.out.println("circleIndex = "+soloCircleIndex);
+//                    System.out.println("Red point detected in miss");
+//                }
             }
             // Если точка находится между кругами
             else if (circleIndex < circlesList.size())
