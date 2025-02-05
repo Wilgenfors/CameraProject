@@ -12,6 +12,10 @@ public class SimpleRunnable implements Runnable {
     private BufferedImage myPicture_obj;
     private ImageIcon imgIcon_obj;
     private BufferedImage colorImg_obj;
+
+    static private JTextArea ta; //локальный объект типа JTextArea
+    static private String text; //текст, который поток будет выводить
+
     static private boolean stop = false;
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
@@ -19,10 +23,7 @@ public class SimpleRunnable implements Runnable {
         Frame =redmainFrame;
         webcam_obj = webcam;
         imageLabel_obj = imageLabel;
-//        imageLabel_obj = imageLabel;
-//        myPicture_obj = myPicture;
-//        imgIcon_obj = imgIcon;
-//        colorImg_obj = colorImg;
+
     }
     // метод для остановки потока и расспознавания красных точек:
     static public void stopped(){
@@ -33,12 +34,20 @@ public class SimpleRunnable implements Runnable {
     static public void running(){
         stop = false;
     }
+    public static void SetText(JTextArea textArea, String textOut){
+
+        ta = textArea; //локальный объект присваиваем переданному параметру
+        text=textOut;
+    }
+
     @Override
     public void run(){
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
-            //redMain_obj.guiTest(webcam_obj);
-//            RedMain redmain = new RedMain();
             colorImg_obj = webcam_obj.getImage();
+            if (ta!=null){
+                ta.append(text+"\n"); //выводим текст в объект JTextArea
+            }
+
 
             // Буффер для изменнения картинки в серый
             BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
@@ -56,8 +65,6 @@ public class SimpleRunnable implements Runnable {
             Frame.setVisible(true);
             redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon, colorImg_obj);
 
-//            redMain_obj.resizeImage(imageLabel_obj, myPicture_obj, imgIcon_obj, colorImg_obj);
-//            System.out.println("Runnable!!!");
             try {
                 Thread.currentThread().sleep(100);
             } catch (InterruptedException e) {

@@ -16,6 +16,7 @@ import java.io.IOException;
 
 public class Main {
     static Webcam webcam = Webcam.getDefault();
+    static JTextArea myTextArea;
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
@@ -38,7 +39,12 @@ public class Main {
         // add button for stopped Runnable:
         JButton button_stop = new JButton("Stopped detected");
         window.add(button_stop, BorderLayout.SOUTH);
+
         //_____________________________________________________________
+        myTextArea = new JTextArea(10,20);
+        JScrollPane scrollPane = new JScrollPane(myTextArea);
+        window.add(scrollPane,BorderLayout.EAST);
+
         window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
@@ -49,7 +55,7 @@ public class Main {
         // Слушатель конпки для начала потока (расспознования красных точек):
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-           //     SimpleRunnable.running();
+                SimpleRunnable.running();
                 RedMain.guiTest(webcam);
             }
         });

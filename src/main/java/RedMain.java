@@ -17,7 +17,7 @@ public class RedMain {
     static BufferedImage myPicture = null;
     //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
-
+    private static String text;
     public static void closeRedMain(){
 
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
@@ -99,18 +99,28 @@ public class RedMain {
             // Если точка в центре или в области промаха:
             if (circleIndex == -1){
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-//                if (soloCircleIndex==-99) {
-//                    System.out.println("circleIndex = "+soloCircleIndex);
-//                    System.out.println("Red point detected in center");
-//                }
-//                else if (soloCircleIndex==99){
-//                    System.out.println("circleIndex = "+soloCircleIndex);
-//                    System.out.println("Red point detected in miss");
-//                }
+                if (soloCircleIndex==-99) {
+                    //System.out.println("circleIndex = "+soloCircleIndex);
+                    System.out.println("Red point detected in center");
+                    //text = "Red point detected in center";
+                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in center");
+                }
+                else if (soloCircleIndex==99){
+                    //System.out.println("circleIndex = "+soloCircleIndex);
+                    System.out.println("Red point detected in miss");
+                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
+                    //text = "Red point detected in miss";
+                }
             }
             // Если точка находится между кругами
             else if (circleIndex < circlesList.size())
+            {
                 System.out.println("Red point detected in  "+(circleIndex));
+                String textOut = "Red point detected in  "+(circleIndex);
+                SimpleRunnable.SetText(Main.myTextArea,textOut);
+
+            }
+
             // ----------------------------------------------------------------------
 
         }
@@ -141,25 +151,25 @@ public class RedMain {
         int circleRc2 = circleNext.getRadius();
         // Левая часть нужна для нахождения радиуса от центра до нашей красной точки:
         double leftPart_1 = Math.pow(xRedPoint-circle.getX(), 2) + Math.pow(yRedPoint-circle.getY(), 2);
-        System.out.println("");
-        System.out.println("");
-        System.out.println("xRedPoint-circle.getX()"+(xRedPoint-circle.getX()));
-        System.out.println("yRedPoint-circle.getY()"+(yRedPoint-circle.getY()));
-        System.out.println("leftPart_1 = "+leftPart_1);
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("xRedPoint-circle.getX()"+(xRedPoint-circle.getX()));
+//        System.out.println("yRedPoint-circle.getY()"+(yRedPoint-circle.getY()));
+//        System.out.println("leftPart_1 = "+leftPart_1);
         // Значения в leftPart_1 и leftPart_2 одинаковые!!!
         double leftPart_2 = Math.pow(xRedPoint-circleNext.getX(), 2) + Math.pow(yRedPoint-circleNext.getY(), 2);
-        System.out.println("xRedPoint-circleNext.getX()"+(xRedPoint-circleNext.getX()));
-        System.out.println("yRedPoint-circleNext.getY()"+(yRedPoint-circleNext.getY()));
-        System.out.println("leftPart_2 = "+leftPart_2);
-        System.out.println("");
-        System.out.println("");
+//        System.out.println("xRedPoint-circleNext.getX()"+(xRedPoint-circleNext.getX()));
+//        System.out.println("yRedPoint-circleNext.getY()"+(yRedPoint-circleNext.getY()));
+//        System.out.println("leftPart_2 = "+leftPart_2);
+//        System.out.println("");
+//        System.out.println("");
         // И сравниваем с радиусами текущего и следующего круга:
         if (leftPart_1>=((circleRc1)*(circleRc1)) && leftPart_2<=((circleRc2)*(circleRc2)))
         {
-            System.out.println("\n\nleftPart_1 = "+leftPart_1);
-            System.out.println("circleRc1^2 = "+(circleRc1)*(circleRc1));
-            System.out.println("circleRc1^2 = "+(circleRc2)*(circleRc2));
-            System.out.println("\n\n");
+//            System.out.println("\n\nleftPart_1 = "+leftPart_1);
+//            System.out.println("circleRc1^2 = "+(circleRc1)*(circleRc1));
+//            System.out.println("circleRc1^2 = "+(circleRc2)*(circleRc2));
+//            System.out.println("\n\n");
             return true;
         }
 
@@ -201,7 +211,7 @@ public class RedMain {
 
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
 
-        System.out.println("red dot circle = " + myPoint.getX() + " " + myPoint.getY() + " " + myPoint.getRadius());
+        //System.out.println("red dot circle = " + myPoint.getX() + " " + myPoint.getY() + " " + myPoint.getRadius());
         return myPoint;
 
 
