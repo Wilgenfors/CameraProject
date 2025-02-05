@@ -1,6 +1,6 @@
 #define LASER 8
 #define BUTTON 2
-
+#define MODE 9
 bool state = 0, ledState = 0;
 
 void setup() {
