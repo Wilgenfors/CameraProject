@@ -18,6 +18,7 @@ public class RedMain {
     //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
     private static String text;
+
     public static void closeRedMain(){
 
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
@@ -103,12 +104,15 @@ public class RedMain {
                     //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in center");
                     //text = "Red point detected in center";
-                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in center");
+//                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in center");
+                    Main.myTextArea.append(""+"Red point detected in center"+"\n");
                 }
-                else if (soloCircleIndex==99){
+                //else if (soloCircleIndex==99){
+                else if (myPoint.getRadius()!=-500){
                     //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in miss");
-                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
+                    Main.myTextArea.append(""+"Red point detected in miss"+"\n");
+                    //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
                     //text = "Red point detected in miss";
                 }
             }
@@ -117,8 +121,8 @@ public class RedMain {
             {
                 System.out.println("Red point detected in  "+(circleIndex));
                 String textOut = "Red point detected in  "+(circleIndex);
-                SimpleRunnable.SetText(Main.myTextArea,textOut);
-
+             //   SimpleRunnable.SetText(Main.myTextArea,textOut);
+                Main.myTextArea.append(""+textOut+"\n");
             }
 
             // ----------------------------------------------------------------------
@@ -181,7 +185,8 @@ public class RedMain {
         int i = 0;
         // Передаю первый и последний круг в метод circleSoloIs_OnXY:
         Circle circleCentre =  circles2.get(1);
-        //Circle circleLast =  circles2.get(circles2.size());
+        //Circle circleLast =  circles2.get(circles2.size()-1);
+        System.out.println(circles2.size()-1);
 
         // Возвращает -99 если красная точка в центре или 99 если в области промаха.
 
@@ -189,8 +194,11 @@ public class RedMain {
         double leftPart = Math.pow(xRedPoint-circleCentre.getX(), 2) + Math.pow(yRedPoint-circleCentre.getY(), 2);
 
         // Возвращает -99 если красная точка в центре или 99 если в области промаха.
+
         if (leftPart<=((circleCentre.getRadius())*(circleCentre.getRadius()))) return -99;
-        return 99;
+        // Иначе если красная точка существует, то она в промахе (условие ниже не использовано потому что выходит за границы)
+        //if (leftPart>=((circleLast.getRadius())*(circleLast.getRadius()))) return 99;
+        return 100;
     }
 
 

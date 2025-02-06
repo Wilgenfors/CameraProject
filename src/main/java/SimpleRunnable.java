@@ -44,9 +44,9 @@ public class SimpleRunnable implements Runnable {
     public void run(){
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
             colorImg_obj = webcam_obj.getImage();
-            if (ta!=null){
-                ta.append(text+"\n"); //выводим текст в объект JTextArea
-            }
+//            if (ta!=null){
+//                ta.append(text+"\n"); //выводим текст в объект JTextArea
+//            }
 
 
             // Буффер для изменнения картинки в серый
