@@ -13,9 +13,7 @@ import javax.swing.JFrame;
 
 public class RedMain {
     private static JFrame mainFrame;
-    //private static JFrame pointSearchFrame;
     static BufferedImage myPicture = null;
-    //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
     private static String text;
 
@@ -25,32 +23,38 @@ public class RedMain {
     }
 
     public static void guiTest( Webcam webcam) {
-        // frame for bounds detected:
+
         MyLabel imageLabel = new MyLabel();
+        // Условие для проверки создан ли второй фрейм или нет
         if (mainFrame!=null) {
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
-//            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
+        // Второй фрейм для распознавания красных точек и кругов:
         mainFrame = new JFrame("BoundsTarget");
         myPicture = webcam.getImage();
 
-        // Буффер для изменнения картинки в серый
+        // Буффер для изменения картинки в серый
         BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
 //		BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(),BufferedImage.TYPE_BYTE_BINARY);
 
         Graphics2D graphics = blackAndWhiteImg.createGraphics();
 
+        // Преобразуем рисунок в серый:
         graphics.drawImage(myPicture, 0, 0, null);
+        // Создаем иконку рисунка на основе серой картинки:
         ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
+        // И добавляем на лейбл:
         imageLabel.setIcon(imgIcon);
-
+        // И удаляем лейбл What!?!?:
         mainFrame.remove(imageLabel);
         mainFrame.add(imageLabel, BorderLayout.CENTER);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
+        // Вызываем метод для распознавания:
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
         System.out.println("Black");
         mainFrame.setLocationRelativeTo(null);
+        // :
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -59,15 +63,15 @@ public class RedMain {
             }
         });
 
-
+        // Создаем наш поток для постоянного распознавания:
         RedMain redmain = new RedMain();
         // Создаем объектную переменую для потока и сам поток:
         SimpleRunnable run1=new SimpleRunnable(redmain, mainFrame,webcam, imageLabel);
         Thread thread1=new Thread(run1); //создаем поток и передаем ему наш объект
         thread1.start();
     }
-    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
+    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
@@ -75,53 +79,50 @@ public class RedMain {
         imgIcon.setImage(dimg);
         RedSearch redSearch = new RedSearch(myPicture);
 
-
-       // redSearch.findRedPoints(); //Находим координаты красной точки
-        Circle circle = redSearch.getCircle(); //находим внешний круг
+        //находим внешний круг:
+        Circle circle = redSearch.getCircle();
         if (circle==null) {
             System.out.println("--!! No circle !!--");
         } else {
 
-            //red point detected:
-            // Объектная переменная для синей обводки:
+            // Находим красную точку и обводим её синим:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon);
             imageLabel.drawPoint(myPoint, dHeight);
             //--------------------------------------------------------------------
+            // Рисуем первый найденный круг:
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
-//            System.out.println("--- inner circles search ---");
-            ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
+            //находим все внутренние круги:
+            ArrayList<Circle> circlesList = redSearch.getCircles(circle);
             imageLabel.drawCircles(circlesList);
-            circlesList.add(circle); //если нужен список со всеми кругами
+            //если нужен список со всеми кругами:
+            circlesList.add(circle);
 
             // Новый алгоритм точности попадания:
             int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-//            System.out.println("circleIndex = "+circleIndex);
 
             // Если точка в центре или в области промаха:
             if (circleIndex == -1){
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
+                // Если попали в центр:
                 if (soloCircleIndex==-99) {
-                    //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in center");
-                    //text = "Red point detected in center";
-//                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in center");
+                    // Выводим информацию в текстовое поле фрейма класса Main:
                     Main.myTextArea.append(""+"Red point detected in center"+"\n");
                 }
-                //else if (soloCircleIndex==99){
+                // Радиус == - 500 это дефолтное значение при отсутствии красной точки
+                // значит иначе красная точка есть и если она не в центре, то в области промаха:
                 else if (myPoint.getRadius()!=-500){
-                    //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in miss");
+                    // Выводим информацию в текстовое поле фрейма класса Main:
                     Main.myTextArea.append(""+"Red point detected in miss"+"\n");
-                    //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
-                    //text = "Red point detected in miss";
                 }
             }
-            // Если точка находится между кругами
+            // Если точка находится между кругами:
             else if (circleIndex < circlesList.size())
             {
                 System.out.println("Red point detected in  "+(circleIndex));
                 String textOut = "Red point detected in  "+(circleIndex);
-             //   SimpleRunnable.SetText(Main.myTextArea,textOut);
+                // Выводим информацию в текстовое поле фрейма класса Main:
                 Main.myTextArea.append(""+textOut+"\n");
             }
 
@@ -138,6 +139,7 @@ public class RedMain {
             // Проверяем чтобы следующий круг не выходил за границы:
             if ((count) < circles2.size()-1 ){
                 Circle circleNext = circles2.get(count + 1);
+                // Если точка находится между кругов возвращаем значение области попадания:
                 if (circleIs_OnXY(circle, circleNext, xRedPoint, yRedPoint)){
                     System.out.println("\n\n i = " + i);
                     return i;
@@ -150,30 +152,17 @@ public class RedMain {
     }
 
     private static boolean circleIs_OnXY(Circle circle,Circle circleNext, int xRedPoint, int yRedPoint) {
-//		(x – a)2 + (y – b)2 = R2
+//		формула сравнения: (x – a)2 + (y – b)2 = R2
         int circleRc1 = circle.getRadius();
         int circleRc2 = circleNext.getRadius();
         // Левая часть нужна для нахождения радиуса от центра до нашей красной точки:
         double leftPart_1 = Math.pow(xRedPoint-circle.getX(), 2) + Math.pow(yRedPoint-circle.getY(), 2);
-//        System.out.println("");
-//        System.out.println("");
-//        System.out.println("xRedPoint-circle.getX()"+(xRedPoint-circle.getX()));
-//        System.out.println("yRedPoint-circle.getY()"+(yRedPoint-circle.getY()));
-//        System.out.println("leftPart_1 = "+leftPart_1);
-        // Значения в leftPart_1 и leftPart_2 одинаковые!!!
         double leftPart_2 = Math.pow(xRedPoint-circleNext.getX(), 2) + Math.pow(yRedPoint-circleNext.getY(), 2);
-//        System.out.println("xRedPoint-circleNext.getX()"+(xRedPoint-circleNext.getX()));
-//        System.out.println("yRedPoint-circleNext.getY()"+(yRedPoint-circleNext.getY()));
-//        System.out.println("leftPart_2 = "+leftPart_2);
-//        System.out.println("");
-//        System.out.println("");
+
         // И сравниваем с радиусами текущего и следующего круга:
         if (leftPart_1>=((circleRc1)*(circleRc1)) && leftPart_2<=((circleRc2)*(circleRc2)))
         {
-//            System.out.println("\n\nleftPart_1 = "+leftPart_1);
-//            System.out.println("circleRc1^2 = "+(circleRc1)*(circleRc1));
-//            System.out.println("circleRc1^2 = "+(circleRc2)*(circleRc2));
-//            System.out.println("\n\n");
+            // Возвращаем если красная точка находится в области между кругами:
             return true;
         }
 
@@ -184,16 +173,14 @@ public class RedMain {
     private static int getSoloCircleIndByXY(int xRedPoint, int yRedPoint, ArrayList<Circle> circles2) {
         int i = 0;
         // Передаю первый и последний круг в метод circleSoloIs_OnXY:
-        Circle circleCentre =  circles2.get(1);
-        //Circle circleLast =  circles2.get(circles2.size()-1);
-        System.out.println(circles2.size()-1);
+        Circle circleCentre = circles2.get(1);
 
-        // Возвращает -99 если красная точка в центре или 99 если в области промаха.
+        System.out.println(circles2.size()-1);
 
         // Левая часть нужна для нахождения радиуса от центра до нашей красной точки:
         double leftPart = Math.pow(xRedPoint-circleCentre.getX(), 2) + Math.pow(yRedPoint-circleCentre.getY(), 2);
 
-        // Возвращает -99 если красная точка в центре или 99 если в области промаха.
+        // Возвращает -99 если красная точка в центре или 99 если в области промаха иначе возвращается 100.
 
         if (leftPart<=((circleCentre.getRadius())*(circleCentre.getRadius()))) return -99;
         // Иначе если красная точка существует, то она в промахе (условие ниже не использовано потому что выходит за границы)
@@ -219,7 +206,6 @@ public class RedMain {
 
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
 
-        //System.out.println("red dot circle = " + myPoint.getX() + " " + myPoint.getY() + " " + myPoint.getRadius());
         return myPoint;
 
 

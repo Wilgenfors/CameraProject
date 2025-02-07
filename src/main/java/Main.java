@@ -19,18 +19,21 @@ public class Main {
     static JTextArea myTextArea;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello world!");
 
-        //todo проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
+        //проверяет кол-во камер, и если 1, то брать дефолтную, иначе вторую:
         var cams = Webcam.getWebcams();
         if (cams.size()>1) {
             webcam = cams.get(1);
         }
+        // Задаем разрешение камеры:
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
+        // Создаем панель для нашего объекта вебкамеры:
         WebcamPanel panel = new WebcamPanel(webcam);
         panel.setImageSizeDisplayed(true);
 
+        // Создаем Фрейм для нашей отображения полученного изображения
+        // И добавляем туда кнопки и панель для отображения веб-камеры:
         JFrame window = new JFrame("Webcam");
         window.add(panel, BorderLayout.CENTER);
         // add button for detected black circle and red point^
@@ -41,7 +44,9 @@ public class Main {
         window.add(button_stop, BorderLayout.SOUTH);
 
         //_____________________________________________________________
+        // Текстовое пол для вывода места попадания или промаха:
         myTextArea = new JTextArea(10,20);
+        // В текстовом поле добавляем скролинг:
         JScrollPane scrollPane = new JScrollPane(myTextArea);
         window.add(scrollPane,BorderLayout.EAST);
 
@@ -69,10 +74,6 @@ public class Main {
         });
         //_______________________________________________
 
-//
-//        BufferedImage image = webcam.getImage();
-//
-//        ImageIO.write(image, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
     }
 
 }
