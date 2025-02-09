@@ -16,6 +16,7 @@ public class SimpleRunnable implements Runnable {
     static private JTextArea ta; //локальный объект типа JTextArea
     static private String text; //текст, который поток будет выводить
 
+    // переменныя для остановки потока:
     static private boolean stop = false;
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
@@ -44,14 +45,10 @@ public class SimpleRunnable implements Runnable {
     public void run(){
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
             colorImg_obj = webcam_obj.getImage();
-//            if (ta!=null){
-//                ta.append(text+"\n"); //выводим текст в объект JTextArea
-//            }
 
-
-            // Буффер для изменнения картинки в серый
+            // Буффер для изменения картинки в серый
             BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-//		BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(),BufferedImage.TYPE_BYTE_BINARY);
+            // BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(),BufferedImage.TYPE_BYTE_BINARY);
 
             Graphics2D graphics = blackAndWhiteImg.createGraphics();
 
@@ -63,6 +60,7 @@ public class SimpleRunnable implements Runnable {
             Frame.add(imageLabel_obj, BorderLayout.CENTER);
             Frame.setSize(800, 600);
             Frame.setVisible(true);
+            // Вызываем метод для распознавания кругов и красной точки:
             redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon, colorImg_obj);
 
             try {

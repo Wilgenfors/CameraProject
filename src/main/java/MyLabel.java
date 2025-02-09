@@ -67,7 +67,7 @@ public class MyLabel extends JLabel {
 		repaint();
 	}
 
-	// Метод возращающий значения красной точки
+	// Метод возражающей значения красной точки
 	public void PointValue(int radius, int xMax, int yMax) {
 		this.pointR = radius;
 		this.pointX = xMax;
@@ -75,7 +75,7 @@ public class MyLabel extends JLabel {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g) { // Метод для прорисовки Кругов и/или точки
 		super.paint(g);
 		Graphics2D gr2D = (Graphics2D) g;
 		Graphics2D grDot = (Graphics2D) g;
@@ -104,22 +104,13 @@ public class MyLabel extends JLabel {
 			pen = new BasicStroke(2);
 			grDot.setStroke(pen);
 			grDot.setColor(Color.BLUE);
-			// for (MyPoint point : redPoints) {
-//				int x = circle.getX(); 
-//				int y = circle.getY(); 
-//				int r = circle.getRadius();
-//				circleR = (int) (r*dHeight);
-//				circleX = (int) (x*dHeight);
-//				circleY = (int) (y*dHeight);
 
 			circleX = (int) (circle.getX() * dHeight);
 			circleY =  (int) (circle.getY()* dHeight);
 			circleR =  (int) (circle.getRadius()* dHeight);
 
-//				gr2D.drawOval(xMax-radius, yMax-radius, 2*radius, 2*radius);
 			grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
 		}
 	}
-	// }
 
 }
