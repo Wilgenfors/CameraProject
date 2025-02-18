@@ -1,9 +1,9 @@
-#define LASER 8
-#define BUTTON 2
-#define MODE 9
+#define LASER 2 //8
+#define BUTTON 3//2
+//#define MODE 9
 bool state = 0, ledState = 0;
-int gndPin = 6;
-int signalPin = 7;
+int gndPin = 9;//6;
+int signalPin = 10;//7;
 int delayNumber = 2000;
 
 void setup() {
@@ -20,10 +20,12 @@ void loop() {
   // Когда кнопка не нажата, Arduino считывает это как HIGH, а если нажата, то как LOW.
   if (sensorVal2 == LOW) {    // Если кнопка нажата,
     delayNumber = 200;  // то светодиод будет гореть,
-    digitalWrite(13, HIGH);
+    //digitalWrite(13, HIGH);
+    digitalWrite(11, HIGH);
   } else {
     delayNumber = 2000;
-    digitalWrite(13, LOW);
+    //digitalWrite(13, LOW);
+    digitalWrite(11, LOW);
   }
 
   digitalWrite(LASER, LOW);
