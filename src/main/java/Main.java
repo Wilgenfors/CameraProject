@@ -3,42 +3,64 @@
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
-import com.github.sarxos.webcam.util.ImageUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Main {
     static Webcam webcam = Webcam.getDefault();
     static JTextArea myTextArea;
 
+    static JTextField inputPlayerCount;
+    static JTextField inputCountShot;
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
 
-        //todo проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
+        // проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
         if (cams.size()>1) {
             webcam = cams.get(1);
         }
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-        WebcamPanel panel = new WebcamPanel(webcam);
-        panel.setImageSizeDisplayed(true);
+        WebcamPanel panelWebcam = new WebcamPanel(webcam);
+        panelWebcam.setImageSizeDisplayed(true);
 
         JFrame window = new JFrame("Webcam");
-        window.add(panel, BorderLayout.CENTER);
-        // add button for detected black circle and red point^
-        JButton button = new JButton("Red detected");
-        window.add(button, BorderLayout.NORTH);
-        // add button for stopped Runnable:
-        JButton button_stop = new JButton("Stopped detected");
-        window.add(button_stop, BorderLayout.SOUTH);
+        window.add(panelWebcam, BorderLayout.CENTER);
+
+        // create panelNORTH for North:
+        JPanel panelNORTH = new JPanel();
+
+        // add label before startButton:
+        JLabel labelPlayerCount = new JLabel("Введите кол-во игроков: ");
+        panelNORTH.add(labelPlayerCount);
+
+        // add for input PlayerCount:
+        inputPlayerCount = new JTextField(5);
+        panelNORTH.add(inputPlayerCount);
+
+        // add label before startButton:
+        JLabel labelCountShot = new JLabel("Введите кол-во выстрелов: ");
+        panelNORTH.add(labelCountShot);
+
+        // add for input PlayerCount:
+        inputCountShot = new JTextField(5);
+        panelNORTH.add(inputCountShot);
+
+        // add startButton for detected black circle and red point:
+        JButton startButton = new JButton("Red detected");
+        panelNORTH.add(startButton);
+
+        // add panel in frame - window:
+        window.add(panelNORTH, BorderLayout.NORTH);
+
+        // add stopButton for stopped Runnable:
+        JButton stopButton = new JButton("Stopped detected");
+        window.add(stopButton, BorderLayout.SOUTH);
 
         //_____________________________________________________________
         myTextArea = new JTextArea(10,20);
@@ -53,16 +75,20 @@ public class Main {
         //RedMain.guiTest(webcam);
 
         // Слушатель конпки для начала потока (расспознования красных точек):
-        button.addActionListener(new ActionListener() {
+        startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SimpleRunnable.running();
-                RedMain.guiTest(webcam);
+                if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
+                    // todo сделать try catch на наличие пустого кода:
+                    SimpleRunnable.running();
+                    RedMain.guiTest(webcam);
+                }
+
             }
         });
         //_______________________________________________
 
         // Слашатель для остановки потока:
-        button_stop.addActionListener(new ActionListener() {
+        stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SimpleRunnable.stopped();
             }

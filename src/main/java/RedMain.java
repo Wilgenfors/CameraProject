@@ -111,7 +111,9 @@ public class RedMain {
                 else if (myPoint.getRadius()!=-500){
                     //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in miss");
-                    Main.myTextArea.append(""+"Red point detected in miss"+"\n");
+                    //Main.myTextArea.append(""+"Red point detected in miss"+"\n");
+
+
                     //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
                     //text = "Red point detected in miss";
                 }
