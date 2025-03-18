@@ -19,6 +19,7 @@ public class RedMain {
     static ArrayList<Circle> circlesList;
     private static String text;
 
+    static Thread thread1;
     public static void closeRedMain(){
 
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
@@ -59,11 +60,10 @@ public class RedMain {
             }
         });
 
-
         RedMain redmain = new RedMain();
         // Создаем объектную переменую для потока и сам поток:
-        SimpleRunnable run1=new SimpleRunnable(redmain, mainFrame,webcam, imageLabel);
-        Thread thread1=new Thread(run1); //создаем поток и передаем ему наш объект
+        SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
+         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
         thread1.start();
     }
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
@@ -101,18 +101,28 @@ public class RedMain {
             if (circleIndex == -1){
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                 if (soloCircleIndex==-99) {
-                    //System.out.println("circleIndex = "+soloCircleIndex);
-                    System.out.println("Red point detected in center");
-                    //text = "Red point detected in center";
-//                    SimpleRunnable.SetText(Main.myTextArea,"Red point detected in center");
-                    Main.myTextArea.append(""+"Red point detected in center"+"\n");
+
+
+                    Main.listScorePlayers.add(10);
+                    // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
+                    Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
+                    if (Main.shot == Main.countShot-1) Main.player++;
+                    Main.stream.stop = true;
+                    if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
                 }
                 //else if (soloCircleIndex==99){
                 else if (myPoint.getRadius()!=-500){
+
                     //System.out.println("circleIndex = "+soloCircleIndex);
                     System.out.println("Red point detected in miss");
                     //Main.myTextArea.append(""+"Red point detected in miss"+"\n");
 
+                    Main.listScorePlayers.add(0);
+                    // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
+                    Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
+                    if (Main.shot == Main.countShot-1) Main.player++;
+                    Main.stream.stop = true;
+                    if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
 
                     //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
                     //text = "Red point detected in miss";
@@ -121,16 +131,27 @@ public class RedMain {
             // Если точка находится между кругами
             else if (circleIndex < circlesList.size())
             {
-                System.out.println("Red point detected in  "+(circleIndex));
-                String textOut = "Red point detected in  "+(circleIndex);
-             //   SimpleRunnable.SetText(Main.myTextArea,textOut);
-                Main.myTextArea.append(""+textOut+"\n");
+
+
+                if (circleIndex == 0) Main.listScorePlayers.add(8);
+                else if (circleIndex == 1) Main.listScorePlayers.add(5);
+                else if (circleIndex == 2) Main.listScorePlayers.add(2);
+
+                // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
+                Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
+                if (Main.shot == Main.countShot-1) Main.player++;
+                Main.stream.stop = true;
+                if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
             }
 
             // ----------------------------------------------------------------------
 
+
         }
+
     }
+
+
 
     // Методы для алгоритма точности попадания между кругами:
     private static int getCircleIndByXY(int xRedPoint, int yRedPoint, ArrayList<Circle> circles2) {

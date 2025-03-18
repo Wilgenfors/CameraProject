@@ -9,14 +9,14 @@ public class SimpleRunnable implements Runnable {
     JFrame Frame;
     private Webcam webcam_obj;
     private MyLabel imageLabel_obj;
-    private BufferedImage myPicture_obj;
-    private ImageIcon imgIcon_obj;
+  //  private BufferedImage myPicture_obj;
+ //   private ImageIcon imgIcon_obj;
     private BufferedImage colorImg_obj;
 
-    static private JTextArea ta; //локальный объект типа JTextArea
-    static private String text; //текст, который поток будет выводить
+    // private JTextArea ta; //локальный объект типа JTextArea
+   //  private String text; //текст, который поток будет выводить
 
-    static private boolean stop = false;
+     boolean stop = false;
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
         redMain_obj = redmain;
@@ -25,29 +25,26 @@ public class SimpleRunnable implements Runnable {
         imageLabel_obj = imageLabel;
 
     }
-    // метод для остановки потока и расспознавания красных точек:
-    static public void stopped(){
-        stop = true;
-    }
-
-    // метод для остановки потока и расспознавания красных точек:
-    static public void running(){
-        stop = false;
-    }
-    public static void SetText(JTextArea textArea, String textOut){
-
-        ta = textArea; //локальный объект присваиваем переданному параметру
-        text=textOut;
-    }
+//    // метод для остановки потока и расспознавания красных точек:
+//    static public void stopped(){
+//        stop = true;
+//    }
+//
+//    // метод для остановки потока и расспознавания красных точек:
+//    static public void running(){
+//        stop = false;
+//    }
+//    public static void SetText(JTextArea textArea, String textOut){
+//
+//        ta = textArea; //локальный объект присваиваем переданному параметру
+//        text=textOut;
+//    }
 
     @Override
     public void run(){
+        //while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
             colorImg_obj = webcam_obj.getImage();
-//            if (ta!=null){
-//                ta.append(text+"\n"); //выводим текст в объект JTextArea
-//            }
-
 
             // Буффер для изменнения картинки в серый
             BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
@@ -72,5 +69,7 @@ public class SimpleRunnable implements Runnable {
             }
         }
     }
+
+
 }
 

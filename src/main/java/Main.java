@@ -9,13 +9,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     static Webcam webcam = Webcam.getDefault();
     static JTextArea myTextArea;
-
     static JTextField inputPlayerCount;
     static JTextField inputCountShot;
+    static ArrayList<Integer> listScorePlayers = new ArrayList<>();
+    static int player = 0;
+    static int shot = 0;
+
+    static int playerCount = 0;
+    static int  countShot = 0;
+    static SimpleRunnable stream;
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
 
@@ -77,12 +84,31 @@ public class Main {
         // Слушатель конпки для начала потока (расспознования красных точек):
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
-                    // todo сделать try catch на наличие пустого кода:
-                    SimpleRunnable.running();
-                    RedMain.guiTest(webcam);
-                }
+                // Обработка исключения пустой стоки преобразованной в целое:
+                try{
+                    if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
 
+                        playerCount = Integer.parseInt(inputPlayerCount.getText());
+                       countShot = Integer.parseInt(inputCountShot.getText());
+
+
+
+                        // Запускаем поток и второй фрейм:
+                                //SimpleRunnable.running();
+
+                        // Эксперементальное создание потока и передача объектов конструктору:::::::::::::::::::::::::::
+
+                        // Создаем необходимые объекты для создания конструктора:
+                                RedMain.guiTest(webcam);
+                        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+                    }
+                }
+                catch(NumberFormatException ex){
+                    ex.getMessage();
+                }
             }
         });
         //_______________________________________________
@@ -90,15 +116,27 @@ public class Main {
         // Слашатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SimpleRunnable.stopped();
+
+                RedMain.thread1.stop();
             }
         });
         //_______________________________________________
 
+
+        // todo после получения всех значений попаданий игроков сделать цикл который подсчитывает общий счет для
+        // для каждого игрока и выводил победителя:
 //
 //        BufferedImage image = webcam.getImage();
 //
 //        ImageIO.write(image, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
     }
 
+    public static void restartingTheStream() {
+        // Эксперементальное создание потока и передача объектов конструктору:::::::::::::::::::::::::::
+
+        // Создаем необходимые объекты для создания конструктора:
+
+        //RedMain.guiTest(webcam);
+        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    }
 }
