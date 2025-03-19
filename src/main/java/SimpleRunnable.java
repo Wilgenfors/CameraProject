@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SimpleRunnable implements Runnable {
+
     private RedMain redMain_obj;
     JFrame Frame;
     private Webcam webcam_obj;
@@ -16,7 +17,8 @@ public class SimpleRunnable implements Runnable {
     // private JTextArea ta; //локальный объект типа JTextArea
    //  private String text; //текст, который поток будет выводить
 
-     boolean stop = false;
+    // static boolean stop = false;
+    public static boolean stop;
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
         redMain_obj = redmain;
@@ -24,11 +26,17 @@ public class SimpleRunnable implements Runnable {
         webcam_obj = webcam;
         imageLabel_obj = imageLabel;
 
+        stop = false;
+
     }
-//    // метод для остановки потока и расспознавания красных точек:
-//    static public void stopped(){
-//        stop = true;
-//    }
+    // метод для остановки потока и расспознавания красных точек:
+    static public void stopped(){
+        stop = true;
+    }
+
+    public static void contented() {
+        stop = false;
+    }
 //
 //    // метод для остановки потока и расспознавания красных точек:
 //    static public void running(){
@@ -42,8 +50,9 @@ public class SimpleRunnable implements Runnable {
 
     @Override
     public void run(){
-        //while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
+
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
+        //while (Thread.currentThread().getState()==Thread.State.RUNNABLE ){
             colorImg_obj = webcam_obj.getImage();
 
             // Буффер для изменнения картинки в серый
@@ -69,6 +78,7 @@ public class SimpleRunnable implements Runnable {
             }
         }
     }
+
 
 
 }

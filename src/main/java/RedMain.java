@@ -18,8 +18,9 @@ public class RedMain {
     //static BufferedImage myPicture2 = null;
     static ArrayList<Circle> circlesList;
     private static String text;
-
+    private static int countStepGame;
     static Thread thread1;
+    static RedMain redmain;
     public static void closeRedMain(){
 
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
@@ -60,7 +61,8 @@ public class RedMain {
             }
         });
 
-        RedMain redmain = new RedMain();
+        countStepGame = 1;
+        redmain = new RedMain();
         // Создаем объектную переменую для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
          thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
@@ -102,13 +104,44 @@ public class RedMain {
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                 if (soloCircleIndex==-99) {
 
-
+                    System.out.println("Red point detected in center");
                     Main.listScorePlayers.add(10);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                    Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
-                    if (Main.shot == Main.countShot-1) Main.player++;
-                    Main.stream.stop = true;
-                    if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                    // todo Изменить алгоритм смены игрока:
+                    if (Main.countShot % Main.shot == 0) Main.player++;
+                    System.out.println("Main.shot = "+Main.shot);
+                    System.out.println("Main.countShot = "+Main.countShot);
+
+                    System.out.println("Main.player = "+Main.player);
+                    System.out.println("Main.playerCount = "+Main.playerCount);
+                    if (Main.player == Main.playerCount) Main.totalScore();
+                    else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+//                    thread1.stop();
+//
+//                    //if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+//
+//                    // ++countStepGame;
+//                    //  if (countStepGame < ((Main.playerCount+1)* Main.countShot)){
+//                    // Restart of stream:
+//                    //RedMain redmain = new RedMain(); // Возможно не нужно пересоздавать объектную переменную redmain,
+//                    // а вместо этого сделать её глобальной.
+//
+//                    System.out.println("Stream after stop");
+//
+//                    SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
+//                    thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
+//                    thread1.start();
+//
+//                    System.out.println("Stream restart");
+                    // }
+
+
+                    //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
+                    //text = "Red point detected in miss";
+
+
+
                 }
                 //else if (soloCircleIndex==99){
                 else if (myPoint.getRadius()!=-500){
@@ -119,10 +152,35 @@ public class RedMain {
 
                     Main.listScorePlayers.add(0);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                    Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
-                    if (Main.shot == Main.countShot-1) Main.player++;
-                    Main.stream.stop = true;
-                    if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                    // todo Изменить алгоритм смены игрока:
+                    if (Main.countShot % Main.shot == 0) Main.player++;
+                    System.out.println("Main.shot = "+Main.shot);
+                    System.out.println("Main.countShot = "+Main.countShot);
+
+                    System.out.println("Main.player = "+Main.player);
+                    System.out.println("Main.playerCount = "+Main.playerCount);
+                    if (Main.player == Main.playerCount) Main.totalScore();
+                    else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+//                    thread1.stop();
+//
+//                    //if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+//
+//                    // ++countStepGame;
+//                    //  if (countStepGame < ((Main.playerCount+1)* Main.countShot)){
+//                    // Restart of stream:
+//                    //RedMain redmain = new RedMain(); // Возможно не нужно пересоздавать объектную переменную redmain,
+//                    // а вместо этого сделать её глобальной.
+//
+//                    System.out.println("Stream after stop");
+//
+//                    SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
+//                    thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
+//                    thread1.start();
+//
+//                    System.out.println("Stream restart");
+                    // }
+
 
                     //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
                     //text = "Red point detected in miss";
@@ -132,16 +190,46 @@ public class RedMain {
             else if (circleIndex < circlesList.size())
             {
 
-
+                System.out.println("Red point detected in between circles");
                 if (circleIndex == 0) Main.listScorePlayers.add(8);
                 else if (circleIndex == 1) Main.listScorePlayers.add(5);
                 else if (circleIndex == 2) Main.listScorePlayers.add(2);
 
                 // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                Main.myTextArea.append("Player "+(Main.player+1)+" hit points"+Main.listScorePlayers.get((Main.shot++)+Main.player)+"\n");
-                if (Main.shot == Main.countShot-1) Main.player++;
-                Main.stream.stop = true;
-                if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+                Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                // todo Изменить алгоритм смены игрока:
+                if (Main.countShot % Main.shot == 0) Main.player++;
+                System.out.println("Main.shot = "+Main.shot);
+                System.out.println("Main.countShot = "+Main.countShot);
+
+                System.out.println("Main.player = "+Main.player);
+                System.out.println("Main.playerCount = "+Main.playerCount);
+                if (Main.player == Main.playerCount) Main.totalScore();
+                else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+
+
+//                    thread1.stop();
+//
+//                    //if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
+//
+//                    // ++countStepGame;
+//                    //  if (countStepGame < ((Main.playerCount+1)* Main.countShot)){
+//                    // Restart of stream:
+//                    //RedMain redmain = new RedMain(); // Возможно не нужно пересоздавать объектную переменную redmain,
+//                    // а вместо этого сделать её глобальной.
+//
+//                    System.out.println("Stream after stop");
+//
+//                    SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
+//                    thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
+//                    thread1.start();
+//
+//                    System.out.println("Stream restart");
+                // }
+
+
+                //SimpleRunnable.SetText(Main.myTextArea,"Red point detected in miss");
+                //text = "Red point detected in miss";
             }
 
             // ----------------------------------------------------------------------
@@ -248,13 +336,10 @@ public class RedMain {
 
     }
 
-    private static void consoleTest() {
-        RedSearch redSearch = new RedSearch("img.png");
-        redSearch.findRedPoints();
-//		redSearch = new RedSearch("img2.png");
-//		redSearch.findRedPoints();
-//		redSearch = new RedSearch("target.png");
-//		redSearch.boundCircleSearch();
-    }
+//    private static void consoleTest() {
+//        RedSearch redSearch = new RedSearch("img.png");
+//        redSearch.findRedPoints();
+//
+//    }
 
 }
