@@ -22,8 +22,8 @@ void loop() {
   int sensorVal2 = digitalRead(signalPin);
   // Когда кнопка не нажата, Arduino считывает это как HIGH, а если нажата, то как LOW.
   if (sensorVal2 == LOW) {    // Если кнопка нажата,
-    //delayNumber = 200;
-    delayNumber = 150;  // то светодиод будет гореть,
+    delayNumber = 200;
+    //delayNumber = 150;  // то светодиод будет гореть,
   } else {
     delayNumber = 2000;
   }

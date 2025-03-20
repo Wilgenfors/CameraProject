@@ -54,16 +54,13 @@ public class MyLabel extends JLabel {
 		this.circle = circle;
 		this.dHeight = dHeight2;
 		paintRedPoint = true;
-//		paintCircle = false;
 		repaint();
 	}
 
 
 	public void drawPoint(Circle circle) {
 		this.circle = circle;
-		//	this.dHeight = dHeight2;
 		paintRedPoint = true;
-//		paintCircle = false;
 		repaint();
 	}
 
@@ -104,22 +101,13 @@ public class MyLabel extends JLabel {
 			pen = new BasicStroke(2);
 			grDot.setStroke(pen);
 			grDot.setColor(Color.BLUE);
-			// for (MyPoint point : redPoints) {
-//				int x = circle.getX(); 
-//				int y = circle.getY(); 
-//				int r = circle.getRadius();
-//				circleR = (int) (r*dHeight);
-//				circleX = (int) (x*dHeight);
-//				circleY = (int) (y*dHeight);
 
 			circleX = (int) (circle.getX() * dHeight);
 			circleY =  (int) (circle.getY()* dHeight);
 			circleR =  (int) (circle.getRadius()* dHeight);
 
-//				gr2D.drawOval(xMax-radius, yMax-radius, 2*radius, 2*radius);
 			grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
 		}
 	}
-	// }
 
 }

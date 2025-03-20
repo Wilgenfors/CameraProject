@@ -21,9 +21,8 @@ public class Main {
     static ArrayList<Integer> listScorePlayers = new ArrayList<>();
     static int player;
     static int shot;
-
-    static int playerCount;
-    static int  countShot;
+    static int players;
+    static int shots;
     //static SimpleRunnable stream;
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
@@ -81,7 +80,6 @@ public class Main {
         window.pack();
         window.setVisible(true);
         webcam.open();
-        //RedMain.guiTest(webcam);
 
         // Слушатель конпки для начала потока (расспознования красных точек):
         startButton.addActionListener(new ActionListener() {
@@ -90,22 +88,10 @@ public class Main {
                 try{
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
 
-                        playerCount = Integer.parseInt(inputPlayerCount.getText());
-                       countShot = Integer.parseInt(inputCountShot.getText());
+                       players = Integer.parseInt(inputPlayerCount.getText());
+                       shots = Integer.parseInt(inputCountShot.getText());
 
-
-
-                        // Запускаем поток и второй фрейм:
-                                //SimpleRunnable.running();
-
-                        // Эксперементальное создание потока и передача объектов конструктору:::::::::::::::::::::::::::
-
-                        // Создаем необходимые объекты для создания конструктора:
-                                RedMain.guiTest(webcam);
-                        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-
+                       RedMain.guiTest(webcam);
                     }
                 }
                 catch(NumberFormatException ex){
@@ -118,21 +104,9 @@ public class Main {
         // Слашатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 SimpleRunnable.stopped();
-                //RedMain.thread1.stop();
-                //Main.stream.stop = true;
             }
         });
-        //_______________________________________________
-
-
-        // todo после получения всех значений попаданий игроков сделать цикл который подсчитывает общий счет для
-        // для каждого игрока и выводил победителя:
-//
-//        BufferedImage image = webcam.getImage();
-//
-//        ImageIO.write(image, ImageUtils.FORMAT_JPG, new File("selfie.jpg"));
     }
 
 
@@ -140,22 +114,8 @@ public class Main {
     public static void restartingTheStream(Thread thread1,RedMain redmain, JFrame mainFrame, Webcam webcam, MyLabel imageLabel) {
         System.out.println("Enter restartingTheStream");
         SimpleRunnable.stopped();
-
-        //if ((Main.player + Main.shot + 2) != Main.playerCount + Main.countShot) Main.restartingTheStream();
-
-        // ++countStepGame;
-        //  if (countStepGame < ((Main.playerCount+1)* Main.countShot)){
-        // Restart of stream:
-        //RedMain redmain = new RedMain(); // Возможно не нужно пересоздавать объектную переменную redmain,
-        // а вместо этого сделать её глобальной.
-
         System.out.println("Stream after stop");
-
         SimpleRunnable.contented();
-//        SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
-//        Thread new_thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
-//        new_thread1.start();
-
         System.out.println("Stream restart");
     }
 
@@ -164,26 +124,26 @@ public class Main {
         SimpleRunnable.stopped();
 
         int winnerPlayer = -1;
-        int countShotOfPlayer = countShot / playerCount;
-        int winnerTotalScore = 0;
+        int shotsOfPlayer = shots / players;
+        int winnerScore = 0;
         // todo Изменить алгоритм чтобы коректно находил максимальный счет:
 
-        for (int i = 1; i<playerCount;i++){
-            int playerTotalScore = 0;
-            for (int j = 1; j<countShotOfPlayer;j++){
-                playerTotalScore += listScorePlayers.get(Main.shot++);
+        for (int i = 1; i< players; i++){
+            int playerScore = 0;
+            for (int j = 1; j<shotsOfPlayer;j++){
+                playerScore += listScorePlayers.get(Main.shot++);
             }
             Main.myTextArea.append("--------------------------------------------\n");
-            Main.myTextArea.append("Player - "+i+" total score - "+playerTotalScore+"\n");
-            if (countShotOfPlayer >= winnerPlayer)
+            Main.myTextArea.append("Player - "+i+" total score - "+playerScore+"\n");
+            if (playerScore >= winnerPlayer)
             {
                 winnerPlayer = i;
-                winnerTotalScore = playerTotalScore;
+                winnerScore = playerScore;
             }
         }
         // Выводим победителя и его общий счет попаданий:
         Main.myTextArea.append("\n--------------------------------------------\n");
-        Main.myTextArea.append("Winner Player - "+(winnerPlayer)+" total score - "+winnerTotalScore+"\n");
+        Main.myTextArea.append("Winner Player - "+(winnerPlayer)+" total score - "+winnerScore+"\n");
 
     }
 }

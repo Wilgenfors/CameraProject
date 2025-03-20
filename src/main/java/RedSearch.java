@@ -17,7 +17,6 @@ public class RedSearch {
 
 	public RedSearch(String filePath) {
 		path = filePath;
-//		BufferedImage img = null;
 		File f = null;
 
 		// read image
@@ -32,7 +31,6 @@ public class RedSearch {
 
 	public MyPoint[] findRedPoints() {
 		// https://www.geeksforgeeks.org/image-processing-in-java-get-and-set-pixels/
-//		Point[] points;
 		int width = image.getWidth();
 		int height = image.getHeight();
 		// переменные для поиска минимальных и максимальных значений x и y:
@@ -48,12 +46,12 @@ public class RedSearch {
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
 				if (r > 230 && g < 250 && b < 250) {
-//				if (r > 200 && g < 50 && b < 50) {
+
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
 					if (j <= yMin) yMin = j;
-//		        	System.out.println("red detected at x = "+i+", y = "+j);
+
 					System.out.println("i = "+i+" j = "+j);
 					pointsList.add(new MyPoint(i, j));
 				}
@@ -83,13 +81,11 @@ public class RedSearch {
 			points[i] = point;
 			i++;
 		}
-//		return (MyPoint[]) pointsList.toArray();
 		return points;
 	}
-	// Добавил метод из IDEA:
+
 	public Circle findRedPointsAsCircle() {
 		// https://www.geeksforgeeks.org/image-processing-in-java-get-and-set-pixels/
-//		Point[] points;
 		int width = image.getWidth();
 		int height = image.getHeight();
 		// переменные для поиска минимальных и максимальных значений x и y:
@@ -104,17 +100,12 @@ public class RedSearch {
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
 
-//				if (r > 200 && g < 190 && b < 190) {
-//				if (r > 230 && g < 230 && b < 230) {
 				if (r > 250 && g < 250 && b < 250) {
-//				if (r > 200 && g < 50 && b < 50) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
 					if (j <= yMin) yMin = j;
 				}
-				//System.out.println("red detected at x = "+i+", y = "+j);
-				//pointsList.add(new MyPoint(i, j));
 			}
 		}
 
@@ -134,13 +125,11 @@ public class RedSearch {
 
 		System.out.println("\nred detected radius = " + radius);
 
-
 		pointsList.add(new MyPoint(xMin + radius / 2, yMin)); //верхняя
 		pointsList.add(new MyPoint(xMin, yMin + radius / 2)); //левая
 		pointsList.add(new MyPoint(xMin + radius / 2, yMax)); //нижняя
 		pointsList.add(new MyPoint(xMax, yMin + radius / 2)); //правая
-//		return (MyPoint[]) pointsList.toArray();
-		//Circle meCircle =
+
 		return new Circle(xMin + radius, yMin + radius, radius);
 
 	}
@@ -160,7 +149,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//				System.out.println("black at top detected at y = " + j);
 				upperPoint = new MyPoint(width / 2, j);
 				pointsList.add(upperPoint);
 				break;
@@ -172,7 +160,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//				System.out.println("black at buttom detected at y = " + j);
 				lowerPoint = new MyPoint(width / 2, j);
 				pointsList.add(lowerPoint);
 				break;
@@ -184,7 +171,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//				System.out.println("black at left detected at x = " + i);
 				leftPoint = new MyPoint(i, height / 2);
 				pointsList.add(leftPoint);
 				break;
@@ -196,7 +182,6 @@ public class RedSearch {
 			points[i] = point;
 			i++;
 		}
-//		return (MyPoint[]) pointsList.toArray();
 		return points;
 	}
 
@@ -302,8 +287,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//			if (r < 2 && g < 2 && b < 2) {
-//				System.out.println("black at top detected at y = " + j);
 				blackPoints[0] = new MyPoint(circle.getX(), j); //upper point
 				break;
 			}
@@ -315,8 +298,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//			if (r < 2 && g < 2 && b < 2) {
-//				System.out.println("black at buttom detected at y = " + j);
 				blackPoints[1] = new MyPoint(circle.getX(), j); //lower point
 				break;
 			}
@@ -328,8 +309,6 @@ public class RedSearch {
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
 			if (r < 150 && g < 150 && b < 150) {
-//			if (r < 2 && g < 2 && b < 2) {
-//				System.out.println("black at right detected at x = " + i);
 				blackPoints[2] = new MyPoint(i, circle.getY()); //right point
 				break;
 			}
