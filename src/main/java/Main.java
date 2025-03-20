@@ -173,6 +173,7 @@ public class Main {
             for (int j = 1; j<countShotOfPlayer;j++){
                 playerTotalScore += listScorePlayers.get(Main.shot++);
             }
+            Main.myTextArea.append("--------------------------------------------\n");
             Main.myTextArea.append("Player - "+i+" total score - "+playerTotalScore+"\n");
             if (countShotOfPlayer >= winnerPlayer)
             {
@@ -181,7 +182,7 @@ public class Main {
             }
         }
         // Выводим победителя и его общий счет попаданий:
-        Main.myTextArea.append("--------------------------------------------"+"\n");
+        Main.myTextArea.append("\n--------------------------------------------\n");
         Main.myTextArea.append("Winner Player - "+(winnerPlayer)+" total score - "+winnerTotalScore+"\n");
 
     }

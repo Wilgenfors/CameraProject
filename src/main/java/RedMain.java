@@ -108,8 +108,8 @@ public class RedMain {
                     Main.listScorePlayers.add(10);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
-                    // todo Изменить алгоритм смены игрока:
-                    if (Main.countShot % Main.shot == 0) Main.player++;
+
+                    if (Main.countShot == (Main.shot / (Main.player+1) ) ) Main.player++;
                     System.out.println("Main.shot = "+Main.shot);
                     System.out.println("Main.countShot = "+Main.countShot);
 
@@ -153,8 +153,8 @@ public class RedMain {
                     Main.listScorePlayers.add(0);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
-                    // todo Изменить алгоритм смены игрока:
-                    if (Main.countShot % Main.shot == 0) Main.player++;
+
+                    if (Main.countShot == (Main.shot / (Main.player+1) ) ) Main.player++;
                     System.out.println("Main.shot = "+Main.shot);
                     System.out.println("Main.countShot = "+Main.countShot);
 
@@ -197,8 +197,8 @@ public class RedMain {
 
                 // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                 Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
-                // todo Изменить алгоритм смены игрока:
-                if (Main.countShot % Main.shot == 0) Main.player++;
+
+                if (Main.countShot == (Main.shot / (Main.player+1) ) ) Main.player++;
                 System.out.println("Main.shot = "+Main.shot);
                 System.out.println("Main.countShot = "+Main.countShot);
 
