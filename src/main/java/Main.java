@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Main {
 
@@ -19,7 +18,7 @@ public class Main {
     static JTextArea myTextArea;
     static JTextField inputPlayerCount;
     static JTextField inputCountShot;
-    static ArrayList<Integer> listScorePlayers = new ArrayList<>();
+    static ArrayList<Integer> listHits = new ArrayList<>();
     static int player;
     static int shot;
     static int players;
@@ -126,26 +125,32 @@ public class Main {
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
 
-
         int countShotOfPlayer = Integer.parseInt(inputCountShot.getText());
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
         Main.myTextArea.append("-------------------------------------------\n");
         Main.myTextArea.append("Players total score:\n");
 
-        for(Integer i : listScorePlayers) {
-            System.out.println("Enter - for(Integer i : listScorePlayers) ");
-            int totalScore = 0;
+        int countPlayer = 0;
+        int totalScore = 0;
+        int hitStep = 0; ;
+        for(Integer i : listHits) {
 
-            for (int count = 0; count <countShotOfPlayer; count++){
-                System.out.println("Input - for ( ; count <countShotOfPlayer; count++) ");
-                totalScore += listScorePlayers.get(i);
+                totalScore += i;
+                hitStep++;
                 System.out.println("totalScore = "+totalScore);
-            }
-            listPlayersTotal.add(totalScore);
 
-            System.out.println("Player - "+(i)+" total score - "+totalScore+"\n");
-            Main.myTextArea.append("Player - "+(i)+" total score - "+totalScore+"\n");
+
+            // todo создать условие что бы коректно подсчитывало кол-во попаданий на игрока
+
+            if (hitStep == Integer.parseInt(inputPlayerCount.getText())){
+                listPlayersTotal.add(totalScore);
+                Main.myTextArea.append("Player - "+(++countPlayer)+" total score - "+totalScore+"\n");
+                totalScore = 0;
+                hitStep = 0;
+            }
+
+
 
         }
 
@@ -154,13 +159,15 @@ public class Main {
 
         int winnerPlayer = 0;
         int scoreWinner = -1;
-        for(Integer i : listScorePlayers) {
-            if (listScorePlayers.get(i) >= scoreWinner ){
-                scoreWinner = listScorePlayers.get(i);
-                winnerPlayer = i;
+            countPlayer = 0;
+        for(Integer i : listPlayersTotal) {
+            countPlayer++;
+            if (i >= scoreWinner ){
+                scoreWinner = i;
+                winnerPlayer = (countPlayer);
             }
         }
-        Main.myTextArea.append("Winner player - "+(winnerPlayer) + "his total score - "+scoreWinner+"\n");
+        Main.myTextArea.append("Winner player № "+(winnerPlayer) + "\n");
 
 
     }

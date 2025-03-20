@@ -94,9 +94,9 @@ public class RedMain {
                 if (soloCircleIndex==-99) {
 
                     System.out.println("Red point detected in center");
-                    Main.listScorePlayers.add(10);
+                    Main.listHits.add(10);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
                     System.out.println("Main.shot = "+Main.shot);
@@ -112,9 +112,9 @@ public class RedMain {
                 else if (myPoint.getRadius()!=-500){
                     System.out.println("Red point detected in miss");
 
-                    Main.listScorePlayers.add(0);
+                    Main.listHits.add(0);
                     // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                    Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
                     System.out.println("Main.shot = "+Main.shot);
@@ -130,12 +130,12 @@ public class RedMain {
             {
 
                 System.out.println("Red point detected in between circles");
-                if (circleIndex == 0) Main.listScorePlayers.add(8);
-                else if (circleIndex == 1) Main.listScorePlayers.add(5);
-                else if (circleIndex == 2) Main.listScorePlayers.add(2);
+                if (circleIndex == 0) Main.listHits.add(8);
+                else if (circleIndex == 1) Main.listHits.add(5);
+                else if (circleIndex == 2) Main.listHits.add(2);
 
                 // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
-                Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listScorePlayers.get((Main.shot++))+"\n");
+                Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                 if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
                 System.out.println("Main.shot = "+Main.shot);
