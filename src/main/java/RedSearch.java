@@ -133,7 +133,6 @@ public class RedSearch {
 		return new Circle(xMin + radius, yMin + radius, radius);
 
 	}
-	// ---------------------------------------------------------------------------------
 
 
 	public MyPoint[] boundCircleSearch() { //ф-ия для нахождения внешнего круга

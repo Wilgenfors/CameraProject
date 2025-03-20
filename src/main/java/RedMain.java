@@ -65,15 +65,12 @@ public class RedMain {
     }
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
-
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
         imgIcon.setImage(dimg);
         RedSearch redSearch = new RedSearch(myPicture);
 
-
-       // redSearch.findRedPoints(); //Находим координаты красной точки
         Circle circle = redSearch.getCircle(); //находим внешний круг
         if (circle==null) {
             System.out.println("--!! No circle !!--");
@@ -195,7 +192,7 @@ public class RedMain {
         int i = 0;
         // Передаю первый и последний круг в метод circleSoloIs_OnXY:
         Circle circleCentre =  circles2.get(1);
-        //Circle circleLast =  circles2.get(circles2.size()-1);
+
         System.out.println(circles2.size()-1);
 
         // Возвращает -99 если красная точка в центре или 99 если в области промаха.
@@ -207,15 +204,10 @@ public class RedMain {
 
         if (leftPart<=((circleCentre.getRadius())*(circleCentre.getRadius()))) return -99;
         // Иначе если красная точка существует, то она в промахе (условие ниже не использовано потому что выходит за границы)
-        //if (leftPart>=((circleLast.getRadius())*(circleLast.getRadius()))) return 99;
         return 100;
     }
 
 
-    //__________________________________________________________________________________________________________________
-
-
-    // Метод добaвленный из IDEA:
     // metod for detected red poins on target:
     private static Circle detectedRedPointOnTarget(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
@@ -229,16 +221,9 @@ public class RedMain {
 
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
 
-        //System.out.println("red dot circle = " + myPoint.getX() + " " + myPoint.getY() + " " + myPoint.getRadius());
         return myPoint;
 
 
     }
-
-//    private static void consoleTest() {
-//        RedSearch redSearch = new RedSearch("img.png");
-//        redSearch.findRedPoints();
-//
-//    }
 
 }

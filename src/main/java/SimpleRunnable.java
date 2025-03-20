@@ -10,14 +10,7 @@ public class SimpleRunnable implements Runnable {
     JFrame Frame;
     private Webcam webcam_obj;
     private MyLabel imageLabel_obj;
-  //  private BufferedImage myPicture_obj;
- //   private ImageIcon imgIcon_obj;
     private BufferedImage colorImg_obj;
-
-    // private JTextArea ta; //локальный объект типа JTextArea
-   //  private String text; //текст, который поток будет выводить
-
-    // static boolean stop = false;
     public static boolean stop;
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
@@ -37,28 +30,15 @@ public class SimpleRunnable implements Runnable {
     public static void contented() {
         stop = false;
     }
-//
-//    // метод для остановки потока и расспознавания красных точек:
-//    static public void running(){
-//        stop = false;
-//    }
-//    public static void SetText(JTextArea textArea, String textOut){
-//
-//        ta = textArea; //локальный объект присваиваем переданному параметру
-//        text=textOut;
-//    }
 
     @Override
     public void run(){
 
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
-        //while (Thread.currentThread().getState()==Thread.State.RUNNABLE ){
             colorImg_obj = webcam_obj.getImage();
 
             // Буффер для изменнения картинки в серый
             BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-//		BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(),BufferedImage.TYPE_BYTE_BINARY);
-
             Graphics2D graphics = blackAndWhiteImg.createGraphics();
 
             graphics.drawImage(colorImg_obj, 0, 0, null);

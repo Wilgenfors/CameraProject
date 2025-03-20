@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
 
@@ -120,30 +121,47 @@ public class Main {
     }
 
     public static void totalScore() {
-        System.out.println("Game the end, stream stop");
+        System.out.println("\nGame the end, stream stop");
         SimpleRunnable.stopped();
 
-        int winnerPlayer = -1;
-        int shotsOfPlayer = shots / players;
-        int winnerScore = 0;
-        // todo Изменить алгоритм чтобы коректно находил максимальный счет:
+        ArrayList<Integer> listPlayersTotal = new ArrayList<>();
 
-        for (int i = 1; i< players; i++){
-            int playerScore = 0;
-            for (int j = 1; j<shotsOfPlayer;j++){
-                playerScore += listScorePlayers.get(Main.shot++);
+
+        int countShotOfPlayer = Integer.parseInt(inputCountShot.getText());
+
+        // Подсчитываем кол-во очков попадания для каждого игрока:
+        Main.myTextArea.append("-------------------------------------------\n");
+        Main.myTextArea.append("Players total score:\n");
+
+        for(Integer i : listScorePlayers) {
+            System.out.println("Enter - for(Integer i : listScorePlayers) ");
+            int totalScore = 0;
+
+            for (int count = 0; count <countShotOfPlayer; count++){
+                System.out.println("Input - for ( ; count <countShotOfPlayer; count++) ");
+                totalScore += listScorePlayers.get(i);
+                System.out.println("totalScore = "+totalScore);
             }
-            Main.myTextArea.append("--------------------------------------------\n");
-            Main.myTextArea.append("Player - "+i+" total score - "+playerScore+"\n");
-            if (playerScore >= winnerPlayer)
-            {
+            listPlayersTotal.add(totalScore);
+
+            System.out.println("Player - "+(i)+" total score - "+totalScore+"\n");
+            Main.myTextArea.append("Player - "+(i)+" total score - "+totalScore+"\n");
+
+        }
+
+        // Определяем лучшего игрока:
+        Main.myTextArea.append("-------------------------------------------\n");
+
+        int winnerPlayer = 0;
+        int scoreWinner = -1;
+        for(Integer i : listScorePlayers) {
+            if (listScorePlayers.get(i) >= scoreWinner ){
+                scoreWinner = listScorePlayers.get(i);
                 winnerPlayer = i;
-                winnerScore = playerScore;
             }
         }
-        // Выводим победителя и его общий счет попаданий:
-        Main.myTextArea.append("\n--------------------------------------------\n");
-        Main.myTextArea.append("Winner Player - "+(winnerPlayer)+" total score - "+winnerScore+"\n");
+        Main.myTextArea.append("Winner player - "+(winnerPlayer) + "his total score - "+scoreWinner+"\n");
+
 
     }
 }
