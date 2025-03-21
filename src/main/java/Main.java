@@ -91,6 +91,11 @@ public class Main {
                        players = Integer.parseInt(inputPlayerCount.getText());
                        shots = Integer.parseInt(inputCountShot.getText());
 
+                        //todo - Отчистка предыдущих значений:
+                        player = 0;
+                        shot = 0;
+                        listHits = new ArrayList<>();
+                        myTextArea.setText("");
                        RedMain.guiTest(webcam);
                     }
                 }
@@ -140,15 +145,12 @@ public class Main {
                 hitStep++;
                 System.out.println("totalScore = "+totalScore);
 
-            if (hitStep == Integer.parseInt(inputPlayerCount.getText())){
+            if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);
                 Main.myTextArea.append("Player - "+(++countPlayer)+" total score - "+totalScore+"\n");
                 totalScore = 0;
                 hitStep = 0;
             }
-
-
-
         }
 
         // Определяем лучшего игрока:

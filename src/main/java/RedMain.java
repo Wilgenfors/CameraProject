@@ -27,9 +27,11 @@ public class RedMain {
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         MyLabel imageLabel = new MyLabel();
+
         if (mainFrame!=null) {
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
         }
+
         mainFrame = new JFrame("BoundsTarget");
         myPicture = webcam.getImage();
 
@@ -58,6 +60,7 @@ public class RedMain {
         });
 
         countStepGame = 1;
+
         redmain = new RedMain();
         // Создаем объектную переменую для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
@@ -79,7 +82,9 @@ public class RedMain {
 
             // Объектная переменная для синей обводки:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon);
+            // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
             imageLabel.drawPoint(myPoint, dHeight);
+
             //--------------------------------------------------------------------
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
             ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
