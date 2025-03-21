@@ -111,7 +111,7 @@ public class Main {
 
 
 
-    public static void restartingTheStream(Thread thread1,RedMain redmain, JFrame mainFrame, Webcam webcam, MyLabel imageLabel) {
+    public static void restartingTheStream() {
         System.out.println("Enter restartingTheStream");
         SimpleRunnable.stopped();
         System.out.println("Stream after stop");
@@ -125,7 +125,7 @@ public class Main {
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
 
-        int countShotOfPlayer = Integer.parseInt(inputCountShot.getText());
+        //int countShotOfPlayer = Integer.parseInt(inputCountShot.getText());
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
         Main.myTextArea.append("-------------------------------------------\n");
@@ -139,9 +139,6 @@ public class Main {
                 totalScore += i;
                 hitStep++;
                 System.out.println("totalScore = "+totalScore);
-
-
-            // todo создать условие что бы коректно подсчитывало кол-во попаданий на игрока
 
             if (hitStep == Integer.parseInt(inputPlayerCount.getText())){
                 listPlayersTotal.add(totalScore);

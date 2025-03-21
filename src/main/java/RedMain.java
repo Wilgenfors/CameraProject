@@ -18,10 +18,11 @@ public class RedMain {
     private static int countStepGame;
     static Thread thread1;
     static RedMain redmain;
-    public static void closeRedMain(){
 
-        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
-    }
+//    public static void closeRedMain(){
+//
+//        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
+//    }
 
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
@@ -105,7 +106,7 @@ public class RedMain {
                     System.out.println("Main.player = "+Main.player);
                     System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
-                    else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+                    else Main.restartingTheStream();
 
                 }
 
@@ -122,7 +123,7 @@ public class RedMain {
                     System.out.println("Main.player = "+Main.player);
                     System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
-                    else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+                    else Main.restartingTheStream();
                 }
             }
             // Если точка находится между кругами
@@ -143,7 +144,7 @@ public class RedMain {
                 System.out.println("Main.player = "+Main.player);
                 System.out.println("Main.playerCount = "+Main.players);
                 if (Main.player == Main.players) Main.totalScore();
-                else Main.restartingTheStream(thread1,redmain, mainFrame, Main.webcam, imageLabel);
+                else Main.restartingTheStream();
 
             }
         }
