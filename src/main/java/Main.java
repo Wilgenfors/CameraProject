@@ -3,6 +3,7 @@
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
+import jdk.internal.icu.text.UnicodeSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static boolean GameContinuation = true;
+    public static MyWebcamPanel panelWebcam;
+    public static JFrame window;
     static Webcam webcam = Webcam.getDefault();
     static JTextArea myTextArea;
     static JTextField inputPlayerCount;
@@ -34,10 +36,10 @@ public class Main {
         }
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-        WebcamPanel panelWebcam = new WebcamPanel(webcam);
+        panelWebcam = new MyWebcamPanel(webcam);
         panelWebcam.setImageSizeDisplayed(true);
 
-        JFrame window = new JFrame("Webcam");
+        window = new JFrame("Webcam");
         window.add(panelWebcam, BorderLayout.CENTER);
 
         // create panelNORTH for North:
@@ -87,16 +89,16 @@ public class Main {
                 // Обработка исключения пустой стоки преобразованной в целое:
                 try{
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
-
-                       players = Integer.parseInt(inputPlayerCount.getText());
-                       shots = Integer.parseInt(inputCountShot.getText());
-
-                        //todo - Отчистка предыдущих значений:
+                        
+                        RedMain.guiTest(webcam);
+                        //Отчистка предыдущих значений:
+                        players = Integer.parseInt(inputPlayerCount.getText());
+                        shots = Integer.parseInt(inputCountShot.getText());
                         player = 0;
                         shot = 0;
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
-                       RedMain.guiTest(webcam);
+                        
                     }
                 }
                 catch(NumberFormatException ex){
@@ -129,8 +131,6 @@ public class Main {
         SimpleRunnable.stopped();
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
-
-        //int countShotOfPlayer = Integer.parseInt(inputCountShot.getText());
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
         Main.myTextArea.append("-------------------------------------------\n");

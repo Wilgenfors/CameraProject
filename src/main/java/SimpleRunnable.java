@@ -35,6 +35,8 @@ public class SimpleRunnable implements Runnable {
     public void run(){
 
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
+
+
             colorImg_obj = webcam_obj.getImage();
 
             // Буффер для изменнения картинки в серый

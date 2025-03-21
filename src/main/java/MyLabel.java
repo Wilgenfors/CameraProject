@@ -95,7 +95,7 @@ public class MyLabel extends JLabel {
 			}
 		}
 		if (paintRedPoint) {
-			System.out.println("Drawing blue");
+			//System.out.println("Drawing blue");
 			//	float[] dash = { 20, 20 };
 			grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			pen = new BasicStroke(2);
@@ -105,6 +105,10 @@ public class MyLabel extends JLabel {
 			circleX = (int) (circle.getX() * dHeight);
 			circleY =  (int) (circle.getY()* dHeight);
 			circleR =  (int) (circle.getRadius()* dHeight);
+
+			System.out.println("L "+" circleX =" + circleX);
+			System.out.println("L "+" circleY =" + circleY);
+			System.out.println("L "+" circleR =" + circleR);
 
 			grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
 		}

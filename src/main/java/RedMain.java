@@ -13,17 +13,9 @@ import javax.swing.JFrame;
 public class RedMain {
     private static JFrame mainFrame;
     static BufferedImage myPicture = null;
-    static ArrayList<Circle> circlesList;
-    private static String text;
     private static int countStepGame;
     static Thread thread1;
     static RedMain redmain;
-
-//    public static void closeRedMain(){
-//
-//        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
-//    }
-
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         MyLabel imageLabel = new MyLabel();
@@ -62,10 +54,11 @@ public class RedMain {
         countStepGame = 1;
 
         redmain = new RedMain();
-        // Создаем объектную переменую для потока и сам поток:
+//        // Создаем объектную переменую для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
-         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
+        thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
         thread1.start();
+
     }
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
@@ -82,8 +75,15 @@ public class RedMain {
 
             // Объектная переменная для синей обводки:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon);
+
+            // todo ниже строчка кода для эксперементов с MyWebcamPanel:
+            // Здесь буду передавать отображение красных точек на panelWebcam:
+            detectedRedPointOn___WebcamPanel(Main.panelWebcam, myPicture, imgIcon);
+            //____________________________________________________________________
+
+
             // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
-            imageLabel.drawPoint(myPoint, dHeight);
+            //imageLabel.drawPoint(myPoint, dHeight);
 
             //--------------------------------------------------------------------
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
@@ -99,9 +99,10 @@ public class RedMain {
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                 if (soloCircleIndex==-99) {
 
+
+
                     System.out.println("Red point detected in center");
                     Main.listHits.add(10);
-                    // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
@@ -116,10 +117,12 @@ public class RedMain {
                 }
 
                 else if (myPoint.getRadius()!=-500){
+
+
+
                     System.out.println("Red point detected in miss");
 
                     Main.listHits.add(0);
-                    // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
@@ -135,12 +138,13 @@ public class RedMain {
             else if (circleIndex < circlesList.size())
             {
 
+
+
                 System.out.println("Red point detected in between circles");
                 if (circleIndex == 0) Main.listHits.add(8);
                 else if (circleIndex == 1) Main.listHits.add(5);
                 else if (circleIndex == 2) Main.listHits.add(2);
 
-                // Возможно счет будет отоброжаться не верно из-за - Main.listScorePlayers.get(Main.shot+Main.player)
                 Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                 if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
@@ -228,6 +232,21 @@ public class RedMain {
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
 
         return myPoint;
+
+
+    }
+
+    private static void detectedRedPointOn___WebcamPanel(MyWebcamPanel panelWebcam, BufferedImage myPicture, ImageIcon imgIcon) {
+//        float dHeight = panelWebcam.getHeight() / (float) myPicture.getHeight();
+//        int newWidth = (int) (myPicture.getWidth() * dHeight);
+//        Image dimg = myPicture.getScaledInstance(newWidth, panelWebcam.getHeight(), Image.SCALE_SMOOTH);
+//        imgIcon.setImage(dimg);
+
+        RedSearch redSearch = new RedSearch(myPicture);
+        Circle myPoint = redSearch.findRedPointsAsCircle(); // это наша красная точка
+        panelWebcam.drawPointOnWebPanel(myPoint);//, обведенная синим квадратом
+        Main.window.add(panelWebcam, BorderLayout.CENTER);
+        //return myPoint;
 
 
     }
