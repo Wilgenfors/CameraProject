@@ -3,7 +3,7 @@
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
-import jdk.internal.icu.text.UnicodeSet;
+//import jdk.internal.icu.text.UnicodeSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +24,7 @@ public class Main {
     static JTextField inputPlayerCount;
     static JTextField inputCountShot;
     static ArrayList<Integer> listHits = new ArrayList<>();
+    static ArrayList<Circle> PointList = new ArrayList<>();
     static int player;
     static int shot;
     static int players;
@@ -151,7 +152,7 @@ public class Main {
     }
 
     public static void totalScore() {
-     //   System.out.println("\nGame the end, stream stop");
+        //   System.out.println("\nGame the end, stream stop");
         SimpleRunnable.stopped();
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
@@ -165,9 +166,9 @@ public class Main {
         int hitStep = 0; ;
         for(Integer i : listHits) {
 
-                totalScore += i;
-                hitStep++;
-         //       System.out.println("totalScore = "+totalScore);
+            totalScore += i;
+            hitStep++;
+            //       System.out.println("totalScore = "+totalScore);
 
             if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);
@@ -182,7 +183,7 @@ public class Main {
 
         int winnerPlayer = 0;
         int scoreWinner = -1;
-            countPlayer = 0;
+        countPlayer = 0;
         for(Integer i : listPlayersTotal) {
             countPlayer++;
             if (i >= scoreWinner ){
@@ -192,6 +193,26 @@ public class Main {
         }
         Main.myTextArea.append("Winner player № "+(winnerPlayer) + "\n");
 
+        // Вызываем метод для итогово изображения всех попаданий по мешени:
+        printAllHits();
 
     }
+    public static void printAllHits(){
+        // Заменяем вебпанель на обычную:
+        BufferedImage totalPicture = webcam.getImage();
+        JLabel label = new JLabel();
+        Graphics2D graphics = totalPicture.createGraphics();
+        graphics.drawImage(totalPicture, 0, 0, null);
+        ImageIcon imgIcon = new ImageIcon(totalPicture);
+        label.setIcon(imgIcon);
+        window.remove(panelWebcam);
+        window.add(label, BorderLayout.CENTER);
+
+        // Прохдимся по нашим точкам, разделяя по игрокам и по координатам вырисовываем тестовые попадания разных цветов: Пример на 560 высоте и 230 ширине рисут желтым зелем цветом попадание игрока P1
+        for (Circle point: PointList) {
+            System.out.println("point = "+point);
+        }
+
+    }
+
 }

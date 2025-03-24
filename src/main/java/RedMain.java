@@ -82,7 +82,8 @@ public class RedMain {
 
             // Объектная переменная для синей обводки:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
-
+            // Добавляем каждую точку в Лист:
+            Main.PointList.add(myPoint);
 
             // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
             //imageLabel.drawPoint(myPoint, dHeight);
