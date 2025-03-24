@@ -41,13 +41,13 @@ public class RedMain {
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-        System.out.println("Black");
+       // System.out.println("Black");
         mainFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-                System.out.println("color");
+              //  System.out.println("color");
             }
         });
 
@@ -70,7 +70,7 @@ public class RedMain {
 
         Circle circle = redSearch.getCircle(); //находим внешний круг
         if (circle==null) {
-            System.out.println("--!! No circle !!--");
+           // System.out.println("--!! No circle !!--");
         } else {
 
             // Объектная переменная для синей обводки:
@@ -96,16 +96,16 @@ public class RedMain {
 
 
 
-                    System.out.println("Red point detected in center");
+                    //System.out.println("Red point detected in center");
                     Main.listHits.add(10);
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-                    System.out.println("Main.shot = "+Main.shot);
-                    System.out.println("Main.countShot = "+Main.shots);
+//                    System.out.println("Main.shot = "+Main.shot);
+//                    System.out.println("Main.countShot = "+Main.shots);
 
-                    System.out.println("Main.player = "+Main.player);
-                    System.out.println("Main.playerCount = "+Main.players);
+//                    System.out.println("Main.player = "+Main.player);
+//                    System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
                     else Main.restartingTheStream();
 
@@ -115,16 +115,16 @@ public class RedMain {
 
 
 
-                    System.out.println("Red point detected in miss");
+                    //System.out.println("Red point detected in miss");
 
                     Main.listHits.add(0);
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-                    System.out.println("Main.shot = "+Main.shot);
-                    System.out.println("Main.countShot = "+Main.shots);
-                    System.out.println("Main.player = "+Main.player);
-                    System.out.println("Main.playerCount = "+Main.players);
+//                    System.out.println("Main.shot = "+Main.shot);
+//                    System.out.println("Main.countShot = "+Main.shots);
+//                    System.out.println("Main.player = "+Main.player);
+//                    System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
                     else Main.restartingTheStream();
                 }
@@ -135,7 +135,7 @@ public class RedMain {
 
 
 
-                System.out.println("Red point detected in between circles");
+                //System.out.println("Red point detected in between circles");
                 if (circleIndex == 0) Main.listHits.add(8);
                 else if (circleIndex == 1) Main.listHits.add(5);
                 else if (circleIndex == 2) Main.listHits.add(2);
@@ -143,10 +143,10 @@ public class RedMain {
                 Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
                 if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-                System.out.println("Main.shot = "+Main.shot);
-                System.out.println("Main.countShot = "+Main.shots);
-                System.out.println("Main.player = "+Main.player);
-                System.out.println("Main.playerCount = "+Main.players);
+//                System.out.println("Main.shot = "+Main.shot);
+//                System.out.println("Main.countShot = "+Main.shots);
+//                System.out.println("Main.player = "+Main.player);
+//                System.out.println("Main.playerCount = "+Main.players);
                 if (Main.player == Main.players) Main.totalScore();
                 else Main.restartingTheStream();
 
@@ -165,7 +165,7 @@ public class RedMain {
             if ((count) < circles2.size()-1 ){
                 Circle circleNext = circles2.get(count + 1);
                 if (circleIs_OnXY(circle, circleNext, xRedPoint, yRedPoint)){
-                    System.out.println("\n\n i = " + i);
+                    //System.out.println("\n\n i = " + i);
                     return i;
                 }
                 i++;
@@ -198,7 +198,7 @@ public class RedMain {
         // Передаю первый и последний круг в метод circleSoloIs_OnXY:
         Circle circleCentre =  circles2.get(1);
 
-        System.out.println(circles2.size()-1);
+      //  System.out.println(circles2.size()-1);
 
         // Возвращает -99 если красная точка в центре или 99 если в области промаха.
 

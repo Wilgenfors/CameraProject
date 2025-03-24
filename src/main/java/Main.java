@@ -27,7 +27,7 @@ public class Main {
     static int shots;
     //static SimpleRunnable stream;
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello world!");
+       // System.out.println("Hello world!");
 
         // проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
@@ -119,15 +119,15 @@ public class Main {
 
 
     public static void restartingTheStream() {
-        System.out.println("Enter restartingTheStream");
+       // System.out.println("Enter restartingTheStream");
         SimpleRunnable.stopped();
-        System.out.println("Stream after stop");
+       // System.out.println("Stream after stop");
         SimpleRunnable.contented();
-        System.out.println("Stream restart");
+      //  System.out.println("Stream restart");
     }
 
     public static void totalScore() {
-        System.out.println("\nGame the end, stream stop");
+     //   System.out.println("\nGame the end, stream stop");
         SimpleRunnable.stopped();
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
@@ -143,7 +143,7 @@ public class Main {
 
                 totalScore += i;
                 hitStep++;
-                System.out.println("totalScore = "+totalScore);
+         //       System.out.println("totalScore = "+totalScore);
 
             if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);

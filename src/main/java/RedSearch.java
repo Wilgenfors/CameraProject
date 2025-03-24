@@ -92,7 +92,7 @@ public class RedSearch {
 		int xMax = -1, xMin = 1000, yMax = -1, yMin = 1000;
 
 		ArrayList<MyPoint> pointsList = new ArrayList<MyPoint>();
-		System.out.println("img width = " + width + " height = " + height);
+		//System.out.println("img width = " + width + " height = " + height);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				int p = image.getRGB(i, j);
@@ -119,11 +119,11 @@ public class RedSearch {
 //		System.out.println("Min red detected at y = "+yMin);
 
 
-		System.out.println("");
+		//System.out.println("");
 		// Нахождение радиуса по x:
 		int radius = (xMax - xMin) / 2;
 
-		System.out.println("\nred detected radius = " + radius);
+		//System.out.println("\nred detected radius = " + radius);
 
 		pointsList.add(new MyPoint(xMin + radius / 2, yMin)); //верхняя
 		pointsList.add(new MyPoint(xMin, yMin + radius / 2)); //левая
@@ -187,9 +187,9 @@ public class RedSearch {
 	public Circle getCircle(/*Point[] z*/) {
 		//https://shra.ru/2019/10/koordinaty-centra-okruzhnosti-po-trem-tochkam/
 		MyPoint[] z = boundCircleSearch();
-		System.out.println("boundCircleSearch returned "+z.length+" points");
+		//System.out.println("boundCircleSearch returned "+z.length+" points");
 		if (z.length<3) {
-			System.out.println("--!! No circle !!--");
+			//System.out.println("--!! No circle !!--");
 			return null;
 		}
 		int a = z[1].getX() - z[0].getX();
@@ -217,7 +217,7 @@ public class RedSearch {
 	public Circle getCircle(MyPoint[] z) {
 		//https://shra.ru/2019/10/koordinaty-centra-okruzhnosti-po-trem-tochkam/
 		if (z==null || z.length<3) {
-			System.out.println("--!! No circle !!--");
+			//System.out.println("--!! No circle !!--");
 			return null;
 		}
 		for (int i = 0; i < z.length; i++) {
@@ -266,7 +266,7 @@ public class RedSearch {
 				circlesList.remove(circlesList.size() - 1); //убираем последний круг, он обычно совпадает с самым внешним
 			}
 		} catch (java.util.NoSuchElementException err) {
-			System.out.println("--!! NoSuchElementException !!--");
+			//System.out.println("--!! NoSuchElementException !!--");
 		}
 		return circlesList;
 	}
