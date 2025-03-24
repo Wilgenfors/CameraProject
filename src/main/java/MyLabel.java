@@ -34,13 +34,13 @@ public class MyLabel extends JLabel {
 		repaint();
 	}
 
-	public void drawCircles(ArrayList<Circle> circlesList, float dHeight) {
-		this.circlesList = circlesList;
-		this.dHeight = dHeight;
-		paintCircle = true;
-		paintRedPoint = false;
-		repaint();
-	}
+//	public void drawCircles(ArrayList<Circle> circlesList, float dHeight) {
+//		this.circlesList = circlesList;
+//		this.dHeight = dHeight;
+//		paintCircle = true;
+//		paintRedPoint = false;
+//		repaint();
+//	}
 
 	// если добавить в параметры еще float dHeight, то можно не рисовать отдельно первый круг
 	public void drawCircles(ArrayList<Circle> circlesList) { //для рисования всех кругов
@@ -58,18 +58,18 @@ public class MyLabel extends JLabel {
 	}
 
 
-	public void drawPoint(Circle circle) {
-		this.circle = circle;
-		paintRedPoint = true;
-		repaint();
-	}
+//	public void drawPoint(Circle circle) {
+//		this.circle = circle;
+//		paintRedPoint = true;
+//		repaint();
+//	}
 
-	// Метод возращающий значения красной точки
-	public void PointValue(int radius, int xMax, int yMax) {
-		this.pointR = radius;
-		this.pointX = xMax;
-		this.pointY = yMax;
-	}
+//	// Метод возращающий значения красной точки
+//	public void PointValue(int radius, int xMax, int yMax) {
+//		this.pointR = radius;
+//		this.pointX = xMax;
+//		this.pointY = yMax;
+//	}
 
 	@Override
 	public void paint(Graphics g) {
@@ -106,9 +106,10 @@ public class MyLabel extends JLabel {
 			circleY =  (int) (circle.getY()* dHeight);
 			circleR =  (int) (circle.getRadius()* dHeight);
 
-			System.out.println("L "+" circleX =" + circleX);
-			System.out.println("L "+" circleY =" + circleY);
-			System.out.println("L "+" circleR =" + circleR);
+//			System.out.println("L "+" dHeight =" + dHeight);
+//			System.out.println("L "+" circleX =" + circleX);
+//			System.out.println("L "+" circleY =" + circleY);
+//			System.out.println("L "+" circleR =" + circleR);
 
 			grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
 		}

@@ -63,11 +63,15 @@ public class MyWebcamPanel extends WebcamPanel {
             circleY =  (int) (circle.getY()* dHeight);
             circleR =  (int) (circle.getRadius()* dHeight);
 
-            System.out.println("W "+" circleX =" + circleX);
-            System.out.println("W "+" circleY =" + circleY);
-            System.out.println("W "+" circleR =" + circleR);
+//            System.out.println("W "+" dHeight =" + dHeight);
+//            System.out.println("W "+" circleX =" + circleX);
+//            System.out.println("W "+" circleY =" + circleY);
+//            System.out.println("W "+" circleR =" + circleR);
 
             grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
+
+            // Что бы не циклился вне потока:
+            paintRedPoint  = false;
         }
     }
 

@@ -74,12 +74,7 @@ public class RedMain {
         } else {
 
             // Объектная переменная для синей обводки:
-            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon);
-
-            // todo ниже строчка кода для эксперементов с MyWebcamPanel:
-            // Здесь буду передавать отображение красных точек на panelWebcam:
-            detectedRedPointOn___WebcamPanel(Main.panelWebcam, myPicture, imgIcon);
-            //____________________________________________________________________
+            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
 
 
             // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
@@ -219,7 +214,7 @@ public class RedMain {
 
 
     // metod for detected red poins on target:
-    private static Circle detectedRedPointOnTarget(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) {
+    private static Circle detectedRedPointOnTarget(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon,MyWebcamPanel panelWebcam) {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
@@ -230,25 +225,16 @@ public class RedMain {
         Circle myPoint = redSearch.findRedPointsAsCircle(); // это наша красная точка
 
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
+        // Прорисовка на WebPanel:
+        panelWebcam.drawPointOnWebPanel(myPoint, dHeight);//, обведенная синим квадратом
+        //panelWebcam.paintImmediately(100,100,100,100);
+        Main.window.add(panelWebcam, BorderLayout.CENTER);
 
         return myPoint;
 
 
     }
 
-    private static void detectedRedPointOn___WebcamPanel(MyWebcamPanel panelWebcam, BufferedImage myPicture, ImageIcon imgIcon) {
-//        float dHeight = panelWebcam.getHeight() / (float) myPicture.getHeight();
-//        int newWidth = (int) (myPicture.getWidth() * dHeight);
-//        Image dimg = myPicture.getScaledInstance(newWidth, panelWebcam.getHeight(), Image.SCALE_SMOOTH);
-//        imgIcon.setImage(dimg);
 
-        RedSearch redSearch = new RedSearch(myPicture);
-        Circle myPoint = redSearch.findRedPointsAsCircle(); // это наша красная точка
-        panelWebcam.drawPointOnWebPanel(myPoint);//, обведенная синим квадратом
-        Main.window.add(panelWebcam, BorderLayout.CENTER);
-        //return myPoint;
-
-
-    }
 
 }

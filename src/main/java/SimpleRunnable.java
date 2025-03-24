@@ -45,7 +45,7 @@ public class SimpleRunnable implements Runnable {
 
             graphics.drawImage(colorImg_obj, 0, 0, null);
             ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
-            imageLabel_obj.setIcon(imgIcon);
+            //imageLabel_obj.setIcon(imgIcon);
 
             Frame.remove(imageLabel_obj);
             Frame.add(imageLabel_obj, BorderLayout.CENTER);
