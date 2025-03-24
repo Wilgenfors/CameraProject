@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 public class SimpleRunnable implements Runnable {
 
     private RedMain redMain_obj;
-    JFrame Frame;
+    JFrame frame;
     private Webcam webcam_obj;
     private MyLabel imageLabel_obj;
     private BufferedImage colorImg_obj;
@@ -15,7 +15,7 @@ public class SimpleRunnable implements Runnable {
 
     public SimpleRunnable (RedMain redmain, JFrame redmainFrame, Webcam webcam, MyLabel imageLabel){
         redMain_obj = redmain;
-        Frame =redmainFrame;
+        frame =redmainFrame;
         webcam_obj = webcam;
         imageLabel_obj = imageLabel;
 
@@ -47,10 +47,10 @@ public class SimpleRunnable implements Runnable {
             ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
             //imageLabel_obj.setIcon(imgIcon);
 
-            Frame.remove(imageLabel_obj);
-            Frame.add(imageLabel_obj, BorderLayout.CENTER);
-            Frame.setSize(800, 600);
-            Frame.setVisible(true);
+            frame.remove(imageLabel_obj);
+            frame.add(imageLabel_obj, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setVisible(true);
             redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon, colorImg_obj);
 
             try {

@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,7 +42,12 @@ public class Main {
         panelWebcam = new MyWebcamPanel(webcam);
         panelWebcam.setImageSizeDisplayed(true);
 
+
+        //panelWebcam.setSize(800, 600); метод setSize не работает для веб панели
+
         window = new JFrame("Webcam");
+        //window.setSize(782,562); не рабочая строчка
+        window.setPreferredSize(new Dimension(986,661));
         window.add(panelWebcam, BorderLayout.CENTER);
 
         // create panelNORTH for North:
@@ -91,6 +99,11 @@ public class Main {
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
                         
                         RedMain.guiTest(webcam);
+
+                        // Эксперементальный код:
+                        // System.out.println("WebPanel Height = "+panelWebcam.getHeight()+"  Width =  "+panelWebcam.getWidth());
+                        //____________________________________________
+
                         //Отчистка предыдущих значений:
                         players = Integer.parseInt(inputPlayerCount.getText());
                         shots = Integer.parseInt(inputCountShot.getText());
@@ -107,6 +120,17 @@ public class Main {
             }
         });
         //_______________________________________________
+
+
+        // Слушатель для получения изменненых размеров окна:
+//        window.addComponentListener(new ComponentAdapter() {
+//            public void componentResized(ComponentEvent e) {
+//                //System.out.println("Size Changed");
+//                System.out.println("WebFrame Height = "+window.getHeight()+"  Width =  "+window.getWidth());
+//
+//            }
+//        });
+
 
         // Слашатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {

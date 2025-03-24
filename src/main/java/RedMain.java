@@ -38,7 +38,9 @@ public class RedMain {
 
         mainFrame.remove(imageLabel);
         mainFrame.add(imageLabel, BorderLayout.CENTER);
-        mainFrame.setSize(800, 600);
+        //mainFrame.setSize(800, 600);
+        //mainFrame.setSize(640, 480); // 624 441
+        mainFrame.setSize(640+16, 480+39); //
         mainFrame.setVisible(true);
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
        // System.out.println("Black");
@@ -54,6 +56,11 @@ public class RedMain {
         countStepGame = 1;
 
         redmain = new RedMain();
+
+        // Эксперементальный код:
+        System.out.println("Label Height = "+imageLabel.getHeight()+"  Width =  "+imageLabel.getWidth());
+        //____________________________________________
+
 //        // Создаем объектную переменую для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
