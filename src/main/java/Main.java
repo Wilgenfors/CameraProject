@@ -1,7 +1,6 @@
 
 
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 //import jdk.internal.icu.text.UnicodeSet;
 
@@ -9,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,13 +19,15 @@ public class Main {
     static Webcam webcam = Webcam.getDefault();
     static JTextArea myTextArea;
     static JTextField inputPlayerCount;
+    static RedMain redMain;
     static JTextField inputCountShot;
     static ArrayList<Integer> listHits = new ArrayList<>();
-    static ArrayList<Circle> PointList = new ArrayList<>();
+    static ArrayList<Circle> pointList = new ArrayList<>();
     static int player;
     static int shot;
     static int players;
     static int shots;
+    static boolean printAllHits = false;
     //static SimpleRunnable stream;
     public static void main(String[] args) throws IOException {
        // System.out.println("Hello world!");
@@ -112,6 +111,9 @@ public class Main {
                         shot = 0;
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
+                        pointList = new ArrayList<>();
+                        redMain.repaint();
+
                         
                     }
                 }
@@ -198,21 +200,22 @@ public class Main {
 
     }
     public static void printAllHits(){
-        // Заменяем вебпанель на обычную:
+        printAllHits = true;
+        // Заменяем веб панель на обычную:
         BufferedImage totalPicture = webcam.getImage();
-        JLabel label = new JLabel();
         Graphics2D graphics = totalPicture.createGraphics();
         graphics.drawImage(totalPicture, 0, 0, null);
         ImageIcon imgIcon = new ImageIcon(totalPicture);
-        label.setIcon(imgIcon);
+       // label.setIcon(imgIcon);
         window.remove(panelWebcam);
-        window.add(label, BorderLayout.CENTER);
 
-        // Прохдимся по нашим точкам, разделяя по игрокам и по координатам вырисовываем тестовые попадания разных цветов: Пример на 560 высоте и 230 ширине рисут желтым зелем цветом попадание игрока P1
-        for (Circle point: PointList) {
-            System.out.println("point = "+point);
-        }
+        System.out.println("pointList size = "+pointList.size());
+//        System.out.println("draw rect finish");
+        redMain = new RedMain();
+        redMain.trueDrawAllRentable();
 
     }
+
+
 
 }

@@ -8,31 +8,33 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 public class MyLabel extends JLabel {
-	int circleR;
-	int circleX;
-	int circleY;
-	float dHeight;
+    int circleR;
+    int circleX;
+    int circleY;
+    float dHeight;
 
-	// Добавляю для обведения красных точек
-	MyPoint[] redPoints;
-	Circle circle;
-	boolean paintCircles = false;
-	ArrayList<Circle> circlesList = null;
-	int pointR;
-	int pointX;
-	int pointY;
-	// --
-	boolean paintCircle = false;
-	boolean paintRedPoint = false;
+    // Добавляю для обведения красных точек
+    MyPoint[] redPoints;
+    Circle circle;
+    boolean paintCircles = false;
+    ArrayList<Circle> circlesList = null;
+    ArrayList<Circle> resultList = null;
+    int pointR;
+    int pointX;
+    int pointY;
+    // --
+    boolean paintCircle = false;
+    boolean paintRedPoint = false;
+    boolean resultDraw = false;
 
-	public void drawCircle(int x, int y, int r, float dHeight) {
-		this.dHeight = dHeight;
-		circleR = (int) (r*dHeight);
-		circleX = (int) (x*dHeight);
-		circleY = (int) (y*dHeight);
-		paintCircle = true;
-		repaint();
-	}
+    public void drawCircle(int x, int y, int r, float dHeight) {
+        this.dHeight = dHeight;
+        circleR = (int) (r * dHeight);
+        circleX = (int) (x * dHeight);
+        circleY = (int) (y * dHeight);
+        paintCircle = true;
+        repaint();
+    }
 
 //	public void drawCircles(ArrayList<Circle> circlesList, float dHeight) {
 //		this.circlesList = circlesList;
@@ -42,22 +44,30 @@ public class MyLabel extends JLabel {
 //		repaint();
 //	}
 
-	// если добавить в параметры еще float dHeight, то можно не рисовать отдельно первый круг
-	public void drawCircles(ArrayList<Circle> circlesList) { //для рисования всех кругов
-		paintCircles = true;
-		this.circlesList = circlesList;
-		repaint();
-	}
+    // если добавить в параметры еще float dHeight, то можно не рисовать отдельно первый круг
+    public void drawCircles(ArrayList<Circle> circlesList) { //для рисования всех кругов
+        paintCircles = true;
+        this.circlesList = circlesList;
+        repaint();
+    }
 
-	// "менил метод добавив параметр и инициализацию redPoints:"
-	public void drawPoint(Circle circle, float dHeight2) {
-		this.circle = circle;
-		this.dHeight = dHeight2;
-		paintRedPoint = true;
-		repaint();
-	}
+    // "менил метод добавив параметр и инициализацию redPoints:"
+    public void drawPoint(Circle circle, float dHeight2) {
+        this.circle = circle;
+        this.dHeight = dHeight2;
+        paintRedPoint = true;
+        repaint();
 
+    }
 
+    public void drawResult(ArrayList<Circle> pointList, float dHeight2) {
+        System.out.println("Enter to drawResult");
+        this.dHeight = dHeight2;
+        this.resultList = pointList;
+        resultDraw = true;
+        paintCircle = false;
+        repaint();
+    }
 //	public void drawPoint(Circle circle) {
 //		this.circle = circle;
 //		paintRedPoint = true;
@@ -71,48 +81,86 @@ public class MyLabel extends JLabel {
 //		this.pointY = yMax;
 //	}
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D gr2D = (Graphics2D) g;
-		Graphics2D grDot = (Graphics2D) g;
-		BasicStroke pen;
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D gr2D = (Graphics2D) g;
+        Graphics2D grDot = (Graphics2D) g;
+        BasicStroke pen;
+        System.out.println("paint method");
+        if (paintCircle) {
+            System.out.println("paintCircle");
+            float[] dash = {20, 20};
+            gr2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            pen = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dash, 1);
+            gr2D.setStroke(pen);
+            gr2D.setColor(Color.GREEN);
+            for (Circle circle : circlesList) {
+                int x = circle.getX();
+                int y = circle.getY();
+                int r = circle.getRadius();
+                circleR = (int) (r * dHeight);
+                circleX = (int) (x * dHeight);
+                circleY = (int) (y * dHeight);
+                gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
+            }
+        }
+        if (paintRedPoint) {
+            System.out.println("paintRedPoint");
+            //System.out.println("paintRedPoint");
+            //	float[] dash = { 20, 20 };
+            grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            pen = new BasicStroke(2);
+            grDot.setStroke(pen);
+            grDot.setColor(Color.BLUE);
 
-		if (paintCircle) {
-			float[] dash = { 20, 20 };
-			gr2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			pen = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dash, 1);
-			gr2D.setStroke(pen);
-			gr2D.setColor(Color.GREEN);
-			for (Circle circle : circlesList) {
-				int x = circle.getX();
-				int y = circle.getY();
-				int r = circle.getRadius();
-				circleR = (int) (r * dHeight);
-				circleX = (int) (x * dHeight);
-				circleY = (int) (y * dHeight);
-				gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
-			}
-		}
-		if (paintRedPoint) {
-			//System.out.println("Drawing blue");
-			//	float[] dash = { 20, 20 };
-			grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			pen = new BasicStroke(2);
-			grDot.setStroke(pen);
-			grDot.setColor(Color.BLUE);
-
-			circleX = (int) (circle.getX() * dHeight);
-			circleY =  (int) (circle.getY()* dHeight);
-			circleR =  (int) (circle.getRadius()* dHeight);
+            circleX = (int) (circle.getX() * dHeight);
+            circleY = (int) (circle.getY() * dHeight);
+            circleR = (int) (circle.getRadius() * dHeight);
 
 //			System.out.println("L "+" dHeight =" + dHeight);
 //			System.out.println("L "+" circleX =" + circleX);
 //			System.out.println("L "+" circleY =" + circleY);
 //			System.out.println("L "+" circleR =" + circleR);
 
-			grDot.drawRect(circleX-circleR-1, circleY-circleR-1, circleR*2+1, circleR*2+1);
-		}
-	}
+            grDot.drawRect(circleX - circleR - 1, circleY - circleR - 1, circleR * 2 + 1, circleR * 2 + 1);
+        }
 
+
+//		if (resultDraw) {
+//			// В параметрах передаем массив - PointList
+//			// и в цикле в недефектных значений х прорисовываем квадраты
+//			System.out.println("resultDraw");
+//			grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//			pen = new BasicStroke(2);
+//			grDot.setStroke(pen);
+//			grDot.setColor(Color.BLUE);
+//
+//			for (Circle point : resultList) {
+//					circleX = (int) (point.getX() * dHeight);
+//					circleY = (int) (point.getY() * dHeight);
+//					circleR = (int) (point.getRadius() * dHeight);
+//
+//					grDot.drawRect(circleX - circleR - 1, circleY - circleR - 1, circleR * 2 + 1, circleR * 2 + 1);
+//			}
+//			resultDraw = false;
+//		}
+
+        //
+        if (resultDraw) {
+            System.out.println("input resultDraw = =true");
+            grDot.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            pen = new BasicStroke(2);
+            grDot.setStroke(pen);
+            grDot.setColor(Color.BLUE);
+            for (Circle point : resultList) {
+                circleX = (int) (point.getX() * dHeight);
+                circleY = (int) (point.getY() * dHeight);
+                circleR = (int) (point.getRadius() * dHeight);
+                grDot.drawRect(circleX - circleR - 1, circleY - circleR - 1, circleR * 2 + 1, circleR * 2 + 1);
+            }
+        }
+
+
+    }
 }

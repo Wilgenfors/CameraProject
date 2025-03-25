@@ -16,9 +16,10 @@ public class RedMain {
     private static int countStepGame;
     static Thread thread1;
     static RedMain redmain;
+    static MyLabel imageLabel;
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
-        MyLabel imageLabel = new MyLabel();
+        imageLabel = new MyLabel();
 
         if (mainFrame!=null) {
         mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
@@ -83,8 +84,9 @@ public class RedMain {
             // Объектная переменная для синей обводки:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
             // Добавляем каждую точку в Лист:
-            Main.PointList.add(myPoint);
-
+            if (myPoint.getX() != 500 && myPoint.getY() != 500) {
+                Main.pointList.add(myPoint);
+            }
             // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
             //imageLabel.drawPoint(myPoint, dHeight);
 
@@ -244,5 +246,14 @@ public class RedMain {
     }
 
 
+    public void trueDrawAllRentable() {
+        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+        imageLabel.drawResult(Main.pointList,dHeight);
+        //Main.window.add(imageLabel, BorderLayout.CENTER);
+    }
 
+    public void repaint() {
+        imageLabel.repaint();
+
+    }
 }
