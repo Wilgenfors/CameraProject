@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 public class RedMain {
     private static JFrame mainFrame;
     static BufferedImage myPicture = null;
-    private static int countStepGame;
     static Thread thread1;
     static RedMain redmain;
     static MyLabel imageLabel;
@@ -28,7 +27,7 @@ public class RedMain {
         mainFrame = new JFrame("BoundsTarget");
         myPicture = webcam.getImage();
 
-        // Буффер для изменнения картинки в серый
+        // Буфф ер для изменения картинки в серый
         BufferedImage blackAndWhiteImg = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
 
         Graphics2D graphics = blackAndWhiteImg.createGraphics();
@@ -39,30 +38,22 @@ public class RedMain {
 
         mainFrame.remove(imageLabel);
         mainFrame.add(imageLabel, BorderLayout.CENTER);
-        //mainFrame.setSize(800, 600);
-        //mainFrame.setSize(640, 480); // 624 441
+
+        // задаем размер для одинакового отображения нахождения крассных точек на двух фреймах
         mainFrame.setSize(640+16, 480+39); //
         mainFrame.setVisible(true);
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-       // System.out.println("Black");
         mainFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-              //  System.out.println("color");
             }
         });
 
-        countStepGame = 1;
-
         redmain = new RedMain();
 
-        // Эксперементальный код:
-        System.out.println("Label Height = "+imageLabel.getHeight()+"  Width =  "+imageLabel.getWidth());
-        //____________________________________________
-
-//        // Создаем объектную переменую для потока и сам поток:
+//        // Создаем объектную переменную для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
         thread1.start();
@@ -83,14 +74,11 @@ public class RedMain {
 
             // Объектная переменная для синей обводки:
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
-            // Добавляем каждую точку в Лист:
+            // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
             if (myPoint.getX() != 500 && myPoint.getY() != 500) {
                 Main.pointList.add(myPoint);
             }
-            // todo если убрать  imageLabel.drawPoint(myPoint, dHeight); ничего не происходит - решить убратьь его или оставить:
-            //imageLabel.drawPoint(myPoint, dHeight);
 
-            //--------------------------------------------------------------------
             imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
             ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
             imageLabel.drawCircles(circlesList);
@@ -103,38 +91,21 @@ public class RedMain {
             if (circleIndex == -1){
                 int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                 if (soloCircleIndex==-99) {
-
-
-
-                    //System.out.println("Red point detected in center");
                     Main.listHits.add(10);
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
+                    // Условия для перехода на следующего игрока:
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                    System.out.println("Main.shot = "+Main.shot);
-//                    System.out.println("Main.countShot = "+Main.shots);
-
-//                    System.out.println("Main.player = "+Main.player);
-//                    System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
                     else Main.restartingTheStream();
-
                 }
 
                 else if (myPoint.getRadius()!=-500){
-
-
-
-                    //System.out.println("Red point detected in miss");
-
                     Main.listHits.add(0);
                     Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
+                    // Условия для перехода на следующего игрока:
                     if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                    System.out.println("Main.shot = "+Main.shot);
-//                    System.out.println("Main.countShot = "+Main.shots);
-//                    System.out.println("Main.player = "+Main.player);
-//                    System.out.println("Main.playerCount = "+Main.players);
                     if (Main.player == Main.players) Main.totalScore();
                     else Main.restartingTheStream();
                 }
@@ -142,21 +113,14 @@ public class RedMain {
             // Если точка находится между кругами
             else if (circleIndex < circlesList.size())
             {
-
-
-
-                //System.out.println("Red point detected in between circles");
                 if (circleIndex == 0) Main.listHits.add(8);
                 else if (circleIndex == 1) Main.listHits.add(5);
                 else if (circleIndex == 2) Main.listHits.add(2);
 
                 Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
 
+                // Условия для перехода на следующего игрока:
                 if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                System.out.println("Main.shot = "+Main.shot);
-//                System.out.println("Main.countShot = "+Main.shots);
-//                System.out.println("Main.player = "+Main.player);
-//                System.out.println("Main.playerCount = "+Main.players);
                 if (Main.player == Main.players) Main.totalScore();
                 else Main.restartingTheStream();
 
@@ -166,7 +130,7 @@ public class RedMain {
 
 
 
-    // Методы для алгоритма точности попадания между кругами:
+    // Метод для алгоритма точности попадания между кругами:
     private static int getCircleIndByXY(int xRedPoint, int yRedPoint, ArrayList<Circle> circles2) {
         int i = 0;
         for (Circle circle : circles2) {
@@ -185,60 +149,51 @@ public class RedMain {
         return -1;
     }
 
+    // Метод для алгоритма точности попадания между кругами:
     private static boolean circleIs_OnXY(Circle circle,Circle circleNext, int xRedPoint, int yRedPoint) {
 //		(x – a)2 + (y – b)2 = R2
         int circleRc1 = circle.getRadius();
         int circleRc2 = circleNext.getRadius();
         // Левая часть нужна для нахождения радиуса от центра до нашей красной точки:
         double leftPart_1 = Math.pow(xRedPoint-circle.getX(), 2) + Math.pow(yRedPoint-circle.getY(), 2);
-
         double leftPart_2 = Math.pow(xRedPoint-circleNext.getX(), 2) + Math.pow(yRedPoint-circleNext.getY(), 2);
 
         if (leftPart_1>=((circleRc1)*(circleRc1)) && leftPart_2<=((circleRc2)*(circleRc2)))
         {
             return true;
         }
-
         return false;
     }
 
     // Методы для алгоритма точности попадания центр или в область промаха:
     private static int getSoloCircleIndByXY(int xRedPoint, int yRedPoint, ArrayList<Circle> circles2) {
-        int i = 0;
+        int i = 0; // todo Возможно удалить эту переменную
         // Передаю первый и последний круг в метод circleSoloIs_OnXY:
         Circle circleCentre =  circles2.get(1);
-
-      //  System.out.println(circles2.size()-1);
-
-        // Возвращает -99 если красная точка в центре или 99 если в области промаха.
-
         // Левая часть нужна для нахождения радиуса от центра до нашей красной точки:
         double leftPart = Math.pow(xRedPoint-circleCentre.getX(), 2) + Math.pow(yRedPoint-circleCentre.getY(), 2);
-
         // Возвращает -99 если красная точка в центре или 99 если в области промаха.
-
         if (leftPart<=((circleCentre.getRadius())*(circleCentre.getRadius()))) return -99;
         // Иначе если красная точка существует, то она в промахе (условие ниже не использовано потому что выходит за границы)
         return 100;
     }
 
 
-    // metod for detected red poins on target:
+    // ф-ия для нахождения красной точки на фреймах и прорисовки их:
     private static Circle detectedRedPointOnTarget(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon,MyWebcamPanel panelWebcam) {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         int newWidth = (int) (myPicture.getWidth() * dHeight);
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
         imgIcon.setImage(dimg);
 
+        // Находим где наша точка на мишени и прорисовываем по координатам на первом и втором фрейме:
         RedSearch redSearch = new RedSearch(myPicture);
-
         Circle myPoint = redSearch.findRedPointsAsCircle(); // это наша красная точка
 
         imageLabel.drawPoint(myPoint, dHeight);//, обведенная синим квадратом
-        // Прорисовка на WebPanel:
+
         panelWebcam.drawPointOnWebPanel(myPoint, dHeight);//, обведенная синим квадратом
-        //panelWebcam.paintImmediately(100,100,100,100);
-        Main.window.add(panelWebcam, BorderLayout.CENTER);
+        Main.mainFrame.add(panelWebcam, BorderLayout.CENTER);
 
         return myPoint;
 
@@ -246,12 +201,13 @@ public class RedMain {
     }
 
 
+    // Ф-ия для прорисовки всех попаданий на втором фрейме
     public void trueDrawAllRentable() {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
         imageLabel.drawResult(Main.pointList,dHeight);
-        //Main.window.add(imageLabel, BorderLayout.CENTER);
     }
 
+    // ф-ия для обновления лейбла на втором фрейме:
     public void repaint() {
         imageLabel.repaint();
 

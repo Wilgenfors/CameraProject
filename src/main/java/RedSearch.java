@@ -29,60 +29,7 @@ public class RedSearch {
 		}
 	}
 
-//	public MyPoint[] findRedPoints() {
-//		// https://www.geeksforgeeks.org/image-processing-in-java-get-and-set-pixels/
-//		int width = image.getWidth();
-//		int height = image.getHeight();
-//		// переменные для поиска минимальных и максимальных значений x и y:
-//		int xMax = -1, xMin = 1000, yMax = -1, yMin = 1000;
-//		// переменная для нахождения радиуса:
-//		int radius = 0;
-//		ArrayList<MyPoint> pointsList = new ArrayList<MyPoint>();
-//		System.out.println("img width = " + width + " height = " + height);
-//		for (int i = 0; i < width; i++) {
-//			for (int j = 0; j < height; j++) {
-//				int p = image.getRGB(i, j);
-//				int r = (p >> 16) & 0xff; // get red
-//				int g = (p >> 8) & 0xff; // get green
-//				int b = p & 0xff; // get blue
-//				if (r > 230 && g < 250 && b < 250) {
-//
-//					if (i >= xMax) xMax = i;
-//					if (i <= xMin) xMin = i;
-//					if (j >= yMax) yMax = j;
-//					if (j <= yMin) yMin = j;
-//
-//					System.out.println("i = "+i+" j = "+j);
-//					pointsList.add(new MyPoint(i, j));
-//				}
-//			}
-//		}
-//
-//		// Максимальные и минимальные значения расных точек по x:
-//		System.out.println("\nFRP Max red detected at x = "+xMax);
-//		System.out.println("FRP Min detected at x = "+xMin);
-//
-//		// Максимальные и минимальные значения расных точек по y:
-//		System.out.println("\nFRP Max red detected at  y = "+yMax);
-//		System.out.println("FRP Min red detected at y = "+yMin);
-//
-//		// Нахождение радиуса по x:
-//		radius = (xMax - xMin) / 2;
-//		System.out.println("FRP red detected radius = "+radius);
-//
-//		pointsList.add(new MyPoint(xMin+radius/2, yMin)); //верхняя
-//		pointsList.add(new MyPoint(xMin, yMin+radius/2)); //левая
-//		pointsList.add(new MyPoint(xMin+radius/2, yMax)); //нижняя
-//		pointsList.add(new MyPoint(xMax, yMin+radius/2)); //правая
-//
-//		MyPoint[] points = new MyPoint[pointsList.size()];
-//		int i = 0;
-//		for (MyPoint point : pointsList) {
-//			points[i] = point;
-//			i++;
-//		}
-//		return points;
-//	}
+
 
 	public Circle findRedPointsAsCircle() {
 		// https://www.geeksforgeeks.org/image-processing-in-java-get-and-set-pixels/
@@ -92,7 +39,6 @@ public class RedSearch {
 		int xMax = -1, xMin = 1000, yMax = -1, yMin = 1000;
 
 		ArrayList<MyPoint> pointsList = new ArrayList<MyPoint>();
-		//System.out.println("img width = " + width + " height = " + height);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				int p = image.getRGB(i, j);
@@ -109,22 +55,10 @@ public class RedSearch {
 			}
 		}
 
-
-		// Максимальные и минимальные значения расных точек по x:
-//		System.out.println("\nMax red detected at x = "+xMax);
-//		System.out.println("Min detected at x = "+xMin);
-
-		// Максимальные и минимальные значения расных точек по y:
-//		System.out.println("\nMax red detected at  y = "+yMax);
-//		System.out.println("Min red detected at y = "+yMin);
-
-
-		//System.out.println("");
 		// Нахождение радиуса по x:
 		int radius = (xMax - xMin) / 2;
 
-		//System.out.println("\nred detected radius = " + radius);
-
+		// Добавляем координаты нашей точки в списов
 		pointsList.add(new MyPoint(xMin + radius / 2, yMin)); //верхняя
 		pointsList.add(new MyPoint(xMin, yMin + radius / 2)); //левая
 		pointsList.add(new MyPoint(xMin + radius / 2, yMax)); //нижняя
@@ -187,9 +121,7 @@ public class RedSearch {
 	public Circle getCircle(/*Point[] z*/) {
 		//https://shra.ru/2019/10/koordinaty-centra-okruzhnosti-po-trem-tochkam/
 		MyPoint[] z = boundCircleSearch();
-		//System.out.println("boundCircleSearch returned "+z.length+" points");
 		if (z.length<3) {
-			//System.out.println("--!! No circle !!--");
 			return null;
 		}
 		int a = z[1].getX() - z[0].getX();

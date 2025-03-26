@@ -22,11 +22,12 @@ public class SimpleRunnable implements Runnable {
         stop = false;
 
     }
-    // метод для остановки потока и расспознавания красных точек:
+    // метод для остановки потока и распознавания красных точек:
     static public void stopped(){
         stop = true;
     }
 
+    // ф-ия для возобновления потока:
     public static void contented() {
         stop = false;
     }
@@ -34,12 +35,10 @@ public class SimpleRunnable implements Runnable {
     @Override
     public void run(){
 
+        // ока не остановили поток он будет обновлять картинку на втором фрейме
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
-
-
             colorImg_obj = webcam_obj.getImage();
-
-            // Буффер для изменнения картинки в серый
+            // Буфф ер для изменения картинки в серый
             BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
             Graphics2D graphics = blackAndWhiteImg.createGraphics();
 

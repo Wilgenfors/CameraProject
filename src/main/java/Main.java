@@ -1,5 +1,3 @@
-
-
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
 //import jdk.internal.icu.text.UnicodeSet;
@@ -13,42 +11,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-
-    public static MyWebcamPanel panelWebcam;
-    public static JFrame window;
-    static Webcam webcam = Webcam.getDefault();
-    static JTextArea myTextArea;
-    static JTextField inputPlayerCount;
-    static RedMain redMain;
-    static JTextField inputCountShot;
-    static ArrayList<Integer> listHits = new ArrayList<>();
-    static ArrayList<Circle> pointList = new ArrayList<>();
-    static int player;
-    static int shot;
-    static int players;
-    static int shots;
-    static boolean printAllHits = false;
-    //static SimpleRunnable stream;
+    public static MyWebcamPanel panelWebcam; // Панель для работы с камерой
+    public static JFrame mainFrame; // Фрейм на котором отображается поток с веб-камеры и todo будет производиться настройка цвета лазера и черных кругов - калибровка
+    static Webcam webcam = Webcam.getDefault(); // Объектная переменная для работы с веб-камерой
+    static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждгого игрока и вывода лучшего игрока
+    static JTextField inputPlayerCount; // текстовое поле для ввода кол-ва игроков
+    static RedMain redMain; // Объектная переменная для работы с классом
+    static JTextField inputCountShot; // текстовое поле для ввода допустимого кол-ва попаданий на игрока
+    static ArrayList<Integer> listHits = new ArrayList<>(); // Лист хранящий каждое попадание всеми игроками - Пример 5,5,8,10,0
+    static ArrayList<Circle> pointList = new ArrayList<>(); // Лист хранящий в себе координаты каждого попадания
+    static int player; // переменная для хранения с каким игроком по счеты мы сейчас взаимодействуем
+    static int shot; // переменная для хранения какой выстрел по счету
+    static int players; // переменная для хранения кол-ва всех игроков участвующих в игре
+    static int shots;// переменная для хранения допустимого кол-ва попаданий
+    static boolean printAllHits = false; // переменная для вывода всех попаданий после конца игры
     public static void main(String[] args) throws IOException {
-       // System.out.println("Hello world!");
-
         // проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
         if (cams.size()>1) {
             webcam = cams.get(1);
         }
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-        panelWebcam = new MyWebcamPanel(webcam);
-        panelWebcam.setImageSizeDisplayed(true);
+        webcam.setViewSize(WebcamResolution.VGA.getSize());// Настраиваем разрешение для камеры
 
+        panelWebcam = new MyWebcamPanel(webcam);  // Передаем объект камеры на специальную панель для вывода изображения с камеры
+        panelWebcam.setImageSizeDisplayed(true);  // Делаем веб-панель видимой
 
-        //panelWebcam.setSize(800, 600); метод setSize не работает для веб панели
-
-        window = new JFrame("Webcam");
-        //window.setSize(782,562); не рабочая строчка
-        window.setPreferredSize(new Dimension(986,661));
-        window.add(panelWebcam, BorderLayout.CENTER);
+        mainFrame = new JFrame("Webcam"); // Создаем главный фрейм
+        mainFrame.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
+        mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
 
         // create panelNORTH for North:
         JPanel panelNORTH = new JPanel();
@@ -74,21 +65,25 @@ public class Main {
         panelNORTH.add(startButton);
 
         // add panel in frame - window:
-        window.add(panelNORTH, BorderLayout.NORTH);
+        mainFrame.add(panelNORTH, BorderLayout.NORTH);
 
         // add stopButton for stopped Runnable:
         JButton stopButton = new JButton("Stopped detected");
-        window.add(stopButton, BorderLayout.SOUTH);
+        mainFrame.add(stopButton, BorderLayout.SOUTH);
 
-        //_____________________________________________________________
+        // Создаем текстовое поле для вывода информации об выстрелах игроков
         myTextArea = new JTextArea(10,20);
+        // И помещаем текстовое поле на скрол
         JScrollPane scrollPane = new JScrollPane(myTextArea);
-        window.add(scrollPane,BorderLayout.EAST);
+        // и добовляем этот скрол на главный фрейм
+        mainFrame.add(scrollPane,BorderLayout.EAST);
 
-        window.setResizable(true);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.pack();
-        window.setVisible(true);
+        // И заканчиваем настройку главного фрейма
+        mainFrame.setResizable(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        // открываем видео поток для камеры
         webcam.open();
 
         // Слушатель конпки для начала потока (расспознования красных точек):
@@ -97,13 +92,7 @@ public class Main {
                 // Обработка исключения пустой стоки преобразованной в целое:
                 try{
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
-                        
                         RedMain.guiTest(webcam);
-
-                        // Эксперементальный код:
-                        // System.out.println("WebPanel Height = "+panelWebcam.getHeight()+"  Width =  "+panelWebcam.getWidth());
-                        //____________________________________________
-
                         //Отчистка предыдущих значений:
                         players = Integer.parseInt(inputPlayerCount.getText());
                         shots = Integer.parseInt(inputCountShot.getText());
@@ -113,8 +102,6 @@ public class Main {
                         myTextArea.setText("");
                         pointList = new ArrayList<>();
                         redMain.repaint();
-
-                        
                     }
                 }
                 catch(NumberFormatException ex){
@@ -122,20 +109,9 @@ public class Main {
                 }
             }
         });
-        //_______________________________________________
 
 
-        // Слушатель для получения изменненых размеров окна:
-//        window.addComponentListener(new ComponentAdapter() {
-//            public void componentResized(ComponentEvent e) {
-//                //System.out.println("Size Changed");
-//                System.out.println("WebFrame Height = "+window.getHeight()+"  Width =  "+window.getWidth());
-//
-//            }
-//        });
-
-
-        // Слашатель для остановки потока:
+        // Слушатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SimpleRunnable.stopped();
@@ -145,14 +121,13 @@ public class Main {
 
 
 
+    // ф-ия перезапуска потока:
     public static void restartingTheStream() {
-       // System.out.println("Enter restartingTheStream");
         SimpleRunnable.stopped();
-       // System.out.println("Stream after stop");
         SimpleRunnable.contented();
-      //  System.out.println("Stream restart");
     }
 
+    // ф-ия для подсчета очков попадания для игрока и для определения лучшего игрока:
     public static void totalScore() {
         //   System.out.println("\nGame the end, stream stop");
         SimpleRunnable.stopped();
@@ -199,6 +174,7 @@ public class Main {
         printAllHits();
 
     }
+    // После конца игры и остановки потока выводим все попадания на второй фрейм
     public static void printAllHits(){
         printAllHits = true;
         // Заменяем веб панель на обычную:
@@ -206,11 +182,8 @@ public class Main {
         Graphics2D graphics = totalPicture.createGraphics();
         graphics.drawImage(totalPicture, 0, 0, null);
         ImageIcon imgIcon = new ImageIcon(totalPicture);
-       // label.setIcon(imgIcon);
-        window.remove(panelWebcam);
-
-        System.out.println("pointList size = "+pointList.size());
-//        System.out.println("draw rect finish");
+        mainFrame.remove(panelWebcam);
+        // Выводим все попадания на второй фрейм:
         redMain = new RedMain();
         redMain.trueDrawAllRentable();
 
