@@ -46,7 +46,7 @@ public class MyLabel extends JLabel {
 
     // ф-ия для входа в прорисовку всех точек после конца игры
     public void drawResult(ArrayList<Circle> pointList, float dHeight2) {
-        System.out.println("Enter to drawResult");
+        //System.out.println("Enter to drawResult");
         this.dHeight = dHeight2;
         this.resultList = pointList;
         resultDraw = true;

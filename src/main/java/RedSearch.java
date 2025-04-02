@@ -1,33 +1,33 @@
 
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+//import java.io.File;
+//import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 
 public class RedSearch {
-	private String path;
+	//private String path;
 	private BufferedImage image;
 
 	public RedSearch(BufferedImage img) {
 		image = img;
 	}
 
-	public RedSearch(String filePath) {
-		path = filePath;
-		File f = null;
-
-		// read image
-		try {
-			f = new File(path);
-			image = ImageIO.read(f);
-
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-	}
+//	public RedSearch(String filePath) {
+//		path = filePath;
+//		File f = null;
+//
+//		// read image
+//		try {
+//			f = new File(path);
+//			image = ImageIO.read(f);
+//
+//		} catch (IOException e) {
+//			System.out.println(e);
+//		}
+//	}
 
 
 
@@ -58,7 +58,7 @@ public class RedSearch {
 		// Нахождение радиуса по x:
 		int radius = (xMax - xMin) / 2;
 
-		// Добавляем координаты нашей точки в списов
+		// Добавляем координаты нашей точки в список
 		pointsList.add(new MyPoint(xMin + radius / 2, yMin)); //верхняя
 		pointsList.add(new MyPoint(xMin, yMin + radius / 2)); //левая
 		pointsList.add(new MyPoint(xMin + radius / 2, yMax)); //нижняя
@@ -178,7 +178,7 @@ public class RedSearch {
 	}
 
 	/**
-	 *ф-ия для нахождения всех внутренних кругов
+	 *Ф-ия для нахождения всех внутренних кругов
 	 *@param circle - самый внешний круг
 	 *@return ArrayList<Circle> - список всех внутренних кругов (без самого внешнего)
 	 */
@@ -204,7 +204,7 @@ public class RedSearch {
 	}
 
 	/**
-	 *ф-ия для поиска внутренних кругов
+	 *Ф-ия для поиска внутренних кругов
 	 *@return MyPoint[] - массив с 3 точками на потенциальном круге
 	 *@param circle - самый внешний круг
 	 *@param k - отступ от центра для начала поиска

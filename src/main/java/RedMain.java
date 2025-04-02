@@ -15,8 +15,6 @@ public class RedMain {
     static BufferedImage myPicture = null;
     static Thread thread1;
     static RedMain redmain;
-    //static Main mainObj;
-    //Main mainObj;
     static MyLabel imageLabel;
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
@@ -54,8 +52,6 @@ public class RedMain {
         });
 
         redmain = new RedMain();
-        // Created obj for class Main:
-        //Main mainObj = new Main();
 //        // Создаем объектную переменную для потока и сам поток:
         SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
@@ -70,26 +66,13 @@ public class RedMain {
         imgIcon.setImage(dimg);
         RedSearch redSearch = new RedSearch(myPicture);
 
-        // Created obj for class Main:
-        //Main mainObj = new Main();
-
         Circle circle = redSearch.getCircle(); //находим внешний круг
         if (circle == null) {
             // System.out.println("--!! No circle !!--");
         } else {
-
-            // Объектная переменная для синей обводки:
-            // добавляем метод вернет веб-панель:
-
-            //Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
             Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
-            //if (mainObj != null) {
-                //Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, mainObj.returnedWebPanel());
                 // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
                 if (myPoint.getX() != 500 && myPoint.getY() != 500) {
-
-                    //Заменяем Main.pointList.add(myPoint); на метод:
-                    //Main.pointList.add(myPoint);
                     Main.addPointList(myPoint);
                 }
 
@@ -105,34 +88,21 @@ public class RedMain {
                 if (circleIndex == -1) {
                     int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                     if (soloCircleIndex == -99) {
-                        //Main.listHits.add(10);
                         Main.addListHits(10);
-                        //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
                         Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
 
                         // Условия для перехода на следующего игрока:
                         Main.playerChangeCondition();
-//                    if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                    if (Main.player == Main.players) Main.totalScore();
-//                    else Main.restartingTheStream();
 
                     } else if (myPoint.getRadius() != -500) {
-                        //Main.listHits.add(0);
                         Main.addListHits(0);
-                        //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
                         Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
                         // Условия для перехода на следующего игрока:
                         Main.playerChangeCondition();
-//                    if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                    if (Main.player == Main.players) Main.totalScore();
-//                    else Main.restartingTheStream();
                     }
                 }
                 // Если точка находится между кругами
                 else if (circleIndex < circlesList.size()) {
-//                if (circleIndex == 0) Main.listHits.add(8);
-//                else if (circleIndex == 1) Main.listHits.add(5);
-//                else if (circleIndex == 2) Main.listHits.add(2);
                     if (circleIndex == 0) Main.addListHits(8);
                     else if (circleIndex == 1) Main.addListHits(5);
                     else if (circleIndex == 2) Main.addListHits(2);
@@ -141,9 +111,6 @@ public class RedMain {
                     Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
                     // Условия для перехода на следующего игрока:
                     Main.playerChangeCondition();
-//                if (Main.shots == (Main.shot / (Main.player+1) ) ) Main.player++;
-//                if (Main.player == Main.players) Main.totalScore();
-//                else Main.restartingTheStream();
 
                 }
             }

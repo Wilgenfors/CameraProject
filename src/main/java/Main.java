@@ -14,7 +14,7 @@ public class Main {
     public static MyWebcamPanel panelWebcam; // Панель для работы с камерой
     public static JFrame mainFrame; // Фрейм на котором отображается поток с веб-камеры и todo будет производиться настройка цвета лазера и черных кругов - калибровка
     static Webcam webcam = Webcam.getDefault(); // Объектная переменная для работы с веб-камерой
-    static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждгого игрока и вывода лучшего игрока
+    static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждого игрока и вывода лучшего игрока
     static JTextField inputPlayerCount; // текстовое поле для ввода кол-ва игроков
     static RedMain redMain; // Объектная переменная для работы с классом
     static JTextField inputCountShot; // текстовое поле для ввода допустимого кол-ва попаданий на игрока
@@ -25,8 +25,10 @@ public class Main {
     static int players; // переменная для хранения кол-ва всех игроков участвующих в игре
     static int shots;// переменная для хранения допустимого кол-ва попаданий
     static boolean printAllHits = false; // переменная для вывода всех попаданий после конца игры
+
+
     public static void main(String[] args) throws IOException {
-        // проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
+        // проверять кол-во камее, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
 
         if (cams.size()>1) {
@@ -75,9 +77,9 @@ public class Main {
 
         // Создаем текстовое поле для вывода информации об выстрелах игроков
         myTextArea = new JTextArea(10,20);
-        // И помещаем текстовое поле на скрол
+        // И помещаем текстовое поле на скол
         JScrollPane scrollPane = new JScrollPane(myTextArea);
-        // и добовляем этот скрол на главный фрейм
+        // и добавляем этот скол на главный фрейм
         mainFrame.add(scrollPane,BorderLayout.EAST);
 
         // И заканчиваем настройку главного фрейма
@@ -88,7 +90,7 @@ public class Main {
         // открываем видео поток для камеры
         webcam.open();
 
-        // Слушатель конпки для начала потока (расспознования красных точек):
+        // Слушатель кнопки для начала потока (распознавания красных точек):
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Обработка исключения пустой стоки преобразованной в целое:
@@ -103,9 +105,6 @@ public class Main {
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
                         pointList = new ArrayList<>();
-//                        if (redMain != null){
-//                            redMain.repaint();
-//                        }
                         redMain.repaint();
 
                     }
@@ -187,7 +186,6 @@ public class Main {
         BufferedImage totalPicture = webcam.getImage();
         Graphics2D graphics = totalPicture.createGraphics();
         graphics.drawImage(totalPicture, 0, 0, null);
-        //ImageIcon imgIcon = new ImageIcon(totalPicture);
         mainFrame.remove(panelWebcam);
         // Выводим все попадания на второй фрейм:
         redMain = new RedMain();
