@@ -28,9 +28,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // проверять кол-во камеер, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
+
         if (cams.size()>1) {
             webcam = cams.get(1);
         }
+
 
         webcam.setViewSize(WebcamResolution.VGA.getSize());// Настраиваем разрешение для камеры
 
@@ -101,7 +103,11 @@ public class Main {
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
                         pointList = new ArrayList<>();
+//                        if (redMain != null){
+//                            redMain.repaint();
+//                        }
                         redMain.repaint();
+
                     }
                 }
                 catch(NumberFormatException ex){
@@ -135,8 +141,8 @@ public class Main {
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
-        Main.myTextArea.append("-------------------------------------------\n");
-        Main.myTextArea.append("Players total score:\n");
+        myTextArea.append("-------------------------------------------\n");
+        myTextArea.append("Players total score:\n");
 
         int countPlayer = 0;
         int totalScore = 0;
@@ -149,14 +155,14 @@ public class Main {
 
             if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);
-                Main.myTextArea.append("Player - "+(++countPlayer)+" total score - "+totalScore+"\n");
+                myTextArea.append("Player - "+(++countPlayer)+" total score - "+totalScore+"\n");
                 totalScore = 0;
                 hitStep = 0;
             }
         }
 
         // Определяем лучшего игрока:
-        Main.myTextArea.append("-------------------------------------------\n");
+        myTextArea.append("-------------------------------------------\n");
 
         int winnerPlayer = 0;
         int scoreWinner = -1;
@@ -168,7 +174,7 @@ public class Main {
                 winnerPlayer = (countPlayer);
             }
         }
-        Main.myTextArea.append("Winner player № "+(winnerPlayer) + "\n");
+        myTextArea.append("Winner player № "+(winnerPlayer) + "\n");
 
         // Вызываем метод для итогово изображения всех попаданий по мешени:
         printAllHits();
@@ -181,12 +187,35 @@ public class Main {
         BufferedImage totalPicture = webcam.getImage();
         Graphics2D graphics = totalPicture.createGraphics();
         graphics.drawImage(totalPicture, 0, 0, null);
-        ImageIcon imgIcon = new ImageIcon(totalPicture);
+        //ImageIcon imgIcon = new ImageIcon(totalPicture);
         mainFrame.remove(panelWebcam);
         // Выводим все попадания на второй фрейм:
         redMain = new RedMain();
         redMain.trueDrawAllRentable();
 
+    }
+
+    // метод, который добавляет координаты красной точки в массив:
+    public static void addPointList(Circle myPoint){
+        pointList.add(myPoint);
+    }
+
+    // метод, который добавляет координаты красной точки в массив:
+    public static void addListHits(int pointsForOneHit){
+        listHits.add(pointsForOneHit);
+    }
+
+    // метод, проверяющий условия перехода очереди для игроков:
+    public static void playerChangeCondition(){
+        if (shots == (shot / (player+1) ) ) player++;
+        if (player == players) totalScore();
+        else restartingTheStream();
+    }
+
+
+    // метод вернёт список точек:
+    public static ArrayList<Circle> returnedPointList(){
+       return pointList;
     }
 
 
