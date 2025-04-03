@@ -3,6 +3,7 @@ import com.github.sarxos.webcam.Webcam;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class RedMain {
-    private static JFrame mainFrame;
+    private static JFrame secondFrame;
     static BufferedImage myPicture = null;
     static Thread thread1;
     static RedMain redmain;
@@ -20,11 +21,11 @@ public class RedMain {
         // frame for bounds detected:
         imageLabel = new MyLabel();
 
-        if (mainFrame!=null) {
-        mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
+        if (secondFrame !=null) {
+        secondFrame.dispatchEvent(new WindowEvent(secondFrame, WindowEvent.WINDOW_CLOSING));
         }
 
-        mainFrame = new JFrame("BoundsTarget");
+        secondFrame = new JFrame("BoundsTarget");
         myPicture = webcam.getImage();
 
         // Буфф ер для изменения картинки в серый
@@ -36,14 +37,14 @@ public class RedMain {
         ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
         imageLabel.setIcon(imgIcon);
 
-        mainFrame.remove(imageLabel);
-        mainFrame.add(imageLabel, BorderLayout.CENTER);
+        secondFrame.remove(imageLabel);
+        secondFrame.add(imageLabel, BorderLayout.CENTER);
 
         // задаем размер для одинакового отображения нахождения крассных точек на двух фреймах
-        mainFrame.setSize(640+16, 480+39); //
-        mainFrame.setVisible(true);
+        secondFrame.setSize(640+16, 480+39); //
+        secondFrame.setVisible(true);
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-        mainFrame.setLocationRelativeTo(null);
+        secondFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -53,9 +54,17 @@ public class RedMain {
 
         redmain = new RedMain();
 //        // Создаем объектную переменную для потока и сам поток:
-        SimpleRunnable run1 = new SimpleRunnable(redmain, mainFrame, Main.webcam, imageLabel);
+        SimpleRunnable run1 = new SimpleRunnable(redmain, secondFrame, Main.webcam, imageLabel);
         thread1 = new Thread(run1); //создаем поток и передаем ему наш объект
         thread1.start();
+
+        // Слушатель, который останавливает поток после закрытия окна:
+        secondFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                SimpleRunnable.stopped();
+            }
+        });
 
     }
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
@@ -205,4 +214,5 @@ public class RedMain {
         imageLabel.repaint();
 
     }
+
 }
