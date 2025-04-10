@@ -22,13 +22,6 @@ public class MyWebcamPanel extends WebcamPanel { // Класс наследуе�
     }
 
 
-//    public void drawPointOnWebPanel(Circle circle) {
-//        this.circle = circle;
-//        paintRedPoint = true;
-//        repaint();
-//    }
-
-
     public void paint(Graphics g) {
         super.paint(g);
         //Graphics2D gr2D = (Graphics2D) g;
@@ -56,5 +49,6 @@ public class MyWebcamPanel extends WebcamPanel { // Класс наследуе�
             paintRedPoint  = false;
         }
     }
+
 
 }

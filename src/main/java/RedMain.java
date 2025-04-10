@@ -198,7 +198,6 @@ public class RedMain {
 
     }
 
-
     // Ф-ия для прорисовки всех попаданий на втором фрейме
     public void trueDrawAllRentable() {
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();

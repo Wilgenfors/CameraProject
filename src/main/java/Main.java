@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ public class Main {
     static int players; // переменная для хранения кол-ва всех игроков участвующих в игре
     static int shots;// переменная для хранения допустимого кол-ва попаданий
     static boolean printAllHits = false; // переменная для вывода всех попаданий после конца игры
-
+    static JCheckBox redCalibrationChBox = new JCheckBox("Red");
+    static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
+    //static JCheckBox whiteCalibrationChBox = new JCheckBox("White");
 
     public static void main(String[] args) throws IOException {
         // проверять кол-во камее, и если 1, то брать дефолтную, иначе вторую
@@ -69,8 +73,9 @@ public class Main {
         panelNORTH.add(startButton);
 
         // add JCheckBox for detected:
-        JCheckBox calibrationChBox = new JCheckBox("Calibration");
-        panelNORTH.add(calibrationChBox);
+        panelNORTH.add(redCalibrationChBox);
+        panelNORTH.add(blackCalibrationChBox);
+       // panelNORTH.add(whiteCalibrationChBox);
 
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
@@ -120,10 +125,53 @@ public class Main {
         });
 
 
+
         // Слушатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SimpleRunnable.stopped();
+            }
+        });
+
+        // Слушатель созданный для калибровки цветов через мышь:
+        mainFrame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                BufferedImage image = webcam.getImage();
+                // Если нажали на калибровку красной точки:
+                if (redCalibrationChBox.isSelected()) {
+                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
+                    int p = image.getRGB(e.getX(), e.getY() / 2);
+                    int r = (p >> 16) & 0xff; // get red
+                    int g = (p >> 8) & 0xff; // get green
+                    int b = p & 0xff; // get blue
+
+                    // Метод для передачи диапазона цвета нашей красной точки:
+                    RedSearch.passDiaposoneColorRedPoint(r,g,b);
+
+                    redCalibrationChBox.setSelected(false);
+                }
+                // Если нажали на калибровку черного круга:
+                else if (blackCalibrationChBox.isSelected()) {
+                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
+
+                    int p = image.getRGB(e.getX(), e.getY() / 2);
+                    int r = (p >> 16) & 0xff; // get red
+                    int g = (p >> 8) & 0xff; // get green
+                    int b = p & 0xff; // get blue
+
+                    // Метод для передачи диапазона цвета нашего черного круга:
+                    RedSearch.blackCirclePassDiaposoneColor(r,g,b);
+
+                    blackCalibrationChBox.setSelected(false);
+                }
+                // Если нажали на калибровку белого фона:
+//                else if (whiteCalibrationChBox.isSelected()) {
+//                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
+//                    RedSearch.backgroundFoundDiaposonColor(e.getX(), e.getY());
+//                    whiteCalibrationChBox.setSelected(false);
+//                }
             }
         });
     }

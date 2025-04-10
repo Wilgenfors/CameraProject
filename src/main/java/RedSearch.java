@@ -8,11 +8,32 @@ import java.util.ArrayList;
 //import javax.imageio.ImageIO;
 
 public class RedSearch {
+	// Поля для диапазона цветов красной точки и черных кругов:
+	private static int redDiaposonePoint;
+	private static int greenDiaposonePoinPoint;
+	private static int blueDiaposonePoinPoint;
+
+	private static int circleRedDiaposone;
+	private static int circleGreenDiaposone;
+	private static int circleBlueDiaposone;
+
 	//private String path;
-	private BufferedImage image;
+	private static BufferedImage image;
 
 	public RedSearch(BufferedImage img) {
 		image = img;
+	}
+
+	public static void passDiaposoneColorRedPoint(int r, int g, int b) {
+		redDiaposonePoint = r;
+		greenDiaposonePoinPoint = g;
+		blueDiaposonePoinPoint = b;
+	}
+
+	public static void blackCirclePassDiaposoneColor(int r, int g, int b) {
+		circleRedDiaposone = r;
+		circleGreenDiaposone = g;
+		circleBlueDiaposone = b;
 	}
 
 //	public RedSearch(String filePath) {
@@ -46,7 +67,8 @@ public class RedSearch {
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
 
-				if (r > 250 && g < 250 && b < 250) {
+				//if (r > 250 && g < 250 && b < 250) {
+				if ((r > redDiaposonePoint - 5 || r < redDiaposonePoint + 5) && (g > greenDiaposonePoinPoint - 5 || g < greenDiaposonePoinPoint + 5) && (b > blueDiaposonePoinPoint - 5 || b < blueDiaposonePoinPoint + 5)) {
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -81,7 +103,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
+			//if (r < 150 && g < 150 && b < 150) {
+			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {
 				upperPoint = new MyPoint(width / 2, j);
 				pointsList.add(upperPoint);
 				break;
@@ -92,8 +115,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
-				lowerPoint = new MyPoint(width / 2, j);
+			//if (r < 150 && g < 150 && b < 150) {
+			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {				lowerPoint = new MyPoint(width / 2, j);
 				pointsList.add(lowerPoint);
 				break;
 			}
@@ -103,7 +126,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
+			//if (r < 150 && g < 150 && b < 150) {
+			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {
 				leftPoint = new MyPoint(i, height / 2);
 				pointsList.add(leftPoint);
 				break;
