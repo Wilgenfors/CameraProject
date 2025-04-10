@@ -25,7 +25,7 @@ void loop() {
     delayNumber = 200;
     //delayNumber = 150;  // то светодиод будет гореть,
   } else {
-    delayNumber = 2000;
+    delayNumber = 8000;
   }
 
   digitalWrite(LASER, LOW);
