@@ -68,9 +68,9 @@ public class Main {
         JButton startButton = new JButton("Red detected");
         panelNORTH.add(startButton);
 
-        // add startButton for detected black circle and red point:
-        JButton calibrationButton = new JButton("Calibration");
-        panelNORTH.add(calibrationButton);
+        // add JCheckBox for detected:
+        JCheckBox calibrationChBox = new JCheckBox("Calibration");
+        panelNORTH.add(calibrationChBox);
 
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
