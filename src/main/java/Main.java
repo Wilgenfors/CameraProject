@@ -19,6 +19,7 @@ public class Main {
     static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждого игрока и вывода лучшего игрока
     static JTextField inputPlayerCount; // текстовое поле для ввода кол-ва игроков
     static RedMain redMain; // Объектная переменная для работы с классом
+    //static RedSearch redSearch;
     static JTextField inputCountShot; // текстовое поле для ввода допустимого кол-ва попаданий на игрока
     static ArrayList<Integer> listHits = new ArrayList<>(); // Лист хранящий каждое попадание всеми игроками - Пример 5,5,8,10,0
     static ArrayList<Circle> pointList = new ArrayList<>(); // Лист хранящий в себе координаты каждого попадания
@@ -27,9 +28,7 @@ public class Main {
     static int players; // переменная для хранения кол-ва всех игроков участвующих в игре
     static int shots;// переменная для хранения допустимого кол-ва попаданий
     static boolean printAllHits = false; // переменная для вывода всех попаданий после конца игры
-    static JCheckBox redCalibrationChBox = new JCheckBox("Red");
-    static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
-    //static JCheckBox whiteCalibrationChBox = new JCheckBox("White");
+
 
     public static void main(String[] args) throws IOException {
         // проверять кол-во камее, и если 1, то брать дефолтную, иначе вторую
@@ -72,10 +71,10 @@ public class Main {
         JButton startButton = new JButton("Red detected");
         panelNORTH.add(startButton);
 
-        // add JCheckBox for detected:
-        panelNORTH.add(redCalibrationChBox);
-        panelNORTH.add(blackCalibrationChBox);
-       // panelNORTH.add(whiteCalibrationChBox);
+        // add calibrationButton for calibration diapason colors black circle and red point:
+        JButton calibrationButton = new JButton("Calibration of colors");
+        panelNORTH.add(calibrationButton);
+
 
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
@@ -114,7 +113,11 @@ public class Main {
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
                         pointList = new ArrayList<>();
-                        redMain.repaint();
+                        if (redMain != null){
+                            redMain.repaint();
+                        }
+
+                        //RedMain.repaint();
 
                     }
                 }
@@ -124,6 +127,14 @@ public class Main {
             }
         });
 
+        // Слушатель кнопки для открытия фрейма калибровки и создание объекта:
+        calibrationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage image  = webcam.getImage();
+                Calibration calibration = new Calibration(image);
+
+            }
+        });
 
 
         // Слушатель для остановки потока:
@@ -133,47 +144,7 @@ public class Main {
             }
         });
 
-        // Слушатель созданный для калибровки цветов через мышь:
-        mainFrame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                BufferedImage image = webcam.getImage();
-                // Если нажали на калибровку красной точки:
-                if (redCalibrationChBox.isSelected()) {
-                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
-                    int p = image.getRGB(e.getX(), e.getY() / 2);
-                    int r = (p >> 16) & 0xff; // get red
-                    int g = (p >> 8) & 0xff; // get green
-                    int b = p & 0xff; // get blue
 
-                    // Метод для передачи диапазона цвета нашей красной точки:
-                    RedSearch.passDiaposoneColorRedPoint(r,g,b);
-
-                    redCalibrationChBox.setSelected(false);
-                }
-                // Если нажали на калибровку черного круга:
-                else if (blackCalibrationChBox.isSelected()) {
-                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
-
-                    int p = image.getRGB(e.getX(), e.getY() / 2);
-                    int r = (p >> 16) & 0xff; // get red
-                    int g = (p >> 8) & 0xff; // get green
-                    int b = p & 0xff; // get blue
-
-                    // Метод для передачи диапазона цвета нашего черного круга:
-                    RedSearch.blackCirclePassDiaposoneColor(r,g,b);
-
-                    blackCalibrationChBox.setSelected(false);
-                }
-                // Если нажали на калибровку белого фона:
-//                else if (whiteCalibrationChBox.isSelected()) {
-//                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
-//                    RedSearch.backgroundFoundDiaposonColor(e.getX(), e.getY());
-//                    whiteCalibrationChBox.setSelected(false);
-//                }
-            }
-        });
     }
 
 

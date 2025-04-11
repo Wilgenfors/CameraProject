@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class RedSearch {
 	// Поля для диапазона цветов красной точки и черных кругов:
-	private static int redDiaposonePoint;
-	private static int greenDiaposonePoinPoint;
-	private static int blueDiaposonePoinPoint;
+	 int redDiaposonePoint = 250;
+	 int greenDiaposonePoinPoint= 250;
+	 int blueDiaposonePoinPoint= 250;
 
-	private static int circleRedDiaposone;
-	private static int circleGreenDiaposone;
-	private static int circleBlueDiaposone;
+	 int circleRedDiaposone = 150;
+	 int circleGreenDiaposone = 150;
+	 int circleBlueDiaposone = 150;
 
 	//private String path;
 	private static BufferedImage image;
@@ -24,32 +24,18 @@ public class RedSearch {
 		image = img;
 	}
 
-	public static void passDiaposoneColorRedPoint(int r, int g, int b) {
+	public  void passDiaposoneColorRedPoint(int r, int g, int b) {
 		redDiaposonePoint = r;
 		greenDiaposonePoinPoint = g;
 		blueDiaposonePoinPoint = b;
+
 	}
 
-	public static void blackCirclePassDiaposoneColor(int r, int g, int b) {
+	public  void blackCirclePassDiaposoneColor(int r, int g, int b) {
 		circleRedDiaposone = r;
 		circleGreenDiaposone = g;
 		circleBlueDiaposone = b;
 	}
-
-//	public RedSearch(String filePath) {
-//		path = filePath;
-//		File f = null;
-//
-//		// read image
-//		try {
-//			f = new File(path);
-//			image = ImageIO.read(f);
-//
-//		} catch (IOException e) {
-//			System.out.println(e);
-//		}
-//	}
-
 
 
 	public Circle findRedPointsAsCircle() {
@@ -67,8 +53,9 @@ public class RedSearch {
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
 
-				//if (r > 250 && g < 250 && b < 250) {
-				if ((r > redDiaposonePoint - 5 || r < redDiaposonePoint + 5) && (g > greenDiaposonePoinPoint - 5 || g < greenDiaposonePoinPoint + 5) && (b > blueDiaposonePoinPoint - 5 || b < blueDiaposonePoinPoint + 5)) {
+				if (r > redDiaposonePoint && g < greenDiaposonePoinPoint && b < blueDiaposonePoinPoint) {
+					//if (redDiaposonePoint > 250 && greenDiaposonePoinPoint < 250 && blueDiaposonePoinPoint < 250) {
+					System.out.println("point been found");
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -99,24 +86,27 @@ public class RedSearch {
 		MyPoint upperPoint;
 		MyPoint leftPoint;
 		for (int j = 0; j < height; j++) {
-			int p = image.getRGB(width / 2, j);
+			int p = image.getRGB(j, height / 2);
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			//if (r < 150 && g < 150 && b < 150) {
-			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {
+			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
+				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
+				//System.out.println("upperPoint circle been found");
 				upperPoint = new MyPoint(width / 2, j);
 				pointsList.add(upperPoint);
 				break;
 			}
 		}
 		for (int j = height - 1; j > 1; j--) {
-			int p = image.getRGB(width / 2, j);
+			int p = image.getRGB(j, height / 2);
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			//if (r < 150 && g < 150 && b < 150) {
-			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {				lowerPoint = new MyPoint(width / 2, j);
+			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
+				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
+				lowerPoint = new MyPoint(width / 2, j);
+				//System.out.println("lowerPoint circle been found");
 				pointsList.add(lowerPoint);
 				break;
 			}
@@ -126,8 +116,9 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
-			//if (r < 150 && g < 150 && b < 150) {
-			if ((r > circleRedDiaposone - 5 || r < circleRedDiaposone + 5) && (g > circleGreenDiaposone - 5 || g < circleGreenDiaposone + 5) && (b > circleBlueDiaposone - 5 || b < circleBlueDiaposone + 5)) {
+			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
+				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
+				//System.out.println("leftPoint circle been found");
 				leftPoint = new MyPoint(i, height / 2);
 				pointsList.add(leftPoint);
 				break;

@@ -21,7 +21,6 @@ public class MyWebcamPanel extends WebcamPanel { // Класс наследуе�
         repaint();
     }
 
-
     public void paint(Graphics g) {
         super.paint(g);
         //Graphics2D gr2D = (Graphics2D) g;
