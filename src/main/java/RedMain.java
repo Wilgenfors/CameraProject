@@ -62,6 +62,15 @@ public class RedMain {
             }
         });
 
+
+
+        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
+        System.out.println("secondFrame.getWidth() "+ secondFrame.getHeight());
+
+        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
+        System.out.println("imageLabel.getWidth() "+ imageLabel.getHeight());
+
+
     }
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 

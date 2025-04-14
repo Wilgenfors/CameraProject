@@ -27,7 +27,17 @@ Calibration(BufferedImage image){
 
     frameCalibration.remove(labelCalibration);
 
-    labelCalibration.setSize(640+16, 480+39+39);
+//    labelCalibration.setSize(640+16, 480+39+39);
+//
+    //labelCalibration.setSize(640+16+15, 480+39+40);
+
+    // Меняем размер фрейма и лейбла чтобы координаты совпадали с первым и вторым фреймом:
+//    frameCalibration.setSize(frameCalibration.getWidth()-105,frameCalibration.getHeight()-(115+36));
+//    labelCalibration.setSize(labelCalibration.getWidth()-105,labelCalibration.getHeight()-79);
+
+
+    frameCalibration.setSize(656,519);
+    labelCalibration.setSize(640,480);
 
     float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
     int newWidth = (int) (image.getWidth() * dHeight);
@@ -53,13 +63,23 @@ Calibration(BufferedImage image){
     // add panel in frame - window:
     frameCalibration.add(panelNORTH, BorderLayout.NORTH);
 
-    // И заканчиваем настройку главного фрейма
+    // И заканчиваем настройку главного фрейма:
+
+
+
     frameCalibration.setResizable(true);
     frameCalibration.setVisible(true);
     frameCalibration.pack();
+    redSearch = new RedSearch(image);
+
+//    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getWidth());
+//    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getHeight());
+//
+//    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
+//    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getHeight());
 
 
-
+    frameCalibration.getWidth();
     // Слушатель созданный для калибровки цветов через мышь:
     labelCalibration.addMouseListener(new MouseAdapter() {
         @Override
@@ -73,7 +93,7 @@ Calibration(BufferedImage image){
                 int newWidth = (int) (image.getWidth() * dHeight);
                 Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
                 imgIcon.setImage(dimg);
-                redSearch = new RedSearch(image);
+                //redSearch = new RedSearch(image);
 
                 //BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
                 Graphics2D graphics = image.createGraphics();
@@ -82,7 +102,7 @@ Calibration(BufferedImage image){
                 frameCalibration.remove(labelCalibration);
                 frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-                redSearch = new RedSearch(image);
+                //redSearch = new RedSearch(image);
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
                 int p = image.getRGB(e.getX(), e.getY() / 2);
                 int r = (p >> 16) & 0xff; // get red
@@ -102,10 +122,19 @@ Calibration(BufferedImage image){
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
 
                 // Буфф ер для изменения картинки в серый
-                BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+                //BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+                BufferedImage blackAndWhiteImg = image;
+
+                float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
+                int newWidth = (int) (image.getWidth() * dHeight);
+                Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+                imgIcon.setImage(dimg);
+                //redSearch = new RedSearch(image);
+
+
                 Graphics2D graphics = blackAndWhiteImg.createGraphics();
                 graphics.drawImage(blackAndWhiteImg, 0, 0, null);
-                ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
+                //ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
                 labelCalibration.setIcon(imgIcon);
                 frameCalibration.remove(labelCalibration);
                 frameCalibration.add(labelCalibration, BorderLayout.CENTER);

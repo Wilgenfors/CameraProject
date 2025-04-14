@@ -28,6 +28,10 @@ public class RedSearch {
 		redDiaposonePoint = r;
 		greenDiaposonePoinPoint = g;
 		blueDiaposonePoinPoint = b;
+		System.out.println("\n\nredDiaposonePoint "+redDiaposonePoint);
+		System.out.println("greenDiaposonePoinPoint "+greenDiaposonePoinPoint);
+		System.out.println("blueDiaposonePoinPoint "+blueDiaposonePoinPoint);
+
 
 	}
 
@@ -35,6 +39,9 @@ public class RedSearch {
 		circleRedDiaposone = r;
 		circleGreenDiaposone = g;
 		circleBlueDiaposone = b;
+		System.out.println("\n\ncircleRedDiaposone "+circleRedDiaposone);
+		System.out.println("circleGreenDiaposone "+circleGreenDiaposone);
+		System.out.println("circleBlueDiaposone "+circleBlueDiaposone);
 	}
 
 
@@ -55,7 +62,13 @@ public class RedSearch {
 
 				if (r > redDiaposonePoint && g < greenDiaposonePoinPoint && b < blueDiaposonePoinPoint) {
 					//if (redDiaposonePoint > 250 && greenDiaposonePoinPoint < 250 && blueDiaposonePoinPoint < 250) {
-					System.out.println("point been found");
+					//System.out.println("point been found");
+
+					System.out.println("\n\nT redDiaposonePoint "+redDiaposonePoint);
+					System.out.println("T greenDiaposonePoinPoint "+greenDiaposonePoinPoint);
+					System.out.println("T blueDiaposonePoinPoint "+blueDiaposonePoinPoint);
+
+
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -72,6 +85,12 @@ public class RedSearch {
 		pointsList.add(new MyPoint(xMin, yMin + radius / 2)); //левая
 		pointsList.add(new MyPoint(xMin + radius / 2, yMax)); //нижняя
 		pointsList.add(new MyPoint(xMax, yMin + radius / 2)); //правая
+
+//		System.out.println("point xMin - "+xMin);
+//		System.out.println("point yyMin - "+yMin);
+//
+//		System.out.println("point xMax - "+xMax);
+//		System.out.println("point yMax - "+yMax);
 
 		return new Circle(xMin + radius, yMin + radius, radius);
 
