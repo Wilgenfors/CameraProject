@@ -1,15 +1,11 @@
 import com.github.sarxos.webcam.Webcam;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class RedMain {
     private static JFrame secondFrame;
@@ -40,7 +36,7 @@ public class RedMain {
         secondFrame.remove(imageLabel);
         secondFrame.add(imageLabel, BorderLayout.CENTER);
 
-        // задаем размер для одинакового отображения нахождения крассных точек на двух фреймах
+        // задаем размер для одинакового отображения нахождения красных точек на двух фреймах
         secondFrame.setSize(640+16, 480+39); //
         secondFrame.setVisible(true);
         resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
@@ -213,5 +209,6 @@ public class RedMain {
         imageLabel.repaint();
 
     }
+
 
 }

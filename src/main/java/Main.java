@@ -132,6 +132,9 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 BufferedImage image  = webcam.getImage();
                 Calibration calibration = new Calibration(image);
+                //RedMain redmainOfCalibration = new RedMain();
+               // redmainOfCalibration.calibration(image);
+
 
             }
         });

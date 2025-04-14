@@ -16,21 +16,28 @@ public class Calibration {
 
     static JCheckBox redCalibrationChBox = new JCheckBox("Red");
     static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
-    //static JCheckBox whiteCalibrationChBox = new JCheckBox("White");
 
 Calibration(BufferedImage image){
 
-
     labelCalibration = new MyLabel();  // Передаем объект камеры на специальную панель для вывода изображения с камеры
-    //labelCalibration.setImageSizeDisplayed(true);  // Делаем веб-панель видимой
-
     frameCalibration = new JFrame("Calibration"); // Создаем главный фрейм
-    frameCalibration.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
 
     ImageIcon imgIcon = new ImageIcon(image);
     labelCalibration.setIcon(imgIcon);
+
+    frameCalibration.remove(labelCalibration);
+
+    labelCalibration.setSize(640+16, 480+39+39);
+
+    float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
+    int newWidth = (int) (image.getWidth() * dHeight);
+    Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+    imgIcon.setImage(dimg);
+
     frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
+    frameCalibration.remove(labelCalibration);
+    frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
     // create panelNORTH for North:
     JPanel panelNORTH = new JPanel();
@@ -38,7 +45,6 @@ Calibration(BufferedImage image){
     // add JCheckBox for detected:
     panelNORTH.add(redCalibrationChBox);
     panelNORTH.add(blackCalibrationChBox);
-    // panelNORTH.add(whiteCalibrationChBox);
 
     // add startButton for detected black circle and red point:
     JButton startButton = new JButton("Complete calibration");
@@ -47,12 +53,10 @@ Calibration(BufferedImage image){
     // add panel in frame - window:
     frameCalibration.add(panelNORTH, BorderLayout.NORTH);
 
-
     // И заканчиваем настройку главного фрейма
     frameCalibration.setResizable(true);
-    frameCalibration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frameCalibration.pack();
     frameCalibration.setVisible(true);
+    frameCalibration.pack();
 
 
 
@@ -71,11 +75,9 @@ Calibration(BufferedImage image){
                 imgIcon.setImage(dimg);
                 redSearch = new RedSearch(image);
 
-
                 //BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
                 Graphics2D graphics = image.createGraphics();
                 graphics.drawImage(image, 0, 0, null);
-                ImageIcon imgIcon = new ImageIcon(image);
                 labelCalibration.setIcon(imgIcon);
                 frameCalibration.remove(labelCalibration);
                 frameCalibration.add(labelCalibration, BorderLayout.CENTER);
@@ -123,16 +125,8 @@ Calibration(BufferedImage image){
 
                 blackCalibrationChBox.setSelected(false);
             }
-            // Если нажали на калибровку белого фона:
-//                else if (whiteCalibrationChBox.isSelected()) {
-//                    //System.out.println("---!! image clicked at x = "+e.getX()+" y="+e.getY()+ " !!---");
-//                    RedSearch.backgroundFoundDiaposonColor(e.getX(), e.getY());
-//                    whiteCalibrationChBox.setSelected(false);
-//                }
         }
     });
-
-
 
     // Слушатель кнопки для закрытия окна после калибровки цветов:
     startButton.addActionListener(new ActionListener() {
