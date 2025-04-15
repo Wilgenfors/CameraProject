@@ -2,10 +2,7 @@ import com.github.sarxos.webcam.WebcamResolution;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -17,23 +14,23 @@ public class Calibration {
     static JCheckBox redCalibrationChBox = new JCheckBox("Red");
     static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
 
-Calibration(BufferedImage image){
+//Calibration(BufferedImage image){
+Calibration(BufferedImage myPicture){
+
+    // Буфф ер для изменения картинки в серый
+    //BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+    BufferedImage image = myPicture;
+    Graphics2D graphics = image.createGraphics();
+    graphics.drawImage(myPicture, 0, 0, null);
 
     labelCalibration = new MyLabel();  // Передаем объект камеры на специальную панель для вывода изображения с камеры
     frameCalibration = new JFrame("Calibration"); // Создаем главный фрейм
 
     ImageIcon imgIcon = new ImageIcon(image);
+
     labelCalibration.setIcon(imgIcon);
 
     frameCalibration.remove(labelCalibration);
-
-//    labelCalibration.setSize(640+16, 480+39+39);
-//
-    //labelCalibration.setSize(640+16+15, 480+39+40);
-
-    // Меняем размер фрейма и лейбла чтобы координаты совпадали с первым и вторым фреймом:
-//    frameCalibration.setSize(frameCalibration.getWidth()-105,frameCalibration.getHeight()-(115+36));
-//    labelCalibration.setSize(labelCalibration.getWidth()-105,labelCalibration.getHeight()-79);
 
 
     frameCalibration.setSize(656,519);
@@ -65,21 +62,63 @@ Calibration(BufferedImage image){
 
     // И заканчиваем настройку главного фрейма:
 
-
-
     frameCalibration.setResizable(true);
     frameCalibration.setVisible(true);
     frameCalibration.pack();
     redSearch = new RedSearch(image);
 
-//    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getWidth());
-//    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getHeight());
-//
-//    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
-//    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getHeight());
+    //frameCalibration.getWidth();
+
+    // Добавляем слушателя к первому чекбоксу
+    redCalibrationChBox.addItemListener(new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            //updateStatusLabel(checkBox1, checkBox2, statusLabel);
+            BufferedImage image = myPicture;
+            Graphics2D graphics = image.createGraphics();
+            graphics.drawImage(myPicture, 0, 0, null);
+            ImageIcon imgIcon = new ImageIcon(image);
+            labelCalibration.setIcon(imgIcon);
+            frameCalibration.remove(labelCalibration);
+
+            float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
+            int newWidth = (int) (image.getWidth() * dHeight);
+            Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+            imgIcon.setImage(dimg);
+
+            frameCalibration.remove(labelCalibration);
+            frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+
+           // redCalibrationChBox.setSelected(false);
+        }
+    });
+
+    // Добавляем слушателя ко второму чекбоксу
+    blackCalibrationChBox.addItemListener(new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            //updateStatusLabel(checkBox1, checkBox2, statusLabel);
+            BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+            Graphics2D graphics = image.createGraphics();
+            graphics.drawImage(myPicture, 0, 0, null);
+            ImageIcon imgIcon = new ImageIcon(image);
+            labelCalibration.setIcon(imgIcon);
+            frameCalibration.remove(labelCalibration);
+
+            float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
+            int newWidth1 = (int) (image.getWidth() * dHeight);
+            Image dimg = image.getScaledInstance(newWidth1, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+            imgIcon.setImage(dimg);
+
+            frameCalibration.remove(labelCalibration);
+            frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+
+            //blackCalibrationChBox.setSelected(false);
+        }
+    });
 
 
-    frameCalibration.getWidth();
+
     // Слушатель созданный для калибровки цветов через мышь:
     labelCalibration.addMouseListener(new MouseAdapter() {
         @Override
@@ -89,18 +128,24 @@ Calibration(BufferedImage image){
             // Если нажали на калибровку красной точки:
             if (redCalibrationChBox.isSelected()) {
 
+                // Буфф ер для изменения картинки в серый
+               // BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+
+                BufferedImage image = myPicture;
+                Graphics2D graphics = image.createGraphics();
+                graphics.drawImage(myPicture, 0, 0, null);
+                ImageIcon imgIcon = new ImageIcon(image);
+//                labelCalibration.setIcon(imgIcon);
+//                frameCalibration.remove(labelCalibration);
+
                 float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
                 int newWidth = (int) (image.getWidth() * dHeight);
                 Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
                 imgIcon.setImage(dimg);
-                //redSearch = new RedSearch(image);
 
-                //BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-                Graphics2D graphics = image.createGraphics();
-                graphics.drawImage(image, 0, 0, null);
-                labelCalibration.setIcon(imgIcon);
-                frameCalibration.remove(labelCalibration);
-                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+                //frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+//                frameCalibration.remove(labelCalibration);
+//                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
                 //redSearch = new RedSearch(image);
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
@@ -113,7 +158,7 @@ Calibration(BufferedImage image){
                 System.out.println("---!! circle clicked at g = " + g);
                 System.out.println("---!! circle clicked at b = " + b);
                 // Метод для передачи диапазона цвета нашей красной точки:
-                redSearch.passDiaposoneColorRedPoint(r, g, b);
+                RedSearch.passDiaposoneColorRedPoint(r, g, b);
 
                 redCalibrationChBox.setSelected(false);
             }
@@ -121,27 +166,25 @@ Calibration(BufferedImage image){
             else if (blackCalibrationChBox.isSelected()) {
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
 
+
                 // Буфф ер для изменения картинки в серый
-                //BufferedImage blackAndWhiteImg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-                BufferedImage blackAndWhiteImg = image;
+                BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+                Graphics2D graphics = image.createGraphics();
+                graphics.drawImage(myPicture, 0, 0, null);
+                ImageIcon imgIcon = new ImageIcon(image);
+//                labelCalibration.setIcon(imgIcon);
+//                frameCalibration.remove(labelCalibration);
 
                 float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
                 int newWidth = (int) (image.getWidth() * dHeight);
                 Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
                 imgIcon.setImage(dimg);
-                //redSearch = new RedSearch(image);
 
+                //frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+//                frameCalibration.remove(labelCalibration);
+//                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-                Graphics2D graphics = blackAndWhiteImg.createGraphics();
-                graphics.drawImage(blackAndWhiteImg, 0, 0, null);
-                //ImageIcon imgIcon = new ImageIcon(blackAndWhiteImg);
-                labelCalibration.setIcon(imgIcon);
-                frameCalibration.remove(labelCalibration);
-                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
-
-                redSearch = new RedSearch(blackAndWhiteImg);
-
-                int p = blackAndWhiteImg.getRGB(e.getX(), e.getY() / 2);
+                int p = image.getRGB(e.getX(), e.getY() / 2);
                 int r = (p >> 16) & 0xff; // get red
                 int g = (p >> 8) & 0xff; // get green
                 int b = p & 0xff; // get blue
@@ -150,7 +193,7 @@ Calibration(BufferedImage image){
                 System.out.println("---!! point clicked at g = " + g);
                 System.out.println("---!! point clicked at b = " + b);
                 // Метод для передачи диапазона цвета нашего черного круга:
-                redSearch.blackCirclePassDiaposoneColor(r, g, b);
+                RedSearch.blackCirclePassDiaposoneColor(r, g, b);
 
                 blackCalibrationChBox.setSelected(false);
             }
@@ -164,8 +207,7 @@ Calibration(BufferedImage image){
         }
     });
 
-
-
+    
 }
 
 }

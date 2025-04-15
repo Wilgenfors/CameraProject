@@ -9,13 +9,14 @@ import java.util.ArrayList;
 
 public class RedSearch {
 	// Поля для диапазона цветов красной точки и черных кругов:
-	 int redDiaposonePoint = 250;
-	 int greenDiaposonePoinPoint= 250;
-	 int blueDiaposonePoinPoint= 250;
+    static int redDiaposonePoint = 250;
+	 static int greenDiaposonePoinPoint= 250;
+	 static int blueDiaposonePoinPoint= 250;
 
-	 int circleRedDiaposone = 150;
-	 int circleGreenDiaposone = 150;
-	 int circleBlueDiaposone = 150;
+
+	 static int circleRedDiaposone = 150;
+	 static int circleGreenDiaposone = 150;
+	 static int circleBlueDiaposone = 150;
 
 	//private String path;
 	private static BufferedImage image;
@@ -24,24 +25,17 @@ public class RedSearch {
 		image = img;
 	}
 
-	public  void passDiaposoneColorRedPoint(int r, int g, int b) {
+	public static void passDiaposoneColorRedPoint(int r, int g, int b) {
 		redDiaposonePoint = r;
 		greenDiaposonePoinPoint = g;
 		blueDiaposonePoinPoint = b;
-		System.out.println("\n\nredDiaposonePoint "+redDiaposonePoint);
-		System.out.println("greenDiaposonePoinPoint "+greenDiaposonePoinPoint);
-		System.out.println("blueDiaposonePoinPoint "+blueDiaposonePoinPoint);
-
 
 	}
 
-	public  void blackCirclePassDiaposoneColor(int r, int g, int b) {
+	public static void blackCirclePassDiaposoneColor(int r, int g, int b) {
 		circleRedDiaposone = r;
 		circleGreenDiaposone = g;
 		circleBlueDiaposone = b;
-		System.out.println("\n\ncircleRedDiaposone "+circleRedDiaposone);
-		System.out.println("circleGreenDiaposone "+circleGreenDiaposone);
-		System.out.println("circleBlueDiaposone "+circleBlueDiaposone);
 	}
 
 
@@ -60,13 +54,11 @@ public class RedSearch {
 				int g = (p >> 8) & 0xff; // get green
 				int b = p & 0xff; // get blue
 
+				// красный цвет определяется на дефолтном изображении
 				if (r > redDiaposonePoint && g < greenDiaposonePoinPoint && b < blueDiaposonePoinPoint) {
 					//if (redDiaposonePoint > 250 && greenDiaposonePoinPoint < 250 && blueDiaposonePoinPoint < 250) {
-					//System.out.println("point been found");
 
-					System.out.println("\n\nT redDiaposonePoint "+redDiaposonePoint);
-					System.out.println("T greenDiaposonePoinPoint "+greenDiaposonePoinPoint);
-					System.out.println("T blueDiaposonePoinPoint "+blueDiaposonePoinPoint);
+
 
 
 					if (i >= xMax) xMax = i;
@@ -109,6 +101,8 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
+
+			// черный цвет определяется на монохромном изображении
 			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
 				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
 				//System.out.println("upperPoint circle been found");
@@ -122,6 +116,7 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
+			// черный цвет определяется на монохромном изображении
 			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
 				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
 				lowerPoint = new MyPoint(width / 2, j);
@@ -135,6 +130,7 @@ public class RedSearch {
 			int r = (p >> 16) & 0xff; // get red
 			int g = (p >> 8) & 0xff; // get green
 			int b = p & 0xff; // get blue
+			// черный цвет определяется на монохромном изображении
 			if (r < circleRedDiaposone && g < circleGreenDiaposone && b < circleBlueDiaposone) {
 				//if (circleRedDiaposone < 150 && circleGreenDiaposone < 150 && circleBlueDiaposone < 150) {
 				//System.out.println("leftPoint circle been found");

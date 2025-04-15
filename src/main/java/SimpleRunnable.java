@@ -34,7 +34,7 @@ public class SimpleRunnable implements Runnable {
 
     @Override
     public void run(){
-
+        System.out.println("thread started");
         // ока не остановили поток он будет обновлять картинку на втором фрейме
         while (Thread.currentThread().getState()==Thread.State.RUNNABLE && !stop ){
             colorImg_obj = webcam_obj.getImage();
@@ -58,6 +58,8 @@ public class SimpleRunnable implements Runnable {
                 e.printStackTrace();
             }
         }
+        System.out.println("thread finished");
+
     }
 
 

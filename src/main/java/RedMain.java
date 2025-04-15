@@ -64,11 +64,11 @@ public class RedMain {
 
 
 
-        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
-        System.out.println("secondFrame.getWidth() "+ secondFrame.getHeight());
-
-        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
-        System.out.println("imageLabel.getWidth() "+ imageLabel.getHeight());
+//        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
+//        System.out.println("secondFrame.getWidth() "+ secondFrame.getHeight());
+//
+//        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
+//        System.out.println("imageLabel.getWidth() "+ imageLabel.getHeight());
 
 
     }
@@ -188,7 +188,7 @@ public class RedMain {
         Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
         imgIcon.setImage(dimg);
 
-        // Находим где наша точка на мишени и прорисовываем по координатам на первом и втором фрейме:
+        // Находим, где наша точка на мишени и прорисовываем по координатам на первом и втором фрейме:
         RedSearch redSearch = new RedSearch(myPicture);
         Circle myPoint = redSearch.findRedPointsAsCircle(); // это наша красная точка
 
