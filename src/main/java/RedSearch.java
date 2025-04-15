@@ -57,7 +57,7 @@ public class RedSearch {
 				// красный цвет определяется на дефолтном изображении
 				if (r > redDiaposonePoint && g < greenDiaposonePoinPoint && b < blueDiaposonePoinPoint) {
 					//if (redDiaposonePoint > 250 && greenDiaposonePoinPoint < 250 && blueDiaposonePoinPoint < 250) {
-
+					System.out.println("image found at x = " + i + " y=" + j);
 
 
 

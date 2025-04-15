@@ -34,17 +34,19 @@ Calibration(BufferedImage _myPicture){
     frameCalibration.remove(labelCalibration);
 
 
-    frameCalibration.setSize(656,519);
-    labelCalibration.setSize(640,480);
+//    frameCalibration.setSize(656,519);
+//    labelCalibration.setSize(640,480);
+    frameCalibration.setSize(762,634);
+    labelCalibration.setSize(745,559);
 
     float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
     int newWidth = (int) (image.getWidth() * dHeight);
     Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
     imgIcon.setImage(dimg);
 
-    frameCalibration.add(labelCalibration, BorderLayout.CENTER);
+   // frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-    frameCalibration.remove(labelCalibration);
+   // frameCalibration.remove(labelCalibration);
     frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
     // create panelNORTH for North:
@@ -74,6 +76,31 @@ Calibration(BufferedImage _myPicture){
     System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
     System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
 
+
+
+    // Слушатель изменения размера лейбла:
+    labelCalibration.addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            //resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+            float dHeight = labelCalibration.getHeight() / (float) myPicture.getHeight();
+            int newWidth = (int) (myPicture.getWidth() * dHeight);
+            Image dimg = myPicture.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+            imgIcon.setImage(dimg);
+            //RedSearch redSearch = new RedSearch(myPicture);
+        }
+    });
+
+    // Слушатель который возращает размеры окна и лейбла
+    labelCalibration.addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            System.out.println("\n\nframeCalibration.getWidth() "+ frameCalibration.getWidth());
+            System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
+            System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
+            System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
+        }
+    });
 
     // Добавляем слушателя к первому чекбоксу
     redCalibrationChBox.addItemListener(new ItemListener() {
