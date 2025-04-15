@@ -10,15 +10,16 @@ public class Calibration {
     private static JFrame frameCalibration;
     static MyLabel labelCalibration;
     static RedSearch redSearch;
-
+    static BufferedImage myPicture;
     static JCheckBox redCalibrationChBox = new JCheckBox("Red");
     static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
 
 //Calibration(BufferedImage image){
-Calibration(BufferedImage myPicture){
+Calibration(BufferedImage _myPicture){
 
     // Буфф ер для изменения картинки в серый
     //BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+    myPicture = _myPicture;
     BufferedImage image = myPicture;
     Graphics2D graphics = image.createGraphics();
     graphics.drawImage(myPicture, 0, 0, null);
@@ -67,7 +68,12 @@ Calibration(BufferedImage myPicture){
     frameCalibration.pack();
     redSearch = new RedSearch(image);
 
-    //frameCalibration.getWidth();
+    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getWidth());
+    System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
+
+    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
+    System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
+
 
     // Добавляем слушателя к первому чекбоксу
     redCalibrationChBox.addItemListener(new ItemListener() {
@@ -89,7 +95,8 @@ Calibration(BufferedImage myPicture){
             frameCalibration.remove(labelCalibration);
             frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-           // redCalibrationChBox.setSelected(false);
+            //blackCalibrationChBox.setSelected(false);
+            //redCalibrationChBox.setSelected(true);
         }
     });
 
@@ -113,7 +120,6 @@ Calibration(BufferedImage myPicture){
             frameCalibration.remove(labelCalibration);
             frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-            //blackCalibrationChBox.setSelected(false);
         }
     });
 
@@ -203,11 +209,13 @@ Calibration(BufferedImage myPicture){
     // Слушатель кнопки для закрытия окна после калибровки цветов:
     startButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+            myPicture = Main.newPicher();
             frameCalibration.dispose(); // или frame.setVisible(false);
+
         }
     });
 
-    
+
 }
 
 }

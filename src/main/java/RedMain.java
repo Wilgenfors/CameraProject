@@ -64,11 +64,11 @@ public class RedMain {
 
 
 
-//        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
-//        System.out.println("secondFrame.getWidth() "+ secondFrame.getHeight());
-//
-//        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
-//        System.out.println("imageLabel.getWidth() "+ imageLabel.getHeight());
+        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
+        System.out.println("secondFrame.getHeight() "+ secondFrame.getHeight());
+
+        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
+        System.out.println("imageLabel.getHeight() "+ imageLabel.getHeight());
 
 
     }

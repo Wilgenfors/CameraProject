@@ -242,6 +242,10 @@ public class Main {
        return pointList;
     }
 
-
+// метод возращающий новое изображение от видео потока:
+static BufferedImage newPicher(){
+    //BufferedImage image  = webcam.getImage();
+    return webcam.getImage();
+}
 
 }
