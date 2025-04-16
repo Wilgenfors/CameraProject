@@ -59,8 +59,6 @@ public class RedSearch {
 					//if (redDiaposonePoint > 250 && greenDiaposonePoinPoint < 250 && blueDiaposonePoinPoint < 250) {
 					System.out.println("image found at x = " + i + " y=" + j);
 
-
-
 					if (i >= xMax) xMax = i;
 					if (i <= xMin) xMin = i;
 					if (j >= yMax) yMax = j;
@@ -241,37 +239,53 @@ public class RedSearch {
 	 */
 	private MyPoint[] searchCircleFromCenter(Circle circle, int k) {
 		MyPoint[] blackPoints = new MyPoint[3];
+
+		int width = image.getWidth();
+		int height = image.getHeight();
 		//идем в цикле от центра круга вверх
 		for (int j = circle.getY()-k; j > circle.getY()-k - circle.getRadius(); j--) {
-			int p = image.getRGB(circle.getX(), j);
-			int r = (p >> 16) & 0xff; // get red
-			int g = (p >> 8) & 0xff; // get green
-			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
-				blackPoints[0] = new MyPoint(circle.getX(), j); //upper point
-				break;
+
+			// Проверяем, чтобы пиксель не выходил за пределы изображения:
+			if (circle.getX() >= 0 && circle.getX() < width && j >= 0 && j < height) {
+				//int rgb = image.getRGB(circle.getX(), j);
+				// обработка пикселя
+
+				int p = image.getRGB(circle.getX(), j);
+				int r = (p >> 16) & 0xff; // get red
+				int g = (p >> 8) & 0xff; // get green
+				int b = p & 0xff; // get blue
+				if (r < 150 && g < 150 && b < 150) {
+					blackPoints[0] = new MyPoint(circle.getX(), j); //upper point
+					break;
+				}
 			}
 		}
 		//идем в цикле от центра круга вниз
 		for (int j = circle.getY()+k; j < circle.getY()+k + circle.getRadius(); j++) {
-			int p = image.getRGB(circle.getX(), j);
-			int r = (p >> 16) & 0xff; // get red
-			int g = (p >> 8) & 0xff; // get green
-			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
-				blackPoints[1] = new MyPoint(circle.getX(), j); //lower point
-				break;
+			// Проверяем, чтобы пиксель не выходил за пределы изображения:
+			if (circle.getX() >= 0 && circle.getX() < width && j >= 0 && j < height) {
+				int p = image.getRGB(circle.getX(), j);
+				int r = (p >> 16) & 0xff; // get red
+				int g = (p >> 8) & 0xff; // get green
+				int b = p & 0xff; // get blue
+				if (r < 150 && g < 150 && b < 150) {
+					blackPoints[1] = new MyPoint(circle.getX(), j); //lower point
+					break;
+				}
 			}
 		}
 		//идем в цикле от центра круга вправо
 		for (int i = circle.getX()+k; i < circle.getX()+k + circle.getRadius(); i++) {
-			int p = image.getRGB(i, circle.getY());
-			int r = (p >> 16) & 0xff; // get red
-			int g = (p >> 8) & 0xff; // get green
-			int b = p & 0xff; // get blue
-			if (r < 150 && g < 150 && b < 150) {
-				blackPoints[2] = new MyPoint(i, circle.getY()); //right point
-				break;
+			// Проверяем, чтобы пиксель не выходил за пределы изображения:
+			if (i >= 0 && i < width && circle.getY() >= 0 && circle.getY() < height) {
+				int p = image.getRGB(i, circle.getY());
+				int r = (p >> 16) & 0xff; // get red
+				int g = (p >> 8) & 0xff; // get green
+				int b = p & 0xff; // get blue
+				if (r < 150 && g < 150 && b < 150) {
+					blackPoints[2] = new MyPoint(i, circle.getY()); //right point
+					break;
+				}
 			}
 		}
 		return blackPoints;

@@ -59,16 +59,31 @@ public class RedMain {
             @Override
             public void windowClosing(WindowEvent e) {
                 SimpleRunnable.stopped();
+
+                RedSearch.blueDiaposonePoinPoint = 250;
+                RedSearch.redDiaposonePoint = 250;
+                RedSearch.greenDiaposonePoinPoint = 250;
+
+                RedSearch.circleRedDiaposone = 150;
+                RedSearch.circleBlueDiaposone = 150;
+                RedSearch.circleGreenDiaposone = 150;
             }
         });
 
+//        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
+//        System.out.println("secondFrame.getHeight() "+ secondFrame.getHeight());
+//
+//        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
+//        System.out.println("imageLabel.getHeight() "+ imageLabel.getHeight());
 
-
-        System.out.println("secondFrame.getWidth() "+ secondFrame.getWidth());
-        System.out.println("secondFrame.getHeight() "+ secondFrame.getHeight());
-
-        System.out.println("imageLabel.getWidth() "+ imageLabel.getWidth());
-        System.out.println("imageLabel.getHeight() "+ imageLabel.getHeight());
+        // Слушатель созданный для калибровки цветов через мышь:
+        imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                    System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
+            }
+        });
 
 
     }

@@ -6,6 +6,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+//import static jdk.nio.zipfs.ZipFileAttributeView.AttrID.group;
+
 public class Calibration {
     private static JFrame frameCalibration;
     static MyLabel labelCalibration;
@@ -13,6 +15,10 @@ public class Calibration {
     static BufferedImage myPicture;
     static JCheckBox redCalibrationChBox = new JCheckBox("Red");
     static JCheckBox blackCalibrationChBox = new JCheckBox("Black");
+
+    ButtonGroup radioGroup = new ButtonGroup();
+    JRadioButton redButton = new JRadioButton("Red", true);
+    JRadioButton blackButton = new JRadioButton("Black", false);
 
 //Calibration(BufferedImage image){
 Calibration(BufferedImage _myPicture){
@@ -53,8 +59,15 @@ Calibration(BufferedImage _myPicture){
     JPanel panelNORTH = new JPanel();
 
     // add JCheckBox for detected:
-    panelNORTH.add(redCalibrationChBox);
-    panelNORTH.add(blackCalibrationChBox);
+    //panelNORTH.add(redCalibrationChBox);
+    //panelNORTH.add(blackCalibrationChBox);
+
+    // add ragioButton:
+    radioGroup.add(redButton);
+    radioGroup.add(blackButton);
+
+    panelNORTH.add(redButton);
+    panelNORTH.add(blackButton);
 
     // add startButton for detected black circle and red point:
     JButton startButton = new JButton("Complete calibration");
@@ -70,11 +83,11 @@ Calibration(BufferedImage _myPicture){
     frameCalibration.pack();
     redSearch = new RedSearch(image);
 
-    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getWidth());
-    System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
-
-    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
-    System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
+//    System.out.println("frameCalibration.getWidth() "+ frameCalibration.getWidth());
+//    System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
+//
+//    System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
+//    System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
 
 
 
@@ -91,19 +104,19 @@ Calibration(BufferedImage _myPicture){
         }
     });
 
-    // Слушатель который возращает размеры окна и лейбла
-    labelCalibration.addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-            System.out.println("\n\nframeCalibration.getWidth() "+ frameCalibration.getWidth());
-            System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
-            System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
-            System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
-        }
-    });
+//    // Слушатель который возращает размеры окна и лейбла
+//    labelCalibration.addComponentListener(new ComponentAdapter() {
+//        @Override
+//        public void componentResized(ComponentEvent e) {
+//            System.out.println("\n\nframeCalibration.getWidth() "+ frameCalibration.getWidth());
+//            System.out.println("frameCalibration.getHeight() "+ frameCalibration.getHeight());
+//            System.out.println("labelCalibration.getWidth() "+ labelCalibration.getWidth());
+//            System.out.println("labelCalibration.getHeight() "+ labelCalibration.getHeight());
+//        }
+//    });
 
     // Добавляем слушателя к первому чекбоксу
-    redCalibrationChBox.addItemListener(new ItemListener() {
+    redButton.addItemListener(new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent e) {
             //updateStatusLabel(checkBox1, checkBox2, statusLabel);
@@ -128,7 +141,7 @@ Calibration(BufferedImage _myPicture){
     });
 
     // Добавляем слушателя ко второму чекбоксу
-    blackCalibrationChBox.addItemListener(new ItemListener() {
+    blackButton.addItemListener(new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent e) {
             //updateStatusLabel(checkBox1, checkBox2, statusLabel);
@@ -159,7 +172,7 @@ Calibration(BufferedImage _myPicture){
             super.mouseReleased(e);
 
             // Если нажали на калибровку красной точки:
-            if (redCalibrationChBox.isSelected()) {
+            if (redButton.isSelected()) {
 
                 // Буфф ер для изменения картинки в серый
                // BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
@@ -182,7 +195,9 @@ Calibration(BufferedImage _myPicture){
 
                 //redSearch = new RedSearch(image);
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
-                int p = image.getRGB(e.getX(), e.getY() / 2);
+                int p = image.getRGB(e.getX(), e.getY());
+                //int p = myPicture.getRGB(e.getX(), e.getY());
+
                 int r = (p >> 16) & 0xff; // get red
                 int g = (p >> 8) & 0xff; // get green
                 int b = p & 0xff; // get blue
@@ -190,13 +205,67 @@ Calibration(BufferedImage _myPicture){
                 System.out.println("---!! circle clicked at r = " + r);
                 System.out.println("---!! circle clicked at g = " + g);
                 System.out.println("---!! circle clicked at b = " + b);
-                // Метод для передачи диапазона цвета нашей красной точки:
-                RedSearch.passDiaposoneColorRedPoint(r, g, b);
 
-                redCalibrationChBox.setSelected(false);
+                // Проверяем, что координаты в пределах изображения
+                System.out.println("-image.getWidth() = " + image.getWidth());
+                System.out.println("-image.getHeight() = " + image.getHeight());
+
+
+                //todo нужно переопределить метод клика по изображения чтобы мы не выходили за границы изображения:
+                // Если изображение масштабируется в JLabel
+                double scaleX = (double)labelCalibration.getWidth() / image.getWidth();
+                double scaleY = (double)labelCalibration.getHeight() / image.getHeight();
+
+                int imgX = (int)(630 / scaleX);
+                int imgY = (int)(450 / scaleY);
+
+// Проверяем границы
+                if (imgX >= 0 && imgX < image.getWidth() && imgY >= 0 && imgY < image.getHeight()) {
+                    // Сравнение с фоновым цветом:
+                    int pBG = image.getRGB(630, 450);
+                    //int p = myPicture.getRGB(e.getX(), e.getY());
+                    int rBG = (pBG >> 16) & 0xff; // get red
+                    int gBG = (pBG >> 8) & 0xff; // get green
+                    int bBG = pBG & 0xff; // get blue
+
+                    System.out.println("(rBG = " + rBG);
+                    System.out.println("(r = " + r);
+                    System.out.println("(gBG = " + gBG);
+
+                    System.out.println("\n(g = " + g);
+                    System.out.println("(bBG = " + bBG);
+                    System.out.println("(b = " + b);
+
+                    if ((r - rBG) > 20 && (g - gBG) > 20 && (b - bBG) > 20) {
+                        JDialog dialog = new JDialog(frameCalibration, "Уведомление", true); // true - модальное
+                        dialog.setSize(300, 200);
+                        dialog.setLayout(new FlowLayout());
+
+                        // Добавляем компоненты
+                        dialog.add(new JLabel("Диапазон цвета красной точки успешно передан!"));
+                        JButton closeButton = new JButton("Закрыть");
+                        closeButton.addActionListener(ev -> dialog.dispose());
+                        dialog.add(closeButton);
+
+                        // Центрируем относительно родительского окна
+                        dialog.setLocationRelativeTo(frameCalibration);
+                        dialog.setVisible(true);
+
+                        System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
+                        redButton.setSelected(false);
+                        blackButton.setSelected(true);
+                        // Метод для передачи диапазона цвета нашей красной точки:
+                        RedSearch.passDiaposoneColorRedPoint(r, g, b);
+
+                    }
+                }
+
+
+
+                //redCalibrationChBox.setSelected(false);
             }
             // Если нажали на калибровку черного круга:
-            else if (blackCalibrationChBox.isSelected()) {
+            else if (blackButton.isSelected()) {
                 System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
 
 
@@ -217,7 +286,8 @@ Calibration(BufferedImage _myPicture){
 //                frameCalibration.remove(labelCalibration);
 //                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-                int p = image.getRGB(e.getX(), e.getY() / 2);
+                int p = image.getRGB(e.getX(), e.getY());
+
                 int r = (p >> 16) & 0xff; // get red
                 int g = (p >> 8) & 0xff; // get green
                 int b = p & 0xff; // get blue
@@ -225,10 +295,62 @@ Calibration(BufferedImage _myPicture){
                 System.out.println("---!! point clicked at r = " + r);
                 System.out.println("---!! point clicked at g = " + g);
                 System.out.println("---!! point clicked at b = " + b);
-                // Метод для передачи диапазона цвета нашего черного круга:
-                RedSearch.blackCirclePassDiaposoneColor(r, g, b);
 
-                blackCalibrationChBox.setSelected(false);
+                // Сравнение с фоновым цветом:
+                //todo нужно переопределить метод клика по изображения чтобы мы не выходили за границы изображения:
+                // Если изображение масштабируется в JLabel
+                double scaleX = (double)labelCalibration.getWidth() / image.getWidth();
+                double scaleY = (double)labelCalibration.getHeight() / image.getHeight();
+
+                int imgX = (int)(630 / scaleX);
+                int imgY = (int)(450 / scaleY);
+
+// Проверяем границы
+                if (imgX >= 0 && imgX < image.getWidth() && imgY >= 0 && imgY < image.getHeight()) {
+
+                    // остальная обработка
+                    int pBG = image.getRGB(630, 450);
+                    //int p = myPicture.getRGB(e.getX(), e.getY());
+                    int rBG = (pBG >> 16) & 0xff; // get red
+                    int gBG = (pBG >> 8) & 0xff; // get green
+                    int bBG = pBG & 0xff; // get blue
+
+//                System.out.println("(rBG = "+rBG);
+//                System.out.println("(r = "+r);
+//                System.out.println("(gBG = "+gBG);
+//
+//                System.out.println("\n(g = "+g);
+//                System.out.println("(bBG = "+bBG);
+//                System.out.println("(b = "+b);
+
+                    if ( (rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40){
+
+                        JDialog dialog = new JDialog(frameCalibration, "Уведомление", true); // true - модальное
+                        dialog.setSize(300, 200);
+                        dialog.setLayout(new FlowLayout());
+
+                        // Добавляем компоненты
+                        dialog.add(new JLabel("Диапазон цвета черного круга успешно передан!"));
+                        JButton closeButton = new JButton("Закрыть");
+                        closeButton.addActionListener(ev -> dialog.dispose());
+                        dialog.add(closeButton);
+
+                        // Центрируем относительно родительского окна
+                        dialog.setLocationRelativeTo(frameCalibration);
+                        dialog.setVisible(true);
+
+                        System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
+                        redButton.setSelected(true);
+                        blackButton.setSelected(false);
+                        // Метод для передачи диапазона цвета нашего черного круга:
+                        RedSearch.blackCirclePassDiaposoneColor(r, g, b);
+                    }
+                }
+
+
+
+
+               // blackCalibrationChBox.setSelected(false);
             }
         }
     });
@@ -243,6 +365,11 @@ Calibration(BufferedImage _myPicture){
     });
 
 
+
+
+
 }
+
+
 
 }
