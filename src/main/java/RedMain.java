@@ -81,7 +81,7 @@ public class RedMain {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                    System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
+                  //  System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
             }
         });
 

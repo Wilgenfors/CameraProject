@@ -126,6 +126,8 @@ public class Main {
         // Слушатель кнопки для открытия фрейма калибровки и создание объекта:
         calibrationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                SimpleRunnable.stopped();
+
                 BufferedImage image  = webcam.getImage();
                 Calibration calibration = new Calibration(image);
                 //RedMain redmainOfCalibration = new RedMain();

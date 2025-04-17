@@ -39,11 +39,11 @@ Calibration(BufferedImage _myPicture){
 
     frameCalibration.remove(labelCalibration);
 
+    // Получаем размеры image и устанавливаем их как размеры лейбла:
+    labelCalibration.setSize(image.getWidth(),image.getHeight());
 
-//    frameCalibration.setSize(656,519);
-//    labelCalibration.setSize(640,480);
     frameCalibration.setSize(762,634);
-    labelCalibration.setSize(745,559);
+//    labelCalibration.setSize(745,559);
 
     float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
     int newWidth = (int) (image.getWidth() * dHeight);
@@ -194,7 +194,7 @@ Calibration(BufferedImage _myPicture){
 //                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
                 //redSearch = new RedSearch(image);
-                System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
+                //System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
                 int p = image.getRGB(e.getX(), e.getY());
                 //int p = myPicture.getRGB(e.getX(), e.getY());
 
@@ -202,17 +202,14 @@ Calibration(BufferedImage _myPicture){
                 int g = (p >> 8) & 0xff; // get green
                 int b = p & 0xff; // get blue
 
-                System.out.println("---!! circle clicked at r = " + r);
-                System.out.println("---!! circle clicked at g = " + g);
-                System.out.println("---!! circle clicked at b = " + b);
+//                System.out.println("---!! circle clicked at r = " + r);
+//                System.out.println("---!! circle clicked at g = " + g);
+//                System.out.println("---!! circle clicked at b = " + b);
 
                 // Проверяем, что координаты в пределах изображения
-                System.out.println("-image.getWidth() = " + image.getWidth());
-                System.out.println("-image.getHeight() = " + image.getHeight());
+//                System.out.println("-image.getWidth() = " + image.getWidth());
+//                System.out.println("-image.getHeight() = " + image.getHeight());
 
-
-                //todo нужно переопределить метод клика по изображения чтобы мы не выходили за границы изображения:
-                // Если изображение масштабируется в JLabel
                 double scaleX = (double)labelCalibration.getWidth() / image.getWidth();
                 double scaleY = (double)labelCalibration.getHeight() / image.getHeight();
 
@@ -222,27 +219,28 @@ Calibration(BufferedImage _myPicture){
 // Проверяем границы
                 if (imgX >= 0 && imgX < image.getWidth() && imgY >= 0 && imgY < image.getHeight()) {
                     // Сравнение с фоновым цветом:
-                    int pBG = image.getRGB(630, 450);
+                    int pBG = image.getRGB(520, 390);
                     //int p = myPicture.getRGB(e.getX(), e.getY());
                     int rBG = (pBG >> 16) & 0xff; // get red
                     int gBG = (pBG >> 8) & 0xff; // get green
                     int bBG = pBG & 0xff; // get blue
 
-                    System.out.println("(rBG = " + rBG);
-                    System.out.println("(r = " + r);
-                    System.out.println("(gBG = " + gBG);
-
-                    System.out.println("\n(g = " + g);
-                    System.out.println("(bBG = " + bBG);
-                    System.out.println("(b = " + b);
+//                    System.out.println("(rBG = " + rBG);
+//                    System.out.println("(r = " + r);
+//                    System.out.println("(gBG = " + gBG);
+//
+//                    System.out.println("\n(g = " + g);
+//                    System.out.println("(bBG = " + bBG);
+//                    System.out.println("(b = " + b);
 
                     if ((r - rBG) > 20 && (g - gBG) > 20 && (b - bBG) > 20) {
                         JDialog dialog = new JDialog(frameCalibration, "Уведомление", true); // true - модальное
-                        dialog.setSize(300, 200);
+                        dialog.setSize(320, 250);
                         dialog.setLayout(new FlowLayout());
 
                         // Добавляем компоненты
                         dialog.add(new JLabel("Диапазон цвета красной точки успешно передан!"));
+                        dialog.add(new JTextArea("Красная точка:\nR = "+r+"\nG = "+g+"\nB = "+b+"\n\nФон:\nR = "+rBG+"\nG = "+gBG+"\nB = "+bBG));
                         JButton closeButton = new JButton("Закрыть");
                         closeButton.addActionListener(ev -> dialog.dispose());
                         dialog.add(closeButton);
@@ -251,7 +249,7 @@ Calibration(BufferedImage _myPicture){
                         dialog.setLocationRelativeTo(frameCalibration);
                         dialog.setVisible(true);
 
-                        System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
+                       // System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
                         redButton.setSelected(false);
                         blackButton.setSelected(true);
                         // Метод для передачи диапазона цвета нашей красной точки:
@@ -266,50 +264,48 @@ Calibration(BufferedImage _myPicture){
             }
             // Если нажали на калибровку черного круга:
             else if (blackButton.isSelected()) {
-                System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
+               // System.out.println("---!! image clicked at x = " + e.getX() + " y=" + e.getY() + " !!---");
 
 
                 // Буфф ер для изменения картинки в серый
-                BufferedImage image = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-                Graphics2D graphics = image.createGraphics();
+                BufferedImage image2 = new BufferedImage(myPicture.getWidth(), myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+                Graphics2D graphics = image2.createGraphics();
                 graphics.drawImage(myPicture, 0, 0, null);
-                ImageIcon imgIcon = new ImageIcon(image);
+                ImageIcon imgIcon = new ImageIcon(image2);
 //                labelCalibration.setIcon(imgIcon);
 //                frameCalibration.remove(labelCalibration);
 
-                float dHeight = labelCalibration.getHeight() / (float) image.getHeight();
-                int newWidth = (int) (image.getWidth() * dHeight);
-                Image dimg = image.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
+                float dHeight = labelCalibration.getHeight() / (float) image2.getHeight();
+                int newWidth = (int) (image2.getWidth() * dHeight);
+                Image dimg = image2.getScaledInstance(newWidth, labelCalibration.getHeight(), Image.SCALE_SMOOTH);
                 imgIcon.setImage(dimg);
 
                 //frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 //                frameCalibration.remove(labelCalibration);
 //                frameCalibration.add(labelCalibration, BorderLayout.CENTER);
 
-                int p = image.getRGB(e.getX(), e.getY());
+                int p = image2.getRGB(e.getX(), e.getY());
 
                 int r = (p >> 16) & 0xff; // get red
                 int g = (p >> 8) & 0xff; // get green
                 int b = p & 0xff; // get blue
 
-                System.out.println("---!! point clicked at r = " + r);
-                System.out.println("---!! point clicked at g = " + g);
-                System.out.println("---!! point clicked at b = " + b);
+//                System.out.println("---!! point clicked at r = " + r);
+//                System.out.println("---!! point clicked at g = " + g);
+//                System.out.println("---!! point clicked at b = " + b);
 
                 // Сравнение с фоновым цветом:
-                //todo нужно переопределить метод клика по изображения чтобы мы не выходили за границы изображения:
-                // Если изображение масштабируется в JLabel
-                double scaleX = (double)labelCalibration.getWidth() / image.getWidth();
-                double scaleY = (double)labelCalibration.getHeight() / image.getHeight();
+                double scaleX = (double)labelCalibration.getWidth() / image2.getWidth();
+                double scaleY = (double)labelCalibration.getHeight() / image2.getHeight();
 
                 int imgX = (int)(630 / scaleX);
                 int imgY = (int)(450 / scaleY);
 
 // Проверяем границы
-                if (imgX >= 0 && imgX < image.getWidth() && imgY >= 0 && imgY < image.getHeight()) {
+                if (imgX >= 0 && imgX < image2.getWidth() && imgY >= 0 && imgY < image2.getHeight()) {
 
                     // остальная обработка
-                    int pBG = image.getRGB(630, 450);
+                    int pBG = image2.getRGB(520, 390);
                     //int p = myPicture.getRGB(e.getX(), e.getY());
                     int rBG = (pBG >> 16) & 0xff; // get red
                     int gBG = (pBG >> 8) & 0xff; // get green
@@ -326,11 +322,12 @@ Calibration(BufferedImage _myPicture){
                     if ( (rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40){
 
                         JDialog dialog = new JDialog(frameCalibration, "Уведомление", true); // true - модальное
-                        dialog.setSize(300, 200);
+                        dialog.setSize(320, 250);
                         dialog.setLayout(new FlowLayout());
 
                         // Добавляем компоненты
                         dialog.add(new JLabel("Диапазон цвета черного круга успешно передан!"));
+                        dialog.add(new JTextArea("Черный круг:\nR = "+r+"\nG = "+g+"\nB = "+b+"\n\nФон:\nR = "+rBG+"\nG = "+gBG+"\nB = "+bBG));
                         JButton closeButton = new JButton("Закрыть");
                         closeButton.addActionListener(ev -> dialog.dispose());
                         dialog.add(closeButton);
@@ -339,7 +336,7 @@ Calibration(BufferedImage _myPicture){
                         dialog.setLocationRelativeTo(frameCalibration);
                         dialog.setVisible(true);
 
-                        System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
+                    //    System.out.println("(rBG - r ) > 40 && (gBG - g ) > 40 && (bBG - b ) > 40)");
                         redButton.setSelected(true);
                         blackButton.setSelected(false);
                         // Метод для передачи диапазона цвета нашего черного круга:
