@@ -18,8 +18,8 @@ public class Calibration {
 
     ButtonGroup radioGroup = new ButtonGroup();
     JRadioButton redButton = new JRadioButton("Red", true);
-    //Устанавливаем стилистику и размер шрифта:
-    redButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+
     JRadioButton blackButton = new JRadioButton("Black", false);
 
 //Calibration(BufferedImage image){
@@ -63,7 +63,9 @@ Calibration(BufferedImage _myPicture){
     // add JCheckBox for detected:
     //panelNORTH.add(redCalibrationChBox);
     //panelNORTH.add(blackCalibrationChBox);
-
+//Устанавливаем стилистику и размер шрифта:
+    redButton.setFont(new Font("Arial", Font.BOLD, 16));
+    blackButton.setFont(new Font("Arial", Font.BOLD, 16));
     // add ragioButton:
     radioGroup.add(redButton);
     radioGroup.add(blackButton);
