@@ -48,31 +48,52 @@ public class Main {
         // create panelNORTH for North:
         JPanel panelNORTH = new JPanel();
 
+
         // add label before startButton:
         JLabel labelPlayerCount = new JLabel("Введите кол-во игроков: ");
+        //Устанавливаем стилистику и размер шрифта:
+        labelPlayerCount.setFont(new Font("Введите кол-во игроков: ",Font.BOLD,14));
         panelNORTH.add(labelPlayerCount);
 
         // add for input PlayerCount:
         inputPlayerCount = new JTextField("2",5);
+        //Устанавливаем стилистику и размер шрифта:
+        inputPlayerCount.setFont(new Font("2",Font.BOLD,14));
         panelNORTH.add(inputPlayerCount);
 
         // add label before startButton:
         JLabel labelCountShot = new JLabel("Введите кол-во выстрелов: ");
+        //Устанавливаем стилистику и размер шрифта:
+        labelCountShot.setFont(new Font("Введите кол-во выстрелов: ",Font.BOLD,14));
         panelNORTH.add(labelCountShot);
 
         // add for input PlayerCount:
         inputCountShot = new JTextField("2",5);
+        //Устанавливаем стилистику и размер шрифта:
+        inputCountShot.setFont(new Font("2",Font.BOLD,14));
         panelNORTH.add(inputCountShot);
 
         // add startButton for detected black circle and red point:
         JButton startButton = new JButton("Red detected");
+        //Устанавливаем стилистику и размер шрифта:
+        startButton.setFont(new Font("Red detected",Font.BOLD,14));
         panelNORTH.add(startButton);
+
+
+        // add calibrationButton for calibration diapason colors black circle and red point:
+        JButton calibrationButton = new JButton("Calibration of colors");
+        //Устанавливаем стилистику и размер шрифта:
+        calibrationButton.setFont(new Font("Calibration of colors",Font.BOLD,14));
+        panelNORTH.add(calibrationButton);
+
 
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
 
         // add stopButton for stopped Runnable:
         JButton stopButton = new JButton("Stopped detected");
+        //Устанавливаем стилистику и размер шрифта:
+        stopButton.setFont(new Font("Stopped detected",Font.BOLD,14));
         mainFrame.add(stopButton, BorderLayout.SOUTH);
 
         // Создаем текстовое поле для вывода информации об выстрелах игроков
@@ -112,6 +133,21 @@ public class Main {
                 catch(NumberFormatException ex){
                     ex.getMessage();
                 }
+            }
+        });
+
+
+        // Слушатель кнопки для открытия фрейма калибровки и создание объекта:
+        calibrationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SimpleRunnable.stopped();
+
+                BufferedImage image  = webcam.getImage();
+                Calibration calibration = new Calibration(image);
+                //RedMain redmainOfCalibration = new RedMain();
+                // redmainOfCalibration.calibration(image);
+
+
             }
         });
 
@@ -217,5 +253,7 @@ public class Main {
     }
 
 
-
+    public static BufferedImage newPicher() {
+        return webcam.getImage();
+    }
 }
