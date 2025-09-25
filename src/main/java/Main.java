@@ -3,10 +3,12 @@ import com.github.sarxos.webcam.WebcamResolution;
 //import jdk.internal.icu.text.UnicodeSet;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class Main {
     static boolean printAllHits = false; // переменная для вывода всех попаданий после конца игры
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, FontFormatException{
         // проверять кол-во камее, и если 1, то брать дефолтную, иначе вторую
         var cams = Webcam.getWebcams();
 
@@ -42,8 +44,26 @@ public class Main {
         panelWebcam.setImageSizeDisplayed(true);  // Делаем веб-панель видимой
 
         mainFrame = new JFrame("Webcam"); // Создаем главный фрейм
+
         mainFrame.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
         mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
+        //Обозначаем границы Фрейма:
+        // 1) Установить через гредл тему фрейма
+        // 2) написать код шрифта для фонта и возможно ещё установить путь к папке
+        // 3) Добавить OI и срай  катч
+
+
+        // Код, который нужно изменить:
+        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/ds_digital/DS-DIGIB.TTF")); //шрифт
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
+        genv.registerFont(font); //регистрируем шрифт
+        font = font.deriveFont(82f); //задаем ему размер
+        // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
+        // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
+        //timeLabel.setFont(font); //устанавливаем для лейбла шрифт
+        //timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5)); // задаем синюю границу
+
+        //mainFrame.setBorder(new LineBorder(Color.BLUE, 2));
 
         // create panelNORTH for North:
         JPanel panelNORTH = new JPanel();
@@ -60,6 +80,7 @@ public class Main {
         //Устанавливаем стилистику и размер шрифта:
         inputPlayerCount.setFont(new Font("2",Font.BOLD,14));
         panelNORTH.add(inputPlayerCount);
+
 
         // add label before startButton:
         JLabel labelCountShot = new JLabel("Введите кол-во выстрелов: ");
@@ -111,6 +132,8 @@ public class Main {
         // открываем видео поток для камеры
         webcam.open();
 
+
+
         // Слушатель кнопки для начала потока (распознавания красных точек):
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -158,6 +181,8 @@ public class Main {
                 SimpleRunnable.stopped();
             }
         });
+
+
     }
 
 

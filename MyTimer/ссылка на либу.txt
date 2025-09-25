@@ -1,0 +1,1 @@
+implementation 'com.formdev:flatlaf:3.6.1'
