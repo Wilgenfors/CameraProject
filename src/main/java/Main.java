@@ -37,6 +37,17 @@ public class Main {
             webcam = cams.get(1);
         }
 
+        //в блоке try...catch вызываем метод для установки нужного стиля оформления окна
+        try {
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                 | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+
 
         webcam.setViewSize(WebcamResolution.VGA.getSize());// Настраиваем разрешение для камеры
 
@@ -54,10 +65,13 @@ public class Main {
 
 
         // Код, который нужно изменить:
-        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/ds_digital/DS-DIGIB.TTF")); //шрифт
-        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
-        genv.registerFont(font); //регистрируем шрифт
-        font = font.deriveFont(82f); //задаем ему размер
+//        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/ds_digital/DS-DIGIB.TTF")); //шрифт
+//        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
+//        genv.registerFont(font); //регистрируем шрифт
+//        font = font.deriveFont(82f); //задаем ему размер
+//
+
+
         // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
         // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
         //timeLabel.setFont(font); //устанавливаем для лейбла шрифт

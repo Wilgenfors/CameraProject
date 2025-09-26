@@ -13,6 +13,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'com.github.sarxos:webcam-capture:0.3.12'
+    implementation 'com.formdev:flatlaf:3.6.1'
 }
 
 test {
