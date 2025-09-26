@@ -57,7 +57,7 @@ public class Main {
         mainFrame = new JFrame("Webcam"); // Создаем главный фрейм
 
         mainFrame.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
-        mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
+//        mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
         //Обозначаем границы Фрейма:
         // 1) Установить через гредл тему фрейма
         // 2) написать код шрифта для фонта и возможно ещё установить путь к папке
@@ -65,19 +65,15 @@ public class Main {
 
 
         // Код, который нужно изменить:
-//        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/ds_digital/DS-DIGIB.TTF")); //шрифт
-//        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
-//        genv.registerFont(font); //регистрируем шрифт
-//        font = font.deriveFont(82f); //задаем ему размер
-//
+        // Я изменил путь, что бы был виден читаемый файл
+        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/CameraProject/ds_digital/DS-DIGIB.TTF")); //шрифт
+        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
+        genv.registerFont(font); //регистрируем шрифт
+        font = font.deriveFont(20f); //задаем ему размер
 
 
-        // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
-        // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
-        //timeLabel.setFont(font); //устанавливаем для лейбла шрифт
-        //timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5)); // задаем синюю границу
 
-        //mainFrame.setBorder(new LineBorder(Color.BLUE, 2));
+
 
         // create panelNORTH for North:
         JPanel panelNORTH = new JPanel();
@@ -133,11 +129,28 @@ public class Main {
 
         // Создаем текстовое поле для вывода информации об выстрелах игроков
         myTextArea = new JTextArea(10,20);
+
+        // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
+        // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
+
+
+        //timeLabel.setFont(font); //устанавливаем для лейбла шрифт
+        //timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5)); // задаем синюю границу
+        //mainFrame.setBorder(new LineBorder(Color.BLUE, 2));
+        // Настраиваем фонт для лейбал по примеру:
+        myTextArea.setFont(font);
+        myTextArea.setBorder(BorderFactory.createLineBorder(new Color(153, 255, 204), 5)); // задаем синюю границу
+
+
         // И помещаем текстовое поле на скол
         JScrollPane scrollPane = new JScrollPane(myTextArea);
         // и добавляем этот скол на главный фрейм
-        mainFrame.add(scrollPane,BorderLayout.EAST);
-
+//        mainFrame.add(scrollPane,BorderLayout.EAST);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelWebcam, scrollPane);
+        splitPane.setDividerLocation(0.5); // Start with divider in the middle
+        splitPane.setResizeWeight(0.5); // Distribute resize space evenly
+        splitPane.setOneTouchExpandable(true);
+        mainFrame.add(splitPane, BorderLayout.CENTER);
         // И заканчиваем настройку главного фрейма
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
