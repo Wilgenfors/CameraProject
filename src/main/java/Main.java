@@ -57,7 +57,7 @@ public class Main {
         mainFrame = new JFrame("Webcam"); // Создаем главный фрейм
 
         mainFrame.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
-//        mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
+        mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
         //Обозначаем границы Фрейма:
         // 1) Установить через гредл тему фрейма
         // 2) написать код шрифта для фонта и возможно ещё установить путь к папке
@@ -143,14 +143,21 @@ public class Main {
 
 
         // И помещаем текстовое поле на скол
+
         JScrollPane scrollPane = new JScrollPane(myTextArea);
         // и добавляем этот скол на главный фрейм
-//        mainFrame.add(scrollPane,BorderLayout.EAST);
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelWebcam, scrollPane);
-        splitPane.setDividerLocation(0.5); // Start with divider in the middle
-        splitPane.setResizeWeight(0.5); // Distribute resize space evenly
-        splitPane.setOneTouchExpandable(true);
-        mainFrame.add(splitPane, BorderLayout.CENTER);
+        //Dimension fixedSize = new Dimension(100, 40);
+        scrollPane.setPreferredSize(new Dimension(220, 40));
+        //scrollPane.setMinimumSize(fixedSize);
+        //scrollPane.setMaximumSize(fixedSize);
+
+       mainFrame.add(scrollPane,BorderLayout.EAST);
+     //   JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelWebcam, scrollPane);
+    //    splitPane.setDividerLocation(0.5); // Start with divider in the middle
+     //   splitPane.setResizeWeight(0.5); // Distribute resize space evenly
+      //  splitPane.setOneTouchExpandable(true);
+        //    splitPane.setEnabled(false); // ⚠️ Это отключает ВЕСЬ split pane (включая кнопки OneTouch)
+     //   mainFrame.add(splitPane, BorderLayout.CENTER);
         // И заканчиваем настройку главного фрейма
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -174,9 +181,12 @@ public class Main {
                         player = 0;
                         shot = 0;
                         listHits = new ArrayList<>();
-                        myTextArea.setText("");
+                        //myTextArea.setText("");
+                        myTextArea.append(" PLAYER       |      HIT    \n");
+                        myTextArea.append("-----------------------\n");
                         pointList = new ArrayList<>();
                         redMain.repaint();
+
 
                     }
                 }
@@ -228,8 +238,9 @@ public class Main {
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
-        myTextArea.append("-------------------------------------------\n");
-        myTextArea.append("Players total score:\n");
+        myTextArea.append("-----------------------\n");
+        myTextArea.append("Player    |  total score\n");
+
 
         int countPlayer = 0;
         int totalScore = 0;
@@ -242,14 +253,15 @@ public class Main {
 
             if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);
-                myTextArea.append("Player - "+(++countPlayer)+" total score - "+totalScore+"\n");
+               // myTextArea.append("Player - "+(++countPlayer)+" | SCORE - "+totalScore+"\n");
+                myTextArea.append("    "+(++countPlayer)+"                 "+totalScore+"\n");
                 totalScore = 0;
                 hitStep = 0;
             }
         }
 
         // Определяем лучшего игрока:
-        myTextArea.append("-------------------------------------------\n");
+        myTextArea.append("-----------------------\n");
 
         int winnerPlayer = 0;
         int scoreWinner = -1;
@@ -261,7 +273,7 @@ public class Main {
                 winnerPlayer = (countPlayer);
             }
         }
-        myTextArea.append("Winner player № "+(winnerPlayer) + "\n");
+        myTextArea.append("Winner - player "+(winnerPlayer) + "\n");
 
         // Вызываем метод для итогово изображения всех попаданий по мешени:
         printAllHits();

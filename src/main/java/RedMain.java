@@ -98,14 +98,16 @@ public class RedMain {
                     int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
                     if (soloCircleIndex == -99) {
                         Main.addListHits(10);
-                        Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
+                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
 
                         // Условия для перехода на следующего игрока:
                         Main.playerChangeCondition();
 
                     } else if (myPoint.getRadius() != -500) {
                         Main.addListHits(0);
-                        Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
+                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
                         // Условия для перехода на следующего игрока:
                         Main.playerChangeCondition();
                     }
@@ -117,7 +119,8 @@ public class RedMain {
                     else if (circleIndex == 2) Main.addListHits(2);
 
                     //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
-                    Main.myTextArea.append("Player " + ((Main.player) + 1) + " hit points" + Main.listHits.get((Main.shot++)) + "\n");
+                    //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                    Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
                     // Условия для перехода на следующего игрока:
                     Main.playerChangeCondition();
 
