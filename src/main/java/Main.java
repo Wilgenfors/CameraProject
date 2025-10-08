@@ -181,9 +181,9 @@ public class Main {
                         player = 0;
                         shot = 0;
                         listHits = new ArrayList<>();
-                        //myTextArea.setText("");
+                        myTextArea.setText("");
                         myTextArea.append(" PLAYER       |      HIT    \n");
-                        myTextArea.append("-----------------------\n");
+                        //myTextArea.append("-----------------------\n");
                         pointList = new ArrayList<>();
                         redMain.repaint();
 
