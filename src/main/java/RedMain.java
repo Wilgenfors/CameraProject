@@ -7,7 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -17,6 +17,14 @@ public class RedMain {
     static Thread thread1;
     static RedMain redmain;
     static MyLabel imageLabel;
+
+    // Новые переменные взятые с замкнутых линий:
+    static ArrayList<Contour> edgesArray;
+    static int minDiff = 0;
+    private static int upperY = 100000;
+    private static int lowerY = 100000;
+    private static int upperContour = -1;
+    private static int	lowerContour = -1;
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         imageLabel = new MyLabel();
@@ -43,7 +51,8 @@ public class RedMain {
         // задаем размер для одинакового отображения нахождения крассных точек на двух фреймах
         secondFrame.setSize(640+16, 480+39); //
         secondFrame.setVisible(true);
-        resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+        //resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+        resizeImage3(imageLabel, myPicture, imgIcon);
         secondFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -127,6 +136,106 @@ public class RedMain {
                 }
             }
         }
+
+        // Методы замкнутых кругов:
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        BufferedImage bimage = new BufferedImage(
+                img.getWidth(null),
+                img.getHeight(null),
+                BufferedImage.TYPE_INT_ARGB
+        );
+
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
+    }
+
+    private static void resizeImage3(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
+        imageLabel.clear();
+        System.out.println("mySearch");
+        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+        int newWidth = (int) (myPicture.getWidth() * dHeight);
+        MyContourSearch edgeDetector = new MyContourSearch();
+//		edgeDetector.detectEdges(tempImage, 100);
+//		edgeDetector.drawEdges(tempImage, Color.yellow);
+        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        imgIcon.setImage(dimg);
+        var tempImg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        BufferedImage tempImage = toBufferedImage(tempImg);
+        // here change my color:
+
+        //edgesArray =  edgeDetector.getContours(tempImage, Color.BLACK, Color.white);
+        int p = myPicture.getRGB(520, 390);
+        int r = (p >> 16) & 0xff; // get red
+        int g = (p >> 8) & 0xff; // get green
+        int b = p & 0xff; // get blue
+        Color p_color = new Color(133, 133, 133);
+
+        int pBG = myPicture.getRGB(520, 390);
+        int rBG = (pBG >> 16) & 0xff; // get red
+        int gBG = (pBG >> 8) & 0xff; // get green
+        int bBG = pBG & 0xff; // get blue
+
+        Color pBG_color = new Color(203, 203, 203);
+
+                edgesArray =  edgeDetector.getContours(tempImage,p_color, pBG_color);
+        imageLabel.drawMyContour(edgesArray, Color.YELLOW);
+
+    }
+
+    // При нахождении замкнутых линий:
+    // данный метод мне нужен для нахождения области попадания:
+    // todo пока не используется потом надо будет изменить и распознавать лазер
+    protected static int getNearestContour(ArrayList<Contour> edgesArray2, int x, int y) {
+        upperY = 100000;
+        lowerY = 100000;
+        upperContour = -1;
+        lowerContour = -1;
+        int i = 0;
+//		int nearestContour = -1;
+
+        for (Contour contour: edgesArray2) {
+//			System.out.println(i+": ");
+            List<EdgeCoords> coordsWithGivenX = contour.getEdgeCoordsList().stream().filter(coord-> coord.getX()==x).toList();
+            for (EdgeCoords dot: coordsWithGivenX) {
+//			coordsWithGivenX.forEach(dot->{
+//				System.out.print("x="+dot.getX()+", y="+dot.getY()+"; ");
+                if (dot.getY() < y) {
+                    int diff = Math.abs(y - dot.getY());
+                    if (diff < upperY) {
+                        upperY = diff;
+                        upperContour = i;
+                    }
+                } else {
+                    int diff = Math.abs(y - dot.getY());
+                    if (diff < lowerY) {
+                        lowerY = diff;
+                        lowerContour = i;
+                    }
+                }
+            }
+//			System.out.println();
+            i++;
+        }
+        // консольный вывод очков попадания:
+        if (lowerContour == -1 || upperContour == -1) {
+            System.out.println("Промах");
+        }
+        else {
+            int min = 1000;
+            if (lowerContour <= min) min = lowerContour;
+            if (upperContour <= min) min = upperContour;
+            System.out.println("Игрок получает "+(min+1)+ " ");
+        }
+        System.out.println("lower contour = " + lowerContour +", upper Contour = "+ upperContour);
+        return 0;
+    }
 
 
 

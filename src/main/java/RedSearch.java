@@ -272,4 +272,10 @@ public class RedSearch {
 		circleGreenDiaposone = g;
 		circleBlueDiaposone = b;
 	}
+
+	// Новые методы замкнутых кругов:
+
+
+
+
 }

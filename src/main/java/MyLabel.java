@@ -19,6 +19,15 @@ public class MyLabel extends JLabel {
     boolean paintRedPoint = false; // переменная для прорисовки найденной красной точки
     boolean resultDraw = false; // переменная для отображения всех попаданий
 
+
+    // Новые переменные замкнутых кругов:
+    boolean clear = false;
+    boolean paintCircles = false;
+    boolean myContour = false;
+    ArrayList<Contour> contoursArray = null;
+    boolean paintEdges = false;
+    private Color edgesColor;
+
     // ф-ия для входа в прорисовку круга
     public void drawCircle(int x, int y, int r, float dHeight) {
         this.dHeight = dHeight;
@@ -28,6 +37,25 @@ public class MyLabel extends JLabel {
         paintCircle = true;
         repaint();
     }
+
+    // Новый метод замкнутых кругов:
+    public void clear() {
+        clear = true;
+        paintCircle = false;
+        paintCircles = false;
+    }
+    // Новый метод замкнутых кругов:
+    public void drawMyContour(ArrayList<Contour> edgesArray, Color edgesColor) {
+        contoursArray = edgesArray;
+        this.edgesColor = edgesColor;
+        paintEdges = false;
+        paintCircle = false;
+        paintCircles = false;
+        myContour = true;
+        repaint();
+    }
+
+
     // если добавить в параметры еще float dHeight, то можно не рисовать отдельно первый круг
     // ф-ия для входа в прорисовку всех кругов
     public void drawCircles(ArrayList<Circle> circlesList) { //для рисования всех кругов
