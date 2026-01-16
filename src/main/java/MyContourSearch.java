@@ -238,7 +238,15 @@ public class MyContourSearch {
 		int r = (p >> 16) & 0xff; // get red
 		int g = (p >> 8) & 0xff; // get green
 		int b = p & 0xff; // get blue
-		if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
+		//if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
+		if (r < 150 && g < 150 && b < 150) {
+			curDotColor = new Color(r, g, b);
+			//System.out.println("color detected:");
+			//System.out.println("r"+r);
+			//System.out.println("g"+g);
+			//System.out.println("b"+b);
+		}
+
 		return curDotColor;
 	}
 
@@ -386,7 +394,12 @@ public class MyContourSearch {
 	public static void main(String[] args) throws Exception{
 		System.out.println("Started MyContourSearch");
 		MyContourSearch mySearch = new MyContourSearch();
-		BufferedImage image = javax.imageio.ImageIO.read(new java.io.File("target.png"));
+		//BufferedImage image = javax.imageio.ImageIO.read(new java.io.File("target.png"));
+		// todo мне нужно брать изображение с лейбла (камеры)
+		RedMain.myPicture = Main.webcam.getImage();
+
+		// Буфф ер для изменения картинки в серый
+		BufferedImage image = new BufferedImage(RedMain.myPicture.getWidth(), RedMain.myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
 		mySearch.getContours(image, Color.BLACK, Color.WHITE);
 	}
 	
