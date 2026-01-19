@@ -58,6 +58,7 @@ public class RedMain {
             @Override
             public void componentResized(ComponentEvent e) {
                 resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+                //resizeImage3(imageLabel, myPicture, imgIcon);
             }
         });
 

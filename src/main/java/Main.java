@@ -7,6 +7,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -174,6 +176,7 @@ public class Main {
                 // Обработка исключения пустой стоки преобразованной в целое:
                 try{
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
+
                         RedMain.guiTest(webcam);
                         //Отчистка предыдущих значений:
                         players = Integer.parseInt(inputPlayerCount.getText());
@@ -216,6 +219,15 @@ public class Main {
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SimpleRunnable.stopped();
+            }
+        });
+
+        //Слушатель для удаления объекта вебкамеры при закрытии программы:
+        mainFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                webcam.close();
+                System.exit(0);
+
             }
         });
 
