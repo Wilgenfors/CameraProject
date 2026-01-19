@@ -86,7 +86,11 @@ public class ThreadForContour extends Thread{
 		int r = (p >> 16) & 0xff; // get red
 		int g = (p >> 8) & 0xff; // get green
 		int b = p & 0xff; // get blue
-		if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
+		// todo will change this color:
+		// Лютый костыль, из-за создания нового объекта может все посыпаться:
+		RedSearch rSobj = new RedSearch(image);
+		curDotColor = new Color(rSobj.circleRedDiaposone,rSobj.circleGreenDiaposone,rSobj.circleBlueDiaposone);
+		//if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
 		return curDotColor;
 	}
 
