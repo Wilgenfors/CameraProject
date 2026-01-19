@@ -93,6 +93,8 @@ class Contour{
 	public void setEdgeWidth(int edgeWidth) {
 		this.edgeWidth = edgeWidth;
 	}
+
+
 }
 
 public class MyContourSearch {
@@ -102,6 +104,7 @@ public class MyContourSearch {
 //		ArrayList<EdgeCoords> coordsList = new ArrayList<>();
 		ArrayList<Contour> contoursList = new ArrayList<>();
 		Contour firstContour = new Contour();
+
 		EdgeCoords topEdge = getTopEdge(image, edgesColor, backColor);
 		firstContour.setTopEdge(topEdge);
 		EdgeCoords buttomEdge = getButtomEdge(image, edgesColor, backColor);
@@ -390,7 +393,8 @@ public class MyContourSearch {
 		topEdge.setY(y);
 		return topEdge;	
 	}
-	
+
+
 	public static void main(String[] args) throws Exception{
 		System.out.println("Started MyContourSearch");
 		MyContourSearch mySearch = new MyContourSearch();
@@ -400,7 +404,32 @@ public class MyContourSearch {
 
 		// Буфф ер для изменения картинки в серый
 		BufferedImage image = new BufferedImage(RedMain.myPicture.getWidth(), RedMain.myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-		mySearch.getContours(image, Color.BLACK, Color.WHITE);
+		// todo мне нужно здесь тоже поменять цвет круков и фона:
+
+
+
+
+		// Лютый костыль, из-за создания нового объекта может все посыпаться:
+		RedSearch rSobj = new RedSearch(image);
+		Color colorCounter = new Color(rSobj.circleRedDiaposone,rSobj.circleGreenDiaposone,rSobj.circleBlueDiaposone);
+
+		// Искать цвет фона будем аналогично с поиском в классе Calibration:
+
+		// todo Возможно нужны другие координаты точки
+		int pBG = image.getRGB(520, 390);
+
+
+		int rBG = (pBG >> 16) & 0xff; // get red
+		int gBG = (pBG >> 8) & 0xff; // get green
+		int bBG = pBG & 0xff; // get blue
+
+		Color colorBG = new Color(rBG,gBG,bBG);
+
+
+
+
+		//________________________________________________________________________________
+		mySearch.getContours(image, colorCounter, colorBG);
 	}
 	
 }
