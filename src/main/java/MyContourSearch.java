@@ -1,5 +1,6 @@
 //package TargetRecognize;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.image.BufferedImage;
@@ -104,6 +105,22 @@ public class MyContourSearch {
 //		ArrayList<EdgeCoords> coordsList = new ArrayList<>();
 		ArrayList<Contour> contoursList = new ArrayList<>();
 		Contour firstContour = new Contour();
+
+		// Сохраняю изображение для отладки того, что оно корректно:
+		// create a File object with the path and filename for the output image file
+		File output = new File("C:\\IdeaProject\\CameraProject\\CameraProject\\test.png");
+		//File output = new File("test.png");
+
+		try {
+			// write the BufferedImage to the file using ImageIO.write()
+			ImageIO.write(image, "png", output);
+			System.out.println("Удалось сохранить изображение");
+		} catch (Exception e) {
+			System.out.println("Не удалось сохранить изображение!!!");
+			e.printStackTrace();
+		}
+
+
 
 		EdgeCoords topEdge = getTopEdge(image, edgesColor, backColor);
 		firstContour.setTopEdge(topEdge);
@@ -411,6 +428,7 @@ public class MyContourSearch {
 
 		// Лютый костыль, из-за создания нового объекта может все посыпаться:
 		RedSearch rSobj = new RedSearch(image);
+
 		Color colorCounter = new Color(rSobj.circleRedDiaposone,rSobj.circleGreenDiaposone,rSobj.circleBlueDiaposone);
 
 		// Искать цвет фона будем аналогично с поиском в классе Calibration:
