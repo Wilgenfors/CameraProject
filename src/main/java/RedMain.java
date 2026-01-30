@@ -158,6 +158,36 @@ public class RedMain {
     }
 
     private static void resizeImage3(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
+//        imageLabel.clear();
+//        System.out.println("mySearch");
+//        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+//        int newWidth = (int) (myPicture.getWidth() * dHeight);
+//        MyContourSearch edgeDetector = new MyContourSearch();
+////		edgeDetector.detectEdges(tempImage, 100);
+////		edgeDetector.drawEdges(tempImage, Color.yellow);
+//        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+//        imgIcon.setImage(dimg);
+//        var tempImg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+//        BufferedImage tempImage = toBufferedImage(tempImg);
+//        // here change my color:
+//
+//        //edgesArray =  edgeDetector.getContours(tempImage, Color.BLACK, Color.white);
+//        int p = myPicture.getRGB(520, 390);
+//        int r = (p >> 16) & 0xff; // get red
+//        int g = (p >> 8) & 0xff; // get green
+//        int b = p & 0xff; // get blue
+//        Color p_color = new Color(133, 133, 133);
+//
+//        int pBG = myPicture.getRGB(520, 390);
+//        int rBG = (pBG >> 16) & 0xff; // get red
+//        int gBG = (pBG >> 8) & 0xff; // get green
+//        int bBG = pBG & 0xff; // get blue
+//
+//        Color pBG_color = new Color(203, 203, 203);
+//
+//                edgesArray =  edgeDetector.getContours(tempImage,p_color, pBG_color);
+//        imageLabel.drawMyContour(edgesArray, Color.YELLOW);
+
         imageLabel.clear();
         System.out.println("mySearch");
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
@@ -169,23 +199,7 @@ public class RedMain {
         imgIcon.setImage(dimg);
         var tempImg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
         BufferedImage tempImage = toBufferedImage(tempImg);
-        // here change my color:
-
-        //edgesArray =  edgeDetector.getContours(tempImage, Color.BLACK, Color.white);
-        int p = myPicture.getRGB(520, 390);
-        int r = (p >> 16) & 0xff; // get red
-        int g = (p >> 8) & 0xff; // get green
-        int b = p & 0xff; // get blue
-        Color p_color = new Color(133, 133, 133);
-
-        int pBG = myPicture.getRGB(520, 390);
-        int rBG = (pBG >> 16) & 0xff; // get red
-        int gBG = (pBG >> 8) & 0xff; // get green
-        int bBG = pBG & 0xff; // get blue
-
-        Color pBG_color = new Color(203, 203, 203);
-
-                edgesArray =  edgeDetector.getContours(tempImage,p_color, pBG_color);
+        edgesArray =  edgeDetector.getContours(tempImage, Color.BLACK, Color.white);
         imageLabel.drawMyContour(edgesArray, Color.YELLOW);
 
     }

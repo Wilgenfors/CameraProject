@@ -108,17 +108,17 @@ public class MyContourSearch {
 
 		// Сохраняю изображение для отладки того, что оно корректно:
 		// create a File object with the path and filename for the output image file
-		File output = new File("C:\\IdeaProject\\CameraProject\\CameraProject\\test.png");
-		//File output = new File("test.png");
-
-		try {
-			// write the BufferedImage to the file using ImageIO.write()
-			ImageIO.write(image, "png", output);
-			System.out.println("Удалось сохранить изображение");
-		} catch (Exception e) {
-			System.out.println("Не удалось сохранить изображение!!!");
-			e.printStackTrace();
-		}
+//		File output = new File("C:\\IdeaProject\\CameraProject\\CameraProject\\test.png");
+//		//File output = new File("test.png");
+//
+//		try {
+//			// write the BufferedImage to the file using ImageIO.write()
+//			ImageIO.write(image, "png", output);
+//			System.out.println("Удалось сохранить изображение");
+//		} catch (Exception e) {
+//			System.out.println("Не удалось сохранить изображение!!!");
+//			e.printStackTrace();
+//		}
 
 
 
@@ -413,41 +413,52 @@ public class MyContourSearch {
 
 
 	public static void main(String[] args) throws Exception{
+//		System.out.println("Started MyContourSearch");
+//		MyContourSearch mySearch = new MyContourSearch();
+//		BufferedImage image = javax.imageio.ImageIO.read(new java.io.File("target.png"));
+//		// todo мне нужно брать изображение с лейбла (камеры)
+//		//RedMain.myPicture = Main.webcam.getImage();
+//
+//		// Буфф ер для изменения картинки в серый
+//		//BufferedImage image = new BufferedImage(RedMain.myPicture.getWidth(), RedMain.myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+//		// todo мне нужно здесь тоже поменять цвет круков и фона:
+//
+//
+//
+//
+//		// Лютый костыль, из-за создания нового объекта может все посыпаться:
+//		RedSearch rSobj = new RedSearch(image);
+//		// todo Возможно нужно поменять цвета так как считывается изображение не черно белое, а обычное:
+//		Color colorCounter = new Color(rSobj.circleRedDiaposone,rSobj.circleGreenDiaposone,rSobj.circleBlueDiaposone);
+//
+//		// Искать цвет фона будем аналогично с поиском в классе Calibration:
+//
+//		// todo Возможно нужны другие координаты точки
+//		int pBG = image.getRGB(520, 390);
+//
+//
+//		int rBG = (pBG >> 16) & 0xff; // get red
+//		int gBG = (pBG >> 8) & 0xff; // get green
+//		int bBG = pBG & 0xff; // get blue
+//
+//		Color colorBG = new Color(rBG,gBG,bBG);
+//
+//
+//
+//
+//		//________________________________________________________________________________
+//		mySearch.getContours(image, colorCounter, colorBG);
+
+
+
+	// Изначальная версия:
+
+
+
 		System.out.println("Started MyContourSearch");
 		MyContourSearch mySearch = new MyContourSearch();
-		//BufferedImage image = javax.imageio.ImageIO.read(new java.io.File("target.png"));
-		// todo мне нужно брать изображение с лейбла (камеры)
-		RedMain.myPicture = Main.webcam.getImage();
-
-		// Буфф ер для изменения картинки в серый
-		BufferedImage image = new BufferedImage(RedMain.myPicture.getWidth(), RedMain.myPicture.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-		// todo мне нужно здесь тоже поменять цвет круков и фона:
-
-
-
-
-		// Лютый костыль, из-за создания нового объекта может все посыпаться:
-		RedSearch rSobj = new RedSearch(image);
-
-		Color colorCounter = new Color(rSobj.circleRedDiaposone,rSobj.circleGreenDiaposone,rSobj.circleBlueDiaposone);
-
-		// Искать цвет фона будем аналогично с поиском в классе Calibration:
-
-		// todo Возможно нужны другие координаты точки
-		int pBG = image.getRGB(520, 390);
-
-
-		int rBG = (pBG >> 16) & 0xff; // get red
-		int gBG = (pBG >> 8) & 0xff; // get green
-		int bBG = pBG & 0xff; // get blue
-
-		Color colorBG = new Color(rBG,gBG,bBG);
-
-
-
-
-		//________________________________________________________________________________
-		mySearch.getContours(image, colorCounter, colorBG);
+		BufferedImage image = javax.imageio.ImageIO.read(new java.io.File("target.png"));
+		mySearch.getContours(image, Color.BLACK, Color.WHITE);
 	}
 	
 }
