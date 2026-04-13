@@ -139,11 +139,76 @@ public class MyContourSearch {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+
+		// meybe dont work? ==============================
+		// Получаем размеры изображения
+		int imgWidth = image.getWidth();
+		int imgHeight = image.getHeight();
+
+// Получаем координаты разделения
+		int topX = (int) topEdge.getX();
+		int topY = (int) topEdge.getY();
+		int leftX = (int) leftEdge.getX();
+		int leftY = (int) leftEdge.getY();
+
+// Проверяем корректность координат
+		System.out.println("Размер изображения: " + imgWidth + " x " + imgHeight);
+		System.out.println("topEdge: x=" + topX + ", y=" + topY);
+		System.out.println("leftEdge: x=" + leftX + ", y=" + leftY);
+
+// Защита от некорректных значений
+		topX = Math.max(0, Math.min(topX, imgWidth));
+		topY = Math.max(0, Math.min(topY, imgHeight));
+		leftX = Math.max(0, Math.min(leftX, imgWidth));
+		leftY = Math.max(0, Math.min(leftY, imgHeight));
+
+// Теперь безопасно создаем 4 части
+		BufferedImage img_1 = null;
+		BufferedImage img_2 = null;
+		BufferedImage img_3 = null;
+		BufferedImage img_4 = null;
+
+// Часть 1: верхний левый угол
+		if (topX > 0 && leftY > 0) {
+			img_1 = image.getSubimage(0, 0, topX, leftY);
+		} else {
+			System.err.println("img_1: размеры слишком малы: " + topX + " x " + leftY);
+		}
+
+// Часть 3: верхний правый угол
+		if (imgWidth - topX > 0 && leftY > 0) {
+			img_3 = image.getSubimage(topX, 0, imgWidth - topX, leftY);
+		} else {
+			System.err.println("img_3: ширина=" + (imgWidth - topX) + ", высота=" + leftY);
+		}
+
+// Часть 2: нижний левый угол
+		if (topX > 0 && imgHeight - leftY - 1 > 0) {
+			img_2 = image.getSubimage(0, leftY + 1, topX, imgHeight - leftY - 1);
+		} else {
+			System.err.println("img_2: ширина=" + topX + ", высота=" + (imgHeight - leftY - 1));
+		}
+
+// Часть 4: нижний правый угол
+		if (imgWidth - topX > 0 && imgHeight - leftY - 1 > 0) {
+			img_4 = image.getSubimage(topX, leftY + 1, imgWidth - topX, imgHeight - leftY - 1);
+		} else {
+			System.err.println("img_4: ширина=" + (imgWidth - topX) + ", высота=" + (imgHeight - leftY - 1));
+		}
+
+		// Если leftEdge слишком близко к нижнему краю
+		if (leftY >= imgHeight - 1) {
+			System.err.println("Ошибка: leftEdge.Y = " + leftY + " слишком близко к нижнему краю (высота=" + imgHeight + ")");
+			// Корректируем значение
+			leftY = Math.max(0, imgHeight - 2);  // оставляем минимум 2 пикселя
+		}
+		//=================================================
 		//режем картинку на 4 части
-		var img_1 = image.getSubimage(0, 0, topEdge.getX(), leftEdge.getY());
-		var img_3 = image.getSubimage(topEdge.getX(), 0,image.getWidth()-topEdge.getX(), leftEdge.getY());
-		var img_2 = image.getSubimage(0, leftEdge.getY()+1, topEdge.getX(), image.getHeight()-leftEdge.getY()-1);
-		var img_4 = image.getSubimage(topEdge.getX(), leftEdge.getY()+1, image.getWidth()-topEdge.getX(), image.getHeight()-leftEdge.getY()-1);
+//		var img_1 = image.getSubimage(0, 0, topEdge.getX(), leftEdge.getY());
+//		var img_3 = image.getSubimage(topEdge.getX(), 0,image.getWidth()-topEdge.getX(), leftEdge.getY());
+//		var img_2 = image.getSubimage(0, leftEdge.getY()+1, topEdge.getX(), image.getHeight()-leftEdge.getY()-1);
+//		var img_4 = image.getSubimage(topEdge.getX(), leftEdge.getY()+1, image.getWidth()-topEdge.getX(), image.getHeight()-leftEdge.getY()-1);
+
 		//создаем потоки для поиска контуров на этих частях
 		ThreadForContour contourThread1 = new ThreadForContour(img_1, 1, Color.BLACK);
 		ThreadForContour contourThread3 = new ThreadForContour(img_3, 3, Color.BLACK);

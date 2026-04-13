@@ -125,8 +125,9 @@ public class RedMain {
                 // Если точка находится между кругами
                 else if (circleIndex < circlesList.size()) {
                     if (circleIndex == 0) Main.addListHits(8);
-                    else if (circleIndex == 1) Main.addListHits(5);
-                    else if (circleIndex == 2) Main.addListHits(2);
+                    else if (circleIndex == 1) Main.addListHits(6);
+                    else if (circleIndex == 2) Main.addListHits(4);
+                    else if (circleIndex == 3) Main.addListHits(2);
 
                     //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
                     //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
