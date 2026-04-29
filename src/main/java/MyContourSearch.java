@@ -327,14 +327,13 @@ public class MyContourSearch {
 		//if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
 		//if (r < 2 && g < 2 && b < 2) curDotColor = Color.BLACK;
 		//if (r < 2 && g < 2 && b < 2) curDotColor = new Color(r, g, b); // 0,0,0
-		if (r < 150 && g < 150 && b < 150) {
-
-			curDotColor = new Color(r, g, b);
+		if (r < 150 && g < 150 && b < 150)  curDotColor = new Color(r, g, b);
+		else return Color.WHITE;  // Явный цвет для фона
 			//System.out.println("color detected:");
 			//System.out.println("r"+r);
 			//System.out.println("g"+g);
 			//System.out.println("b"+b);
-		}
+
 
 		return curDotColor;
 	}
