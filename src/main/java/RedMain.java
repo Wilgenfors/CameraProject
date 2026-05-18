@@ -43,12 +43,14 @@ public class RedMain {
         // задаем размер для одинакового отображения нахождения крассных точек на двух фреймах
         secondFrame.setSize(640+16, 480+39); //
         secondFrame.setVisible(true);
-        resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+        //resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+        resizeImage(imageLabel, myPicture, imgIcon);
         secondFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+               // resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
+                resizeImage(imageLabel, myPicture, imgIcon);
             }
         });
 
@@ -68,7 +70,7 @@ public class RedMain {
 
     }
 
-    private static void resizeImage2(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
+    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
         //imageLabel.clear();
 //		imageLabel.repaint();
 //		BufferedImage tempImage = myPicture;
@@ -110,66 +112,66 @@ public class RedMain {
     }
 
 
-    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
-
-        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
-        int newWidth = (int) (myPicture.getWidth() * dHeight);
-        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-        imgIcon.setImage(dimg);
-        RedSearch redSearch = new RedSearch(myPicture);
-
-        Circle circle = redSearch.getCircle(); //находим внешний круг
-        if (circle == null) {
-            // System.out.println("--!! No circle !!--");
-        } else {
-            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
-                // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
-                if (myPoint.getX() != 500 && myPoint.getY() != 500) {
-                    Main.addPointList(myPoint);
-                }
-
-                imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
-                ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
-                imageLabel.drawCircles(circlesList);
-                circlesList.add(circle); //если нужен список со всеми кругами
-
-                // Новый алгоритм точности попадания:
-                int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-
-                // Если точка в центре или в области промаха:
-                if (circleIndex == -1) {
-                    int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-                    if (soloCircleIndex == -99) {
-                        Main.addListHits(10);
-                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-
-                        // Условия для перехода на следующего игрока:
-                        Main.playerChangeCondition();
-
-                    } else if (myPoint.getRadius() != -500) {
-                        Main.addListHits(0);
-                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-                        // Условия для перехода на следующего игрока:
-                        Main.playerChangeCondition();
-                    }
-                }
-                // Если точка находится между кругами
-                else if (circleIndex < circlesList.size()) {
-                    if (circleIndex == 0) Main.addListHits(8);
-                    else if (circleIndex == 1) Main.addListHits(5);
-                    else if (circleIndex == 2) Main.addListHits(2);
-
-                    //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
-                    //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-                    Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-                    // Условия для перехода на следующего игрока:
-                    Main.playerChangeCondition();
-
-                }
-            }
-        }
+//    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
+//
+//        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+//        int newWidth = (int) (myPicture.getWidth() * dHeight);
+//        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+//        imgIcon.setImage(dimg);
+//        RedSearch redSearch = new RedSearch(myPicture);
+//
+//        Circle circle = redSearch.getCircle(); //находим внешний круг
+//        if (circle == null) {
+//            // System.out.println("--!! No circle !!--");
+//        } else {
+//            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
+//                // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
+//                if (myPoint.getX() != 500 && myPoint.getY() != 500) {
+//                    Main.addPointList(myPoint);
+//                }
+//
+//                imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
+//                ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
+//                imageLabel.drawCircles(circlesList);
+//                circlesList.add(circle); //если нужен список со всеми кругами
+//
+//                // Новый алгоритм точности попадания:
+//                int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
+//
+//                // Если точка в центре или в области промаха:
+//                if (circleIndex == -1) {
+//                    int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
+//                    if (soloCircleIndex == -99) {
+//                        Main.addListHits(10);
+//                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+//                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+//
+//                        // Условия для перехода на следующего игрока:
+//                        Main.playerChangeCondition();
+//
+//                    } else if (myPoint.getRadius() != -500) {
+//                        Main.addListHits(0);
+//                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+//                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+//                        // Условия для перехода на следующего игрока:
+//                        Main.playerChangeCondition();
+//                    }
+//                }
+//                // Если точка находится между кругами
+//                else if (circleIndex < circlesList.size()) {
+//                    if (circleIndex == 0) Main.addListHits(8);
+//                    else if (circleIndex == 1) Main.addListHits(5);
+//                    else if (circleIndex == 2) Main.addListHits(2);
+//
+//                    //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
+//                    //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+//                    Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+//                    // Условия для перехода на следующего игрока:
+//                    Main.playerChangeCondition();
+//
+//                }
+//            }
+//        }
 
 
 

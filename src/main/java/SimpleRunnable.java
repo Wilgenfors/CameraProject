@@ -50,8 +50,13 @@ public class SimpleRunnable implements Runnable {
             frame.add(imageLabel_obj, BorderLayout.CENTER);
             frame.setSize(800, 600);
             frame.setVisible(true);
-            redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon, colorImg_obj);
-
+            // MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon
+            //redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon, colorImg_obj);
+           // redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon);
+            redMain_obj.resizeImage(imageLabel_obj, blackAndWhiteImg, imgIcon);
+            // colorImg_obj - BufferedImage
+            //  BufferedImage blackAndWhiteImg = new BufferedImage(colorImg_obj.getWidth(), colorImg_obj.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+            // private MyLabel imageLabel_obj;
             try {
                 Thread.currentThread().sleep(100);
             } catch (InterruptedException e) {

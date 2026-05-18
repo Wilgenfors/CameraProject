@@ -18,6 +18,10 @@ public class MyLabel extends JLabel {
     boolean paintCircle = false; // переменная для отображения всех найденных кругов
     boolean paintRedPoint = false; // переменная для прорисовки найденной красной точки
     boolean resultDraw = false; // переменная для отображения всех попаданий
+    boolean paintCircles = false;
+    ArrayList<EdgeCoords> edgeArray = null;
+    private Color edgesColor;
+    boolean paintEdges = false;
 
     // ф-ия для входа в прорисовку круга
     public void drawCircle(int x, int y, int r, float dHeight) {
