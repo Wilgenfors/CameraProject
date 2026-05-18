@@ -186,7 +186,10 @@ public class Main {
                         myTextArea.append(" PLAYER       |      HIT    \n");
                         //myTextArea.append("-----------------------\n");
                         pointList = new ArrayList<>();
-                        redMain.repaint();
+                        if (Main.redMain != null){
+                            redMain.repaint();
+                        }
+
 
 
                     }
