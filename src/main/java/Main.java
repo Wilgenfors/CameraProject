@@ -53,6 +53,7 @@ public class Main {
 
         panelWebcam = new MyWebcamPanel(webcam);  // Передаем объект камеры на специальную панель для вывода изображения с камеры
         panelWebcam.setImageSizeDisplayed(true);  // Делаем веб-панель видимой
+        panelWebcam.setImageSizeDisplayed(false);
 
         mainFrame = new JFrame("Webcam"); // Создаем главный фрейм
 

@@ -68,18 +68,23 @@ public class MyLabel extends JLabel {
         // прорисовываем все круги:
         if (paintCircle) {
             float[] dash = {20, 20};
-            gr2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            //gr2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             pen = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dash, 1);
             gr2D.setStroke(pen);
             gr2D.setColor(Color.GREEN);
             for (Circle circle : circlesList) {
-                int x = circle.getX();
-                int y = circle.getY();
-                int r = circle.getRadius();
-                circleR = (int) (r * dHeight);
-                circleX = (int) (x * dHeight);
-                circleY = (int) (y * dHeight);
-                gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
+//                int x = circle.getX();
+//                int y = circle.getY();
+//                int r = circle.getRadius();
+//                circleR = (int) (r * dHeight);
+//                circleX = (int) (x * dHeight);
+//                circleY = (int) (y * dHeight);
+//                gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
+                int d = (int) (circle.getRadius()*2*dHeight);
+                int R = (int) (circle.getRadius()*dHeight);
+                int X = (int) (circle.getX()*dHeight);
+                int Y = (int) (circle.getY()*dHeight);
+                gr2D.drawOval(X-R, Y-R, d, d);
             }
         }
         // прорисовываем одно попадание:
