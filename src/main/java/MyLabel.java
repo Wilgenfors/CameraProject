@@ -54,6 +54,18 @@ public class MyLabel extends JLabel {
         repaint();
     }
 
+    // New drawing for Algoritm ClosedCircles:
+    public void drawEdges(ArrayList<EdgeCoords> edgeArray, Color edgesColor) {
+        System.out.println("Drawing edges, array size = "+edgeArray.size());
+        this.edgeArray = edgeArray;
+        this.edgesColor = edgesColor;
+        paintEdges = true;
+        paintCircle = false;
+        paintCircles = false;
+        repaint();
+    }
+
+
     @Override
     // ф-ия различной прорисовки:
     public void paint(Graphics g) {

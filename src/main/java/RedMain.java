@@ -67,6 +67,49 @@ public class RedMain {
         });
 
     }
+
+    private static void resizeImage2(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
+        //imageLabel.clear();
+//		imageLabel.repaint();
+//		BufferedImage tempImage = myPicture;
+        System.out.println("closedLineSearch");
+        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+        int newWidth = (int) (myPicture.getWidth() * dHeight);
+        SimpleEdgeDetector edgeDetector = new SimpleEdgeDetector();
+//		edgeDetector.detectEdges(tempImage, 100);
+//		edgeDetector.drawEdges(tempImage, Color.yellow);
+        //Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        //imgIcon.setImage(dimg);
+        //var tempImg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        // Взял со старого resizeImage, то что снизу:
+        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        imgIcon.setImage(dimg);
+        BufferedImage tempImage = toBufferedImage(dimg);
+        ArrayList<EdgeCoords> edgesArray =  edgeDetector.getEdgeCoords(tempImage, 100);
+        imageLabel.drawEdges(edgesArray, Color.GREEN);
+//		imageLabel.repaint();
+    }
+
+    // Взял с RedCircle на сколько понял для лучшей работы с цветами:
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        BufferedImage bimage = new BufferedImage(
+                img.getWidth(null),
+                img.getHeight(null),
+                BufferedImage.TYPE_INT_ARGB
+        );
+
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
+    }
+
+
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
         float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
