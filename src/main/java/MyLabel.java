@@ -104,7 +104,15 @@ public class MyLabel extends JLabel {
 //            }
 //        }
 
-
+        if (paintEdges) {
+            System.out.println("in paint");
+            pen=new BasicStroke(1,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+            gr2D.setStroke(pen);
+            gr2D.setColor(edgesColor);
+            edgeArray.forEach(coords->{
+                gr2D.drawLine(coords.getX(), coords.getY(), coords.getX(), coords.getY());
+            });
+        }
         if (paintCircle) {
             float[] dash = {20, 20};
             pen=new BasicStroke(10,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND, 10, dash, 1);
