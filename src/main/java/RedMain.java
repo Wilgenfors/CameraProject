@@ -46,13 +46,13 @@ public class RedMain {
         secondFrame.setSize(640+16, 480+39); //
         secondFrame.setVisible(true);
         //resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-        resizeImage(imageLabel, myPicture, imgIcon);
+        resizeImage(imageLabel, myPicture, imgIcon,myPicture);
         secondFrame.setLocationRelativeTo(null);
         imageLabel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                // resizeImage(imageLabel, blackAndWhiteImg, imgIcon, myPicture);
-                resizeImage(imageLabel, myPicture, imgIcon);
+                resizeImage(imageLabel, myPicture, imgIcon,myPicture);
             }
         });
 
@@ -72,7 +72,7 @@ public class RedMain {
 
     }
 
-    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
+    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) { //распознавание замкнутых линий
 
         // мы один раз находим контуры кругов:
         // todo 1) Находим один раз все контура кругов и прорисовываем их
@@ -92,10 +92,19 @@ public class RedMain {
             // Рисуем раздельные контуры
             imageLabel.drawSeparateContours(separateContours);
 
-            System.out.println("Found  Contour groups: " + separateContours.size());
+            System.out.println("Found Contour groups: " + separateContours.size());
             flagFoundEdge = true;
         }
-            // 
+
+        // Нахождение красной точки:
+        Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
+
+        // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
+        // todo not found red point - why?
+        if (myPoint.getX() != 500 && myPoint.getY() != 500) {
+            System.out.println("found red point");
+            Main.addPointList(myPoint);
+        }
 
 
 
