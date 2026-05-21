@@ -5,7 +5,7 @@ import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 public class SimpleEdgeDetector {
 	
@@ -48,6 +48,67 @@ public class SimpleEdgeDetector {
 		
 		return edgeCoordsList;
 	}
+
+
+
+    // НОВЫЙ МЕТОД: нахождение раздельных контуров
+    public ArrayList<ArrayList<EdgeCoords>> getSeparateContours(BufferedImage image, int threshold) {
+        ArrayList<EdgeCoords> allEdges = getEdgeCoords(image, threshold);
+
+        boolean[][] visited = new boolean[image.getWidth()][image.getHeight()];
+        Set<String> edgeSet = new HashSet<>();
+        for (EdgeCoords e : allEdges) {
+            edgeSet.add(e.getX() + "," + e.getY());
+        }
+
+        ArrayList<ArrayList<EdgeCoords>> contours = new ArrayList<>();
+
+        for (EdgeCoords start : allEdges) {
+            if (!visited[start.getX()][start.getY()]) {
+                ArrayList<EdgeCoords> contour = bfsTrace(start.getX(), start.getY(), visited, edgeSet, image.getWidth(), image.getHeight());
+                if (contour.size() > 10) {
+                    contours.add(contour);
+                }
+            }
+        }
+
+        System.out.println("Contours found: " + contours.size());
+        return contours;
+    }
+
+    // BFS метод - не требует Stack, использует Queue
+    private ArrayList<EdgeCoords> bfsTrace(int startX, int startY, boolean[][] visited,
+                                           Set<String> edgeSet, int width, int height) {
+        ArrayList<EdgeCoords> contour = new ArrayList<>();
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startX, startY});
+        visited[startX][startY] = true;
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int x = current[0];
+            int y = current[1];
+            contour.add(new EdgeCoords(x, y));
+
+            // Проверяем всех 8 соседей
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (dx == 0 && dy == 0) continue;
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited[nx][ny]) {
+                        if (edgeSet.contains(nx + "," + ny)) {
+                            visited[nx][ny] = true;
+                            queue.add(new int[]{nx, ny});
+                        }
+                    }
+                }
+            }
+        }
+        return contour;
+    }
+
+
 	
     public BufferedImage detectEdges(BufferedImage image, int threshold) {
     	edgeCoordsList = new ArrayList<>();

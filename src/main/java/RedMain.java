@@ -17,6 +17,8 @@ public class RedMain {
     static Thread thread1;
     static RedMain redmain;
     static MyLabel imageLabel;
+    static  boolean flagFoundEdge = false;
+
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         imageLabel = new MyLabel();
@@ -71,24 +73,32 @@ public class RedMain {
     }
 
     public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon) { //распознавание замкнутых линий
-        //imageLabel.clear();
-//		imageLabel.repaint();
-//		BufferedImage tempImage = myPicture;
-        System.out.println("closedLineSearch");
-        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
-        int newWidth = (int) (myPicture.getWidth() * dHeight);
-        SimpleEdgeDetector edgeDetector = new SimpleEdgeDetector();
-//		edgeDetector.detectEdges(tempImage, 100);
-//		edgeDetector.drawEdges(tempImage, Color.yellow);
-        //Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-        //imgIcon.setImage(dimg);
-        //var tempImg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-        // Взял со старого resizeImage, то что снизу:
-        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-        imgIcon.setImage(dimg);
-        BufferedImage tempImage = toBufferedImage(dimg);
-        ArrayList<EdgeCoords> edgesArray =  edgeDetector.getEdgeCoords(tempImage, 100);
-        imageLabel.drawEdges(edgesArray, Color.GREEN);
+
+        // мы один раз находим контуры кругов:
+        // todo 1) Находим один раз все контура кругов и прорисовываем их
+        if (!flagFoundEdge){
+            System.out.println("closedLineSearch");
+            float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+            int newWidth = (int) (myPicture.getWidth() * dHeight);
+            SimpleEdgeDetector edgeDetector = new SimpleEdgeDetector();
+
+            Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+            imgIcon.setImage(dimg);
+            BufferedImage tempImage = toBufferedImage(dimg);
+           // ArrayList<EdgeCoords> edgesArray =  edgeDetector.getEdgeCoords(tempImage, 100);
+            // todo 2) Разделяем их -> Первый координат контура идем от него в 4 стороны и если находим другой контур объединяем их в группу
+            ArrayList<ArrayList<EdgeCoords>> separateContours = edgeDetector.getSeparateContours(tempImage, 100);
+           // imageLabel.drawEdges(edgesArray, Color.GREEN);
+            // Рисуем раздельные контуры
+            imageLabel.drawSeparateContours(separateContours);
+
+            System.out.println("Found  Contour groups: " + separateContours.size());
+            flagFoundEdge = true;
+        }
+            // 
+
+
+
 //		imageLabel.repaint();
     }
 
@@ -112,66 +122,66 @@ public class RedMain {
     }
 
 
-//    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
-//
-//        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
-//        int newWidth = (int) (myPicture.getWidth() * dHeight);
-//        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-//        imgIcon.setImage(dimg);
-//        RedSearch redSearch = new RedSearch(myPicture);
-//
-//        Circle circle = redSearch.getCircle(); //находим внешний круг
-//        if (circle == null) {
-//            // System.out.println("--!! No circle !!--");
-//        } else {
-//            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
-//                // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
-//                if (myPoint.getX() != 500 && myPoint.getY() != 500) {
-//                    Main.addPointList(myPoint);
-//                }
-//
-//                imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
-//                ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
-//                imageLabel.drawCircles(circlesList);
-//                circlesList.add(circle); //если нужен список со всеми кругами
-//
-//                // Новый алгоритм точности попадания:
-//                int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-//
-//                // Если точка в центре или в области промаха:
-//                if (circleIndex == -1) {
-//                    int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
-//                    if (soloCircleIndex == -99) {
-//                        Main.addListHits(10);
-//                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-//                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-//
-//                        // Условия для перехода на следующего игрока:
-//                        Main.playerChangeCondition();
-//
-//                    } else if (myPoint.getRadius() != -500) {
-//                        Main.addListHits(0);
-//                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-//                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-//                        // Условия для перехода на следующего игрока:
-//                        Main.playerChangeCondition();
-//                    }
-//                }
-//                // Если точка находится между кругами
-//                else if (circleIndex < circlesList.size()) {
-//                    if (circleIndex == 0) Main.addListHits(8);
-//                    else if (circleIndex == 1) Main.addListHits(5);
-//                    else if (circleIndex == 2) Main.addListHits(2);
-//
-//                    //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
-//                    //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
-//                    Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
-//                    // Условия для перехода на следующего игрока:
-//                    Main.playerChangeCondition();
-//
-//                }
-//            }
-//        }
+    public static void resizeImageOld(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
+
+        float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+        int newWidth = (int) (myPicture.getWidth() * dHeight);
+        Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+        imgIcon.setImage(dimg);
+        RedSearch redSearch = new RedSearch(myPicture);
+
+        Circle circle = redSearch.getCircle(); //находим внешний круг
+        if (circle == null) {
+            // System.out.println("--!! No circle !!--");
+        } else {
+            Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
+                // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
+                if (myPoint.getX() != 500 && myPoint.getY() != 500) {
+                    Main.addPointList(myPoint);
+                }
+
+                imageLabel.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), dHeight);
+                ArrayList<Circle> circlesList = redSearch.getCircles(circle); //находим все внутренние круги
+                imageLabel.drawCircles(circlesList);
+                circlesList.add(circle); //если нужен список со всеми кругами
+
+                // Новый алгоритм точности попадания:
+                int circleIndex = getCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
+
+                // Если точка в центре или в области промаха:
+                if (circleIndex == -1) {
+                    int soloCircleIndex = getSoloCircleIndByXY(myPoint.getX(), myPoint.getY(), circlesList);
+                    if (soloCircleIndex == -99) {
+                        Main.addListHits(10);
+                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+
+                        // Условия для перехода на следующего игрока:
+                        Main.playerChangeCondition();
+
+                    } else if (myPoint.getRadius() != -500) {
+                        Main.addListHits(0);
+                        //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                        Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+                        // Условия для перехода на следующего игрока:
+                        Main.playerChangeCondition();
+                    }
+                }
+                // Если точка находится между кругами
+                else if (circleIndex < circlesList.size()) {
+                    if (circleIndex == 0) Main.addListHits(8);
+                    else if (circleIndex == 1) Main.addListHits(5);
+                    else if (circleIndex == 2) Main.addListHits(2);
+
+                    //Main.myTextArea.append("Player "+((Main.player)+1)+" hit points"+Main.listHits.get((Main.shot++))+"\n");
+                    //Main.myTextArea.append("Player " + ((Main.player) + 1) + " | hit points  " + Main.listHits.get((Main.shot++)) + "\n");
+                    Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+                    // Условия для перехода на следующего игрока:
+                    Main.playerChangeCondition();
+
+                }
+            }
+        }
 
 
 

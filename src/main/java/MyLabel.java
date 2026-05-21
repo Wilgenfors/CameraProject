@@ -69,6 +69,49 @@ public class MyLabel extends JLabel {
         repaint();
     }
 
+    // НОВЫЙ МЕТОД: рисование раздельных контуров разными цветами
+    public void drawSeparateContours(ArrayList<ArrayList<EdgeCoords>> contours) {
+        Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
+                Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.PINK};
+
+        Graphics2D gr2D = (Graphics2D) getGraphics();
+        if (gr2D != null) {
+            gr2D.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+            for (int i = 0; i < contours.size(); i++) {
+                ArrayList<EdgeCoords> contour = contours.get(i);
+                Color contourColor = colors[i % colors.length];
+                gr2D.setColor(contourColor);  // Устанавливаем цвет ПЕРЕД рисованием
+
+                // Рисуем линии, соединяющие соседние точки
+                for (int j = 0; j < contour.size() - 1; j++) {
+                    EdgeCoords p1 = contour.get(j);
+                    EdgeCoords p2 = contour.get(j + 1);
+                    gr2D.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());  // Только 4 аргумента
+                }
+
+                // Если контур замкнут, соединяем последнюю точку с первой
+                if (contour.size() > 2 && isClosed(contour)) {
+                    EdgeCoords first = contour.get(0);
+                    EdgeCoords last = contour.get(contour.size() - 1);
+                    gr2D.drawLine(last.getX(), last.getY(), first.getX(), first.getY());  // Только 4 аргумента
+                }
+            }
+        }
+        repaint();
+    }
+
+    private boolean isClosed(ArrayList<EdgeCoords> contour) {
+        if (contour.size() < 3) return false;
+        EdgeCoords first = contour.get(0);
+        EdgeCoords last = contour.get(contour.size() - 1);
+        int distance = Math.abs(first.getX() - last.getX()) + Math.abs(first.getY() - last.getY());
+        return distance <= 2; // если расстояние между первой и последней точкой мало
+    }
+
+
+
+
 
     @Override
     // ф-ия различной прорисовки:
@@ -81,35 +124,12 @@ public class MyLabel extends JLabel {
         BasicStroke pen;
         BasicStroke pen2;
 
-        // прорисовываем все круги:
-//        if (paintCircle) {
-//            float[] dash = {20, 20};
-//            //gr2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//            pen = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, dash, 1);
-//            gr2D.setStroke(pen);
-//            gr2D.setColor(Color.GREEN);
-//            for (Circle circle : circlesList) {
-////                int x = circle.getX();
-////                int y = circle.getY();
-////                int r = circle.getRadius();
-////                circleR = (int) (r * dHeight);
-////                circleX = (int) (x * dHeight);
-////                circleY = (int) (y * dHeight);
-////                gr2D.drawOval(circleX - circleR, circleY - circleR, 2 * circleR, 2 * circleR);
-//                int d = (int) (circle.getRadius()*2*dHeight);
-//                int R = (int) (circle.getRadius()*dHeight);
-//                int X = (int) (circle.getX()*dHeight);
-//                int Y = (int) (circle.getY()*dHeight);
-//                gr2D.drawOval(X-R, Y-R, d, d);
-//            }
-//        }
-
         if (paintEdges) {
             System.out.println("in paint");
-            pen=new BasicStroke(1,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+            pen = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
             gr2D.setStroke(pen);
             gr2D.setColor(edgesColor);
-            edgeArray.forEach(coords->{
+            edgeArray.forEach(coords -> {
                 gr2D.drawLine(coords.getX(), coords.getY(), coords.getX(), coords.getY());
             });
         }
