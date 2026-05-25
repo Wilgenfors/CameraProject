@@ -19,6 +19,8 @@ public class RedMain {
     static MyLabel imageLabel;
     static  boolean flagFoundEdge = false;
 
+    private static ArrayList<ArrayList<EdgeCoords>> separateContours = null;
+
     public static void guiTest( Webcam webcam) {
         // frame for bounds detected:
         imageLabel = new MyLabel();
@@ -72,44 +74,74 @@ public class RedMain {
 
     }
 
-    public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) { //распознавание замкнутых линий
+   public static void resizeImage(MyLabel imageLabel, BufferedImage myPicture, ImageIcon imgIcon, BufferedImage colorImg) {
 
-        // мы один раз находим контуры кругов:
-        // todo 1) Находим один раз все контура кругов и прорисовываем их
-        if (!flagFoundEdge){
-            System.out.println("closedLineSearch");
-            float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
-            int newWidth = (int) (myPicture.getWidth() * dHeight);
-            SimpleEdgeDetector edgeDetector = new SimpleEdgeDetector();
+       // мы один раз находим контуры кругов:
+       if (!flagFoundEdge) {
+           System.out.println("closedLineSearch");
+           float dHeight = imageLabel.getHeight() / (float) myPicture.getHeight();
+           int newWidth = (int) (myPicture.getWidth() * dHeight);
+           SimpleEdgeDetector edgeDetector = new SimpleEdgeDetector();
 
-            Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
-            imgIcon.setImage(dimg);
-            BufferedImage tempImage = toBufferedImage(dimg);
-           // ArrayList<EdgeCoords> edgesArray =  edgeDetector.getEdgeCoords(tempImage, 100);
-            // todo 2) Разделяем их -> Первый координат контура идем от него в 4 стороны и если находим другой контур объединяем их в группу
-            ArrayList<ArrayList<EdgeCoords>> separateContours = edgeDetector.getSeparateContours(tempImage, 100);
-           // imageLabel.drawEdges(edgesArray, Color.GREEN);
-            // Рисуем раздельные контуры
-            imageLabel.drawSeparateContours(separateContours);
+           Image dimg = myPicture.getScaledInstance(newWidth, imageLabel.getHeight(), Image.SCALE_SMOOTH);
+           imgIcon.setImage(dimg);
+           BufferedImage tempImage = toBufferedImage(dimg);
 
-            System.out.println("Found Contour groups: " + separateContours.size());
-            flagFoundEdge = true;
-        }
+           // Присваиваем значение объявленной ранее переменной
+           separateContours = edgeDetector.getSeparateContours(tempImage, 100);
 
-        // Нахождение красной точки:
-        Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
+           // Рисуем раздельные контуры
+           imageLabel.drawSeparateContours(separateContours);
 
-        // Добавляем каждую точку в Лист ели он есть те не дефолтное значение:
-        // todo not found red point - why?
-        if (myPoint.getX() != 500 && myPoint.getY() != 500) {
-            System.out.println("found red point");
-            Main.addPointList(myPoint);
-        }
+           System.out.println("Found Contour groups: " + separateContours.size());
+           flagFoundEdge = true;
+       }
 
+       // Нахождение красной точки:
+       Circle myPoint = detectedRedPointOnTarget(imageLabel, colorImg, imgIcon, Main.panelWebcam);
 
+       // Добавляем каждую точку в Лист если она есть (не дефолтное значение):
+       if (myPoint.getX() != 500 && myPoint.getY() != 500) {
+           System.out.println("found red point");
+           Main.addPointList(myPoint);
 
-//		imageLabel.repaint();
-    }
+//            int xRed = myPoint.getX();
+//            int yRed = myPoint.getY();
+           boolean foundBoundary = false;
+           int targetContour = -1;
+           int boundaryY = -1;
+
+           for (int y = myPoint.getY(); y > 0; y--) {
+               // Проходимся по всем контурам
+               for (int contourIdx = 0; contourIdx < separateContours.size(); contourIdx++) {
+                   ArrayList<EdgeCoords> contour = separateContours.get(contourIdx);
+
+                   // Проходимся по всем пикселям контура i
+                   for (EdgeCoords edgePoint : contour) {
+                       // Сравниваем координаты красной точки с пикселем контура
+                       if (myPoint.getX() == edgePoint.getX() && y == edgePoint.getY()) {
+                           // И если совпадают, то заканчиваем цикл через флаг
+                           foundBoundary = true;
+                           targetContour = contourIdx;
+                           boundaryY = y;
+                           break;
+                       }
+                   }
+                   if (foundBoundary) break;
+               }
+               if (foundBoundary) break;
+           }
+
+           if (foundBoundary) {
+               System.out.println("=== RESULT ===");
+               System.out.println("Red dot hit area: contour " + targetContour);
+               System.out.println("Distance to upper border: " + (myPoint.getY() - boundaryY));
+           } else {
+               System.out.println("No contour found above the red dot");
+           }
+       }
+   }
+
 
     // Взял с RedCircle на сколько понял для лучшей работы с цветами:
     public static BufferedImage toBufferedImage(Image img) {
