@@ -134,10 +134,38 @@ public class RedMain {
 
            if (foundBoundary) {
                System.out.println("=== RESULT ===");
-               System.out.println("Red dot hit area: contour " + targetContour);
-               System.out.println("Distance to upper border: " + (myPoint.getY() - boundaryY));
+               //System.out.println("Red dot hit area: contour " + targetContour);
+               if (targetContour == 0 ){
+                   System.out.println("Mimooo )");
+                   Main.addListHits(0);
+               }
+               if (targetContour == 1 || (targetContour == 2 )){
+                   System.out.println("hit !!! - 2 point");
+                   Main.addListHits(2);
+               }
+               if (targetContour == 3 || (targetContour == 4 )){
+                   System.out.println("hit !!! - 4 point");
+                   Main.addListHits(4);
+               }
+               if (targetContour == 5 || (targetContour == 6 )){
+                   System.out.println("hit !!! - 8 point");
+                   Main.addListHits(8);
+               }
+               if (targetContour == 7 ){
+                   System.out.println("hit !!! - 16 point");
+                   Main.addListHits(16);
+                   //Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+               }
+               Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+               // Условия для перехода на следующего игрока:
+               Main.playerChangeCondition();
            } else {
-               System.out.println("No contour found above the red dot");
+               System.out.println("Mimooo )");
+               Main.addListHits(0);
+               Main.myTextArea.append("    " + ((Main.player) + 1) + "                    " + Main.listHits.get((Main.shot++)) + "\n");
+               // Условия для перехода на следующего игрока:
+               Main.playerChangeCondition();
+
            }
        }
    }
