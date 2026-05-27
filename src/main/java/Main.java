@@ -106,26 +106,26 @@ public class Main {
         panelNORTH.add(inputCountShot);
 
         // add startButton for detected black circle and red point:
-        JButton startButton = new JButton("Red detected");
+        JButton startButton = new JButton("Начать играть");
         //Устанавливаем стилистику и размер шрифта:
-        startButton.setFont(new Font("Red detected",Font.BOLD,14));
+        startButton.setFont(new Font("Начать играть",Font.BOLD,14));
         panelNORTH.add(startButton);
 
 
         // add calibrationButton for calibration diapason colors black circle and red point:
-        JButton calibrationButton = new JButton("Calibration of colors");
+        //JButton calibrationButton = new JButton("Calibration of colors");
         //Устанавливаем стилистику и размер шрифта:
-        calibrationButton.setFont(new Font("Calibration of colors",Font.BOLD,14));
-        panelNORTH.add(calibrationButton);
+        //calibrationButton.setFont(new Font("Calibration of colors",Font.BOLD,14));
+        //panelNORTH.add(calibrationButton);
 
 
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
 
         // add stopButton for stopped Runnable:
-        JButton stopButton = new JButton("Stopped detected");
+        JButton stopButton = new JButton("Остановить");
         //Устанавливаем стилистику и размер шрифта:
-        stopButton.setFont(new Font("Stopped detected",Font.BOLD,14));
+        stopButton.setFont(new Font("Остановить",Font.BOLD,14));
         mainFrame.add(stopButton, BorderLayout.SOUTH);
 
         // Создаем текстовое поле для вывода информации об выстрелах игроков
@@ -189,7 +189,7 @@ public class Main {
                         shot = 0;
                         listHits = new ArrayList<>();
                         myTextArea.setText("");
-                        myTextArea.append(" PLAYER       |      HIT    \n");
+                        myTextArea.append(" Игрок       |      Попадания    \n");
                         //myTextArea.append("-----------------------\n");
                         pointList = new ArrayList<>();
                         if (Main.redMain != null){
@@ -208,18 +208,18 @@ public class Main {
 
 
         // Слушатель кнопки для открытия фрейма калибровки и создание объекта:
-        calibrationButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SimpleRunnable.stopped();
-
-                BufferedImage image  = webcam.getImage();
-                Calibration calibration = new Calibration(image);
-                //RedMain redmainOfCalibration = new RedMain();
-                // redmainOfCalibration.calibration(image);
-
-
-            }
-        });
+//        calibrationButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                SimpleRunnable.stopped();
+//
+//                BufferedImage image  = webcam.getImage();
+//                Calibration calibration = new Calibration(image);
+//                //RedMain redmainOfCalibration = new RedMain();
+//                // redmainOfCalibration.calibration(image);
+//
+//
+//            }
+//        });
 
 
         // Слушатель для остановки потока:
@@ -249,7 +249,7 @@ public class Main {
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
         myTextArea.append("-----------------------\n");
-        myTextArea.append("Player    |  total score\n");
+        myTextArea.append("Игрок    |  Общий счет\n");
 
 
         int countPlayer = 0;
@@ -283,7 +283,7 @@ public class Main {
                 winnerPlayer = (countPlayer);
             }
         }
-        myTextArea.append("Winner - player "+(winnerPlayer) + "\n");
+        myTextArea.append("Победитель - игрок "+(winnerPlayer) + "\n");
 
         // Вызываем метод для итогово изображения всех попаданий по мешени:
         printAllHits();
