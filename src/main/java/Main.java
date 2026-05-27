@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static MyWebcamPanel panelWebcam; // Панель для работы с камерой
-    public static JFrame mainFrame; // Фрейм на котором отображается поток с веб-камеры и todo будет производиться настройка цвета лазера и черных кругов - калибровка
+    public static JFrame mainFrame; // Фрейм на котором отображается поток с веб-камеры
     static Webcam webcam = Webcam.getDefault(); // Объектная переменная для работы с веб-камерой
     static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждого игрока и вывода лучшего игрока
     static JTextField inputPlayerCount; // текстовое поле для ввода кол-ва игроков
@@ -59,21 +59,12 @@ public class Main {
 
         mainFrame.setPreferredSize(new Dimension(986,661));  // Настраиваем размер фрейма
         mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
-        //Обозначаем границы Фрейма:
-        // 1) Установить через гредл тему фрейма
-        // 2) написать код шрифта для фонта и возможно ещё установить путь к папке
-        // 3) Добавить OI и срай  катч
 
-
-        // Код, который нужно изменить:
         // Я изменил путь, что бы был виден читаемый файл
         Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/CameraProject/ds_digital/DS-DIGIB.TTF")); //шрифт
         GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
         genv.registerFont(font); //регистрируем шрифт
         font = font.deriveFont(20f); //задаем ему размер
-
-
-
 
 
         // create panelNORTH for North:
@@ -111,14 +102,6 @@ public class Main {
         startButton.setFont(new Font("Начать играть",Font.BOLD,14));
         panelNORTH.add(startButton);
 
-
-        // add calibrationButton for calibration diapason colors black circle and red point:
-        //JButton calibrationButton = new JButton("Calibration of colors");
-        //Устанавливаем стилистику и размер шрифта:
-        //calibrationButton.setFont(new Font("Calibration of colors",Font.BOLD,14));
-        //panelNORTH.add(calibrationButton);
-
-
         // add panel in frame - window:
         mainFrame.add(panelNORTH, BorderLayout.NORTH);
 
@@ -128,42 +111,17 @@ public class Main {
         stopButton.setFont(new Font("Остановить",Font.BOLD,14));
         mainFrame.add(stopButton, BorderLayout.SOUTH);
 
-        // Создаем текстовое поле для вывода информации об выстрелах игроков
-        // Создаем шрифт: имя, стиль (Font.PLAIN, Font.BOLD, Font.ITALIC), размер
-        Font customFont = new Font("Serif", Font.TRUETYPE_FONT, 16);
-
         myTextArea = new JTextArea(10,20);
         //myTextArea.setFont(customFont);
         myTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
 
-        // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
-        // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
-
-
-        //timeLabel.setFont(font); //устанавливаем для лейбла шрифт
-        //timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5)); // задаем синюю границу
-        //mainFrame.setBorder(new LineBorder(Color.BLUE, 2));
-        // Настраиваем фонт для лейбал по примеру:
-       // myTextArea.setFont(font);
         myTextArea.setBorder(BorderFactory.createLineBorder(new Color(153, 255, 204), 5)); // задаем синюю границу
 
-
-        // И помещаем текстовое поле на скол
-
         JScrollPane scrollPane = new JScrollPane(myTextArea);
-        // и добавляем этот скол на главный фрейм
-        //Dimension fixedSize = new Dimension(100, 40);
         scrollPane.setPreferredSize(new Dimension(220, 40));
-        //scrollPane.setMinimumSize(fixedSize);
-        //scrollPane.setMaximumSize(fixedSize);
 
        mainFrame.add(scrollPane,BorderLayout.EAST);
-     //   JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelWebcam, scrollPane);
-    //    splitPane.setDividerLocation(0.5); // Start with divider in the middle
-     //   splitPane.setResizeWeight(0.5); // Distribute resize space evenly
-      //  splitPane.setOneTouchExpandable(true);
-        //    splitPane.setEnabled(false); // ⚠️ Это отключает ВЕСЬ split pane (включая кнопки OneTouch)
-     //   mainFrame.add(splitPane, BorderLayout.CENTER);
+
         // И заканчиваем настройку главного фрейма
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -173,13 +131,6 @@ public class Main {
         webcam.open();
 
 
-
-        // Слушатель кнопки для начала потока (распознавания красных точек)
-        // todo 1) Находим один раз все контура кругов и прорисовываем их
-        // todo 2) Разделяем их -> Первый координат контура идем от него в 4 стороны и если находим другой контур объединяем их в группу
-        // todo 3) Из групп 1-2, 3-4, 5-6 и тд запоминаем как область кругов
-        // todo 4) далее находим красные точки от лазера по старому способу в потоке
-        // todo 5) Немного отредачу нахождение области попадания до 1- первой группы контуров в 1-2 группе тоесть в круге и между вркгами и тд
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -200,9 +151,6 @@ public class Main {
                         if (Main.redMain != null){
                             redMain.repaint();
                         }
-
-
-
                     }
                 }
                 catch(NumberFormatException ex){
@@ -211,30 +159,12 @@ public class Main {
             }
         });
 
-
-        // Слушатель кнопки для открытия фрейма калибровки и создание объекта:
-//        calibrationButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                SimpleRunnable.stopped();
-//
-//                BufferedImage image  = webcam.getImage();
-//                Calibration calibration = new Calibration(image);
-//                //RedMain redmainOfCalibration = new RedMain();
-//                // redmainOfCalibration.calibration(image);
-//
-//
-//            }
-//        });
-
-
         // Слушатель для остановки потока:
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SimpleRunnable.stopped();
             }
         });
-
-
     }
 
 
@@ -247,7 +177,6 @@ public class Main {
 
     // ф-ия для подсчета очков попадания для игрока и для определения лучшего игрока:
     public static void totalScore() {
-        //   System.out.println("\nGame the end, stream stop");
         SimpleRunnable.stopped();
 
         ArrayList<Integer> listPlayersTotal = new ArrayList<>();
@@ -256,7 +185,6 @@ public class Main {
         myTextArea.append("-----------------------\n");
         myTextArea.append("Игрок       |  Общий счет\n");
 
-
         int countPlayer = 0;
         int totalScore = 0;
         int hitStep = 0; ;
@@ -264,11 +192,9 @@ public class Main {
 
             totalScore += i;
             hitStep++;
-            //       System.out.println("totalScore = "+totalScore);
 
             if (hitStep == Integer.parseInt(inputCountShot.getText())){
                 listPlayersTotal.add(totalScore);
-               // myTextArea.append("Player - "+(++countPlayer)+" | SCORE - "+totalScore+"\n");
                 myTextArea.append("    "+(++countPlayer)+"                 "+totalScore+"\n");
                 totalScore = 0;
                 hitStep = 0;
@@ -289,7 +215,6 @@ public class Main {
             }
         }
         myTextArea.append("Победитель - игрок "+(winnerPlayer) + "\n");
-
         // Вызываем метод для итогово изображения всех попаданий по мешени:
         printAllHits();
 

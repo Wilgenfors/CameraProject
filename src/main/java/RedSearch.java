@@ -5,29 +5,16 @@ import java.awt.image.BufferedImage;
 //import java.io.IOException;
 import java.util.ArrayList;
 
-//import javax.imageio.ImageIO;
 
 public class RedSearch {
-	//private String path;
+
 	private BufferedImage image;
 
 	public RedSearch(BufferedImage img) {
 		image = img;
 	}
 
-//	public RedSearch(String filePath) {
-//		path = filePath;
-//		File f = null;
-//
-//		// read image
-//		try {
-//			f = new File(path);
-//			image = ImageIO.read(f);
-//
-//		} catch (IOException e) {
-//			System.out.println(e);
-//		}
-//	}
+
 	int redDiaposonePoint = 250; // todo im deleted static
 	int greenDiaposonePoinPoint= 250;// todo im deleted static
 	int blueDiaposonePoinPoint= 250;// todo im deleted static
@@ -128,33 +115,6 @@ public class RedSearch {
 		return points;
 	}
 
-	public Circle getCircle(/*Point[] z*/) {
-		//https://shra.ru/2019/10/koordinaty-centra-okruzhnosti-po-trem-tochkam/
-		MyPoint[] z = boundCircleSearch();
-		if (z.length<3) {
-			return null;
-		}
-		int a = z[1].getX() - z[0].getX();
-		int b = z[1].getY() - z[0].getY();
-		int c = z[2].getX() - z[0].getX();
-		int d = z[2].getY() - z[0].getY();
-		int e = a * (z[0].getX() + z[1].getX()) + b * (z[0].getY() + z[1].getY());
-		int f = c * (z[0].getX() + z[2].getX()) + d * (z[0].getY() + z[2].getY());
-		int g = 2 * (a * (z[2].getY() - z[1].getY()) - b * (z[2].getX() - z[1].getX()));
-		if (g == 0) {
-			// если точки лежат на одной линии,
-			// или их координаты совпадают,
-			// то окружность вписать не получится
-			return null;
-		}
-		// координаты центра
-		int Cx = (int) ((d * e - b * f) / (float) g);
-		int Cy = (int) ((a * f - c * e) / (float) g);
-		// радиус
-		int R = (int) Math.sqrt(Math.pow(z[0].getX() - Cx, 2) + Math.pow(z[0].getY() - Cy, 2));
-		// вернем параметры круга
-		return new Circle(Cx, Cy, R);
-	}
 
 	public Circle getCircle(MyPoint[] z) {
 		//https://shra.ru/2019/10/koordinaty-centra-okruzhnosti-po-trem-tochkam/
@@ -187,31 +147,6 @@ public class RedSearch {
 		return new Circle(Cx, Cy, R);
 	}
 
-	/**
-	 *Ф-ия для нахождения всех внутренних кругов
-	 *@param circle - самый внешний круг
-	 *@return ArrayList<Circle> - список всех внутренних кругов (без самого внешнего)
-	 */
-	public ArrayList<Circle> getCircles(Circle circle) {
-		ArrayList<Circle> circlesList = new ArrayList<Circle>();
-		MyPoint[] z = searchCircleFromCenter(circle, 0); //находим точки самого внутреннего круга
-		if (getCircle(z)!=null)
-			circlesList.add(getCircle(z)); //добавляем в список круг по найденным точкам
-		//цикл пока последний добавленный круг не приблизится к самому внешнему
-		try {
-			if (!circlesList.isEmpty()) {
-				while (circlesList.get(circlesList.size() - 1).getRadius() + 40 < circle.getRadius()) {
-					//ищем следующий внутренний круг за последним найденным до этого
-					z = searchCircleFromCenter(circle, circlesList.get(circlesList.size() - 1).getRadius() + 40);
-					circlesList.add(getCircle(z));
-				}
-				circlesList.remove(circlesList.size() - 1); //убираем последний круг, он обычно совпадает с самым внешним
-			}
-		} catch (java.util.NoSuchElementException err) {
-			//System.out.println("--!! NoSuchElementException !!--");
-		}
-		return circlesList;
-	}
 
 	/**
 	 *Ф-ия для поиска внутренних кругов
@@ -258,18 +193,5 @@ public class RedSearch {
 			}
 		}
 		return blackPoints;
-	}
-
-	public  void passDiaposoneColorRedPoint(int r, int g, int b) {
-		redDiaposonePoint = r;
-		greenDiaposonePoinPoint = g;
-		blueDiaposonePoinPoint = b;
-
-	}
-
-	public  void blackCirclePassDiaposoneColor(int r, int g, int b) {
-		circleRedDiaposone = r;
-		circleGreenDiaposone = g;
-		circleBlueDiaposone = b;
 	}
 }
