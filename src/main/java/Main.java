@@ -129,7 +129,12 @@ public class Main {
         mainFrame.add(stopButton, BorderLayout.SOUTH);
 
         // Создаем текстовое поле для вывода информации об выстрелах игроков
+        // Создаем шрифт: имя, стиль (Font.PLAIN, Font.BOLD, Font.ITALIC), размер
+        Font customFont = new Font("Serif", Font.TRUETYPE_FONT, 16);
+
         myTextArea = new JTextArea(10,20);
+        //myTextArea.setFont(customFont);
+        myTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
 
         // todo Мне по факту нужно добавлять не лейбл, а текстовое поле где отображается итог игры и панель где изображается видео камеры
         // JLabel timeLabel = new JLabel(); //создаем лейбл, в котором будет время
@@ -139,7 +144,7 @@ public class Main {
         //timeLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5)); // задаем синюю границу
         //mainFrame.setBorder(new LineBorder(Color.BLUE, 2));
         // Настраиваем фонт для лейбал по примеру:
-        myTextArea.setFont(font);
+       // myTextArea.setFont(font);
         myTextArea.setBorder(BorderFactory.createLineBorder(new Color(153, 255, 204), 5)); // задаем синюю границу
 
 
@@ -249,7 +254,7 @@ public class Main {
 
         // Подсчитываем кол-во очков попадания для каждого игрока:
         myTextArea.append("-----------------------\n");
-        myTextArea.append("Игрок    |  Общий счет\n");
+        myTextArea.append("Игрок       |  Общий счет\n");
 
 
         int countPlayer = 0;
