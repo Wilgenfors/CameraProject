@@ -1,4 +1,5 @@
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamResolution;
 //import jdk.internal.icu.text.UnicodeSet;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class Main {
     public static MyWebcamPanel panelWebcam; // Панель для работы с камерой
     public static JFrame mainFrame; // Фрейм на котором отображается поток с веб-камеры
-    static Webcam webcam = Webcam.getDefault(); // Объектная переменная для работы с веб-камерой
+    static Webcam webcam = null; // Объектная переменная для работы с веб-камерой
     static JTextArea myTextArea; // текстовое поле для вывода попаданий игрока, подсчет всех попаданий для каждого игрока и вывода лучшего игрока
     static JTextField inputPlayerCount; // текстовое поле для ввода кол-ва игроков
     static RedMain redMain; // Объектная переменная для работы с классом
@@ -30,11 +31,52 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, FontFormatException{
-        // проверять кол-во камее, и если 1, то брать дефолтную, иначе вторую
-        var cams = Webcam.getWebcams();
 
-        if (cams.size()>1) {
-            webcam = cams.get(1);
+        // Блок try-catch для обработки ошибок камеры
+        try {
+            // проверять кол-во камер, и если 1, то брать дефолтную, иначе вторую
+            var cams = Webcam.getWebcams();
+
+            if (cams.isEmpty()) {
+                throw new WebcamException("Камера не обнаружена! Пожалуйста, подключите веб-камеру.");
+            }
+
+            if (cams.size() > 1) {
+                webcam = cams.get(1);
+            } else {
+                webcam = Webcam.getDefault();
+            }
+
+            if (webcam == null) {
+                throw new WebcamException("Не удалось получить доступ к веб-камере!");
+            }
+
+            // Настраиваем разрешение для камеры
+            webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+            // Открываем видео поток для камеры
+            webcam.open();
+
+        } catch (WebcamException e) {
+            // Выводим сообщение об ошибке WebcamException
+            JOptionPane.showMessageDialog(null,
+                    "Ошибка при инициализации камеры:\n" + e.getMessage() +
+                            "\n\nПрограмма будет закрыта.",
+                    "Ошибка камеры",
+                    JOptionPane.ERROR_MESSAGE);
+
+            // Закрываем программу
+            System.exit(1);
+        } catch (Exception e) {
+            // Выводим сообщение об остальных ошибках
+            JOptionPane.showMessageDialog(null,
+                    "Непредвиденная ошибка при инициализации камеры:\n" + e.getMessage() +
+                            "\n\nПрограмма будет закрыта.",
+                    "Ошибка",
+                    JOptionPane.ERROR_MESSAGE);
+
+            // Закрываем программу
+            System.exit(1);
         }
 
         //в блоке try...catch вызываем метод для установки нужного стиля оформления окна
@@ -47,10 +89,6 @@ public class Main {
             e.printStackTrace();
         }
 
-
-
-        webcam.setViewSize(WebcamResolution.VGA.getSize());// Настраиваем разрешение для камеры
-
         panelWebcam = new MyWebcamPanel(webcam);  // Передаем объект камеры на специальную панель для вывода изображения с камеры
         panelWebcam.setImageSizeDisplayed(true);  // Делаем веб-панель видимой
         panelWebcam.setImageSizeDisplayed(false);
@@ -61,10 +99,10 @@ public class Main {
         mainFrame.add(panelWebcam, BorderLayout.CENTER); // добавляем веб-панель на главный фрейм
 
         // Я изменил путь, что бы был виден читаемый файл
-        Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/CameraProject/ds_digital/DS-DIGIB.TTF")); //шрифт
+        //  Font font = Font.createFont(Font.TRUETYPE_FONT, new File(System.getProperty("user.dir") + "/CameraProject/ds_digital/DS-DIGIB.TTF")); //шрифт
         GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment(); //объект для регистрации шрифта
-        genv.registerFont(font); //регистрируем шрифт
-        font = font.deriveFont(20f); //задаем ему размер
+        //      genv.registerFont(font); //регистрируем шрифт
+        //     font = font.deriveFont(20f); //задаем ему размер
 
 
         // create panelNORTH for North:
@@ -120,21 +158,26 @@ public class Main {
         JScrollPane scrollPane = new JScrollPane(myTextArea);
         scrollPane.setPreferredSize(new Dimension(220, 40));
 
-       mainFrame.add(scrollPane,BorderLayout.EAST);
+        mainFrame.add(scrollPane,BorderLayout.EAST);
 
         // И заканчиваем настройку главного фрейма
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
-        // открываем видео поток для камеры
-        webcam.open();
-
-
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Обработка исключения пустой стоки преобразованной в целое:
+                // Дополнительная проверка, что камера все еще доступна
+                if (webcam == null || !webcam.isOpen()) {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Камера недоступна! Перезапустите программу.",
+                            "Ошибка",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Обработка исключения пустой строки преобразованной в целое:
                 try{
                     if ( Integer.parseInt(inputPlayerCount.getText()) > 0 && Integer.parseInt(inputCountShot.getText()) > 0){
                         RedMain.guiTest(webcam);
@@ -253,11 +296,14 @@ public class Main {
 
     // метод вернёт список точек:
     public static ArrayList<Circle> returnedPointList(){
-       return pointList;
+        return pointList;
     }
 
 
     public static BufferedImage newPicher() {
-        return webcam.getImage();
+        if (webcam != null && webcam.isOpen()) {
+            return webcam.getImage();
+        }
+        return null;
     }
 }
